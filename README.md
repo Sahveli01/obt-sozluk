@@ -68,6 +68,5 @@ scripts/contrast.ts          kontrast tabanı denetimi
 ## Yayın
 
 `main` dalına her push'ta GitHub Actions `validate` + `contrast` + `build`
-çalıştırıp
-GitHub Pages'e yayımlar. Depo adı netleştiğinde `src/config.ts` içindeki
-`site` ve `base` değerleri güncellenmelidir.
+çalıştırıp GitHub Pages'e yayımlar. Depo adı netleştiğinde
+`src/config.ts` içindeki `site` ve `base` değerleri güncellenmelidir.
