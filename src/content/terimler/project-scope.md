@@ -7,7 +7,7 @@ subcategory: "Ürün geliştirme"
 level: orta
 short: ""
 related: []
-disambiguation: []
+disambiguation: [scope-programlama]
 tags: []
 status: stub
 reviewedBy: []

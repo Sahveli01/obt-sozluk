@@ -6,13 +6,14 @@
  *  2. Dosyası olup taslakta olmayan terim.
  *  3. Taslakta aynı slug'a düşen iki terim.
  *  4. `category` / `subcategory` alanlarının taslakla ve kategoriler.ts ile uyumu.
- *  5. `related`, `disambiguation` ve `[[wiki-link]]` hedeflerinin taslakta var olması,
+ *  5. `disambiguation` bağlarının çift yönlü olması.
+ *  6. `related`, `disambiguation` ve `[[wiki-link]]` hedeflerinin taslakta var olması,
  *     ve aynı hedefe gövdede birden fazla kez bağlanılmaması.
- *  6. Aynı alias'ın (ya da bir slug'a eşit alias'ın) iki terimde kullanılması.
- *  7. `short` uzunluğu (<= 160) ve stub olmayan terimlerde boş olmaması.
- *  8. Stub olmayan terimlerde `## Nedir?` başlığının varlığı.
- *  9. Frontmatter'ın zorunlu alanları ve enum değerleri.
- * 10. Öğrenme yollarındaki terim slug'larının var olması.
+ *  7. Aynı alias'ın (ya da bir slug'a eşit alias'ın) iki terimde kullanılması.
+ *  8. `short` uzunluğu (<= 160) ve stub olmayan terimlerde boş olmaması.
+ *  9. Stub olmayan terimlerde `## Nedir?` başlığının varlığı.
+ * 10. Frontmatter'ın zorunlu alanları ve enum değerleri.
+ * 11. Öğrenme yollarındaki terim slug'larının var olması.
  *
  * Uyarılar (çıkış kodunu etkilemez): stub olmayan terimde 2'den az `related`,
  * kendine bağlanan terim, anlam ayrımı grubunda eksik karşılıklı bağlantı.
@@ -397,6 +398,37 @@ function aliasKontrolu(terimler: TerimDosyasi[]): void {
   }
 }
 
+/** Bir dosyanın `disambiguation` listesini metin olarak döndürür. */
+function anlamAyrimiListesi(dosya: TerimDosyasi): string[] {
+  const deger = dosya.frontmatter['disambiguation'];
+  if (!Array.isArray(deger)) return [];
+  return deger.filter((d): d is string => typeof d === 'string');
+}
+
+/**
+ * `disambiguation` çift yönlü olmalıdır: A, B'yi gösteriyorsa B de A'yı
+ * göstermeli. Tek yönlü bağ, okuru terimlerden yalnızca birinde uyarır;
+ * asıl karıştırma riski de çoğu zaman diğer taraftan gelir.
+ */
+function anlamAyrimiCiftYonluMu(terimler: TerimDosyasi[]): void {
+  const dosyalar = new Map(terimler.map((t) => [t.slug, t]));
+
+  for (const terim of terimler) {
+    for (const hedefSlug of anlamAyrimiListesi(terim)) {
+      if (hedefSlug === terim.slug) continue;
+      const hedef = dosyalar.get(hedefSlug);
+      if (!hedef) continue; // Var olmayan hedefi baglantiKontrolu raporluyor.
+      if (!anlamAyrimiListesi(hedef).includes(terim.slug)) {
+        hata(
+          hedef.dosya,
+          `disambiguation tek yönlü: ${terim.dosya} bu terimi gösteriyor ama ` +
+            `karşılığı yok. "${terim.slug}" buraya da eklenmeli.`,
+        );
+      }
+    }
+  }
+}
+
 /** Anlam ayrımı gruplarında karşılıklı bağlantı. */
 function anlamAyrimiKontrolu(taslak: Taslak, terimler: TerimDosyasi[]): void {
   const dosyalar = new Map(terimler.map((t) => [t.slug, t]));
@@ -467,6 +499,7 @@ async function main(): Promise<void> {
 
   aliasKontrolu(terimler);
   anlamAyrimiKontrolu(taslak, terimler);
+  anlamAyrimiCiftYonluMu(terimler);
   const yolSayisi = await yollariKontrolEt(taslak);
 
   console.log(

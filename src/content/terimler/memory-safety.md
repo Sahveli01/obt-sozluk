@@ -45,7 +45,7 @@ int main(void) {
 }
 ```
 
-Aynı erişim Python'da `IndexError` verip programı durdurur; Rust'ta ise ya derlenmez ya da çalışırken panik verip durur. Hiçbirinde rastgele bir belleğin içeriği sessizce yazdırılmaz.
+Buradaki asıl nokta çıktının ne olduğu değil, **belirli bir çıktısının olmaması**: C standardı bu erişimi tanımsız davranış sayar. Program çöpe denk gelen bir sayı basabilir, çökebilir, derleyicinin eniyileştirmesine göre bambaşka davranabilir. Aynı erişim Python'da `IndexError` verip programı durdurur; Rust'ta derleme sırasında ya da çalışırken yakalanır. Hiçbirinde rastgele belleğin içeriği sessizce yazdırılmaz.
 
 ## Dikkat
 

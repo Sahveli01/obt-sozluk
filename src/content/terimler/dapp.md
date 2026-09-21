@@ -25,7 +25,7 @@ Kullanıcı tarafında en görünür fark girişte ortaya çıkar: e-posta ve pa
 
 ## Benzetme
 
-İki kantin düşün. Birincisinde kasiyer var: ne alacağını söylersin, parayı ona verirsin, ürünü o uzatır. İkincisinde duvara gömülü bir düzenek var; kuralları duvarda yazılı, parayı atınca ürünü veriyor ve kimsenin keyfine bakmıyor. dApp ikincisidir — arayüz değişse de kuralları işleten şey aynı yerde, herkesin görebildiği biçimde durur.
+İki otoparkı düşün. Birincisinde görevli var: anahtarı ona verirsin, ücreti o söyler, çıkışta arabayı o getirir. İkincisinde kapıda bariyer ve duvarda yazılı bir tarife var; ödemeyi yaparsan bariyer kalkar, yapmazsan kalkmaz, görevlinin o gün keyfi yerinde mi diye sorulmaz. dApp ikincisidir — girişteki ekran değişse de kuralı işleten şey aynı yerde, herkesin okuyabildiği biçimde durur.
 
 ## Dikkat
 

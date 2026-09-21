@@ -25,7 +25,7 @@ Asıl amaç gizlilik değil, **kuralı ayakta tutmaktır**. Bakiye eksiye düşm
 
 ## Benzetme
 
-Otomat gibi. Camı şeffaftır, içeride hangi ürünün kaç tane kaldığını görürsün; ama elini sokup birini alamazsın. Yapabileceğin iki şey vardır: para atmak ve tuşa basmak. Makinenin bütün garantisi bu daraltmadan gelir — ödeme yapılmadan ürünün düşmediğini, çünkü başka bir yolun olmadığını bilirsin.
+Otel odasının mini barı gibi. Dolabın içini görürsün, neyin kaç tane kaldığını bilirsin; ama fiyatı sen belirleyemez, stoğu sen değiştiremezsin. Yapabileceğin tek şey bir ürünü almaktır ve o an hesabına işlenir. Sayımın tutmasının sebebi budur: dolaba başka bir yoldan erişilemez.
 
 ## Nasıl çalışır?
 

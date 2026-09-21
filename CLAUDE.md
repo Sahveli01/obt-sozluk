@@ -94,7 +94,15 @@ Gövde başlıkları (bu sırayla, bu adlarla):
 ## Kalite kontrol listesi (her toplu yazımdan sonra)
 - `npm run validate` hatasız.
 - Rastgele 3 terimi yüksek sesle okunuyormuş gibi kontrol et: yeni başlayan biri anlar mı?
-- Aynı benzetmeyi farklı terimlerde tekrarlama.
+- **Aynı benzetmeyi aynı kategoride iki terimde kullanma.** Okur bir kategoriyi
+  baştan sona tararken aynı imgeye iki kez çarparsa metin özensiz görünür.
+  Farklı kategorilerdeki iki terim aynı imgeyi **mekanizması farklıysa**
+  kullanabilir — "otelin kat hizmetleri" ile "otelin ücretsiz kahvaltısı" aynı
+  sahneyi paylaşır ama bambaşka şeyi anlatır, sorun değil. Aynı mekanizmayı
+  anlatan iki benzetme ise kategoriler farklı olsa da tekrardır.
+- **Ayrılmış benzetme:** otomat (parayı atınca kuralı işleten, kimsenin keyfine
+  bakmayan makine) `smart-contract` terimine saklandı — Nick Szabo akıllı
+  sözleşme kavramını bu örnekle anlatmıştı. Başka terimde kullanma.
 - Değiştirilen dosya sayısını ve kategori ilerlemesini (`npm run stats`) özetle.
 
 ## Komutlar
