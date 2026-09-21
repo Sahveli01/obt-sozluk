@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-labelledby="favicon-baslik">
+  <title id="favicon-baslik">Sözlük</title>
+
+  <!--
+    Simge: köşeli parantez çifti.
+
+    Sözlüğün üzerine kurulduğu sözdizimi [[slug]] — terimler birbirine
+    onunla bağlanıyor. Bir harf yerine bunu seçmenin sebebi, çalışma adının
+    değişebilecek olması (CLAUDE.md); parantez ada değil işe bağlı.
+
+    Kutucuk kendi zeminini taşıdığı için hem açık hem koyu sekmede görünür.
+    Ayrıca prefers-color-scheme ile tema renklerine geçer.
+
+    DİKKAT: Buradaki renkler src/styles/tokens.css içindeki --color-accent ve
+    --color-text-on-accent değerlerinin kopyasıdır; bir SVG dosyası sitenin
+    CSS değişkenlerini okuyamaz. Token değişirse burası elle güncellenir.
+    Bu istisna DESIGN.md'de kayıtlı.
+    hex değerler, oklch desteklemeyen ortamlar için yedektir.
+  -->
+  <style>
+    .tile {
+      fill: #3d43ab;
+      fill: oklch(0.443 0.163 275);
+    }
+    .mark {
+      stroke: #ffffff;
+      stroke: oklch(1 0 0);
+    }
+    @media (prefers-color-scheme: dark) {
+      .tile {
+        fill: #a5b5ff;
+        fill: oklch(0.793 0.122 275);
+      }
+      .mark {
+        stroke: #0a0c15;
+        stroke: oklch(0.155 0.02 275);
+      }
+    }
+  </style>
+
+  <rect class="tile" width="32" height="32" rx="7" />
+
+  <g
+    class="mark"
+    fill="none"
+    stroke-width="3"
+    stroke-linecap="butt"
+    stroke-linejoin="miter"
+  >
+    <path d="M13 8 H9 V24 H13" />
+    <path d="M19 8 H23 V24 H19" />
+  </g>
+</svg>

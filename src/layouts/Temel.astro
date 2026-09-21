@@ -13,9 +13,15 @@ import { siteYolu } from '../lib/yol.ts';
 interface Props {
   baslik: string;
   aciklama?: string;
+  /**
+   * Arama motorlarına "bu sayfayı dizine alma" der.
+   * Yazılmamış (stub) terim sayfalarında açılır: içeriği henüz yok, arama
+   * sonucunda çıkması hem okuru hem sözlüğü yanıltır.
+   */
+  noindex?: boolean;
 }
 
-const { baslik, aciklama = SITE.description } = Astro.props;
+const { baslik, aciklama = SITE.description, noindex = false } = Astro.props;
 const tamBaslik = baslik === SITE.name ? SITE.name : `${baslik} — ${SITE.name}`;
 ---
 
@@ -27,6 +33,8 @@ const tamBaslik = baslik === SITE.name ? SITE.name : `${baslik} — ${SITE.name}
     <title>{tamBaslik}</title>
     <meta name="description" content={aciklama} />
     <meta name="color-scheme" content="light dark" />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="icon" href={siteYolu('/favicon.svg')} type="image/svg+xml" />
   </head>
   <body>
     <a class="sadece-ekran-okuyucu" href="#icerik">İçeriğe geç</a>

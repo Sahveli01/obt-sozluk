@@ -46,7 +46,11 @@ const SEVIYE_ADLARI: Record<string, string> = {
 const tarihBicimi = new Intl.DateTimeFormat('tr-TR', { dateStyle: 'long' });
 ---
 
-<Temel baslik={terim.data.term} aciklama={terim.data.short || terim.data.term}>
+<Temel
+  baslik={terim.data.term}
+  aciklama={terim.data.short || terim.data.term}
+  noindex={stub}
+>
   <article class="terim">
     <nav class="izlek" aria-label="Konum">
       <a href={siteYolu('/')}>Kategoriler</a>
