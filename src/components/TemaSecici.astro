@@ -1,0 +1,64 @@
+---
+/**
+ * Açık / koyu / sistem tema seçici.
+ *
+ * Seçim `<html data-theme="...">` üzerinden uygulanır; tokens.css bunu
+ * `color-scheme` ile okur ve `light-dark()` iki yarıdan doğru olanı seçer.
+ * Tercih localStorage'da durur.
+ *
+ * Neden `<select>`: telefon başlığında üç düğmeden az yer kaplar, klavye ve
+ * ekran okuyucuyla yerleşik olarak çalışır, `color-scheme` sayesinde açılır
+ * listesi de temayla uyumlu gelir. Krom geri planda kalmalı.
+ *
+ * Yanıp sönmeyi önleyen betik `Temel.astro`'nun <head>'inde, bu bileşenden
+ * önce çalışır.
+ */
+---
+
+<div class="tema">
+  <label class="sadece-ekran-okuyucu" for="tema-secici">Tema</label>
+  <select class="tema__secici" id="tema-secici">
+    <option value="system">Sistem</option>
+    <option value="light">Açık</option>
+    <option value="dark">Koyu</option>
+  </select>
+</div>
+
+<style>
+  .tema__secici {
+    font-family: var(--font-ui);
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-chip);
+    padding: var(--space-1) var(--space-2);
+    min-height: var(--target-min);
+    cursor: pointer;
+  }
+
+  .tema__secici:hover {
+    color: var(--color-text);
+    border-color: var(--color-line-strong);
+  }
+</style>
+
+<script>
+  import { ANAHTAR, temaUygula, temaOku, type Tema } from '../lib/tema.ts';
+
+  const secici = document.querySelector<HTMLSelectElement>('#tema-secici');
+  if (secici) {
+    secici.value = temaOku();
+
+    secici.addEventListener('change', () => {
+      const deger = secici.value as Tema;
+      temaUygula(deger);
+      try {
+        if (deger === 'system') localStorage.removeItem(ANAHTAR);
+        else localStorage.setItem(ANAHTAR, deger);
+      } catch {
+        // Gizli sekmede localStorage yazılamayabilir; tema yine de uygulanır.
+      }
+    });
+  }
+</script>

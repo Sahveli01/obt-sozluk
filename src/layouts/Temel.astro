@@ -7,6 +7,8 @@
  */
 import '../styles/global.css';
 
+import Isaret from '../components/Isaret.astro';
+import TemaSecici from '../components/TemaSecici.astro';
 import { SITE } from '../config.ts';
 import { siteYolu } from '../lib/yol.ts';
 
@@ -19,9 +21,17 @@ interface Props {
    * sonucunda çıkması hem okuru hem sözlüğü yanıltır.
    */
   noindex?: boolean;
+  /** Başlıktaki hangi bağlantının `aria-current` alacağı. */
+  aktif?: 'kategoriler' | 'ara';
 }
 
-const { baslik, aciklama = SITE.description, noindex = false } = Astro.props;
+const {
+  baslik,
+  aciklama = SITE.description,
+  noindex = false,
+  aktif,
+} = Astro.props;
+
 const tamBaslik = baslik === SITE.name ? SITE.name : `${baslik} — ${SITE.name}`;
 ---
 
@@ -32,20 +42,49 @@ const tamBaslik = baslik === SITE.name ? SITE.name : `${baslik} — ${SITE.name}
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{tamBaslik}</title>
     <meta name="description" content={aciklama} />
-    <meta name="color-scheme" content="light dark" />
     {noindex && <meta name="robots" content="noindex" />}
     <link rel="icon" href={siteYolu('/favicon.svg')} type="image/svg+xml" />
+    {/*
+      Tema, boyamadan önce uygulanmalı; yoksa koyu tema seçen okur her
+      sayfada bir kare beyaz görür. Bu yüzden satır içi ve senkron.
+    */}
+    <script is:inline>
+      try {
+        var t = localStorage.getItem('tema');
+        if (t === 'light' || t === 'dark') {
+          document.documentElement.setAttribute('data-theme', t);
+        }
+      } catch (e) {
+        /* Gizli sekmede erişilemeyebilir; sistem teması kalır. */
+      }
+    </script>
   </head>
   <body>
-    <a class="sadece-ekran-okuyucu" href="#icerik">İçeriğe geç</a>
+    <a class="atla" href="#icerik">İçeriğe geç</a>
 
     <header class="site-ust">
-      <div class="kabuk">
-        <a class="site-ust__ad" href={siteYolu('/')}>{SITE.name}</a>
-        <nav class="site-ust__nav" aria-label="Site">
-          <a href={siteYolu('/')}>Kategoriler</a>
-          <a href={siteYolu('/ara')}>Ara</a>
-        </nav>
+      <div class="kabuk site-ust__ic">
+        <a class="marka" href={siteYolu('/')}>
+          <Isaret yon="sol" />
+          <span class="marka__ad marka__ad--uzun">{SITE.name}</span>
+          <span class="marka__ad marka__ad--kisa">{SITE.shortName}</span>
+          <Isaret yon="sag" />
+        </a>
+
+        <div class="site-ust__sag">
+          <nav class="site-ust__nav" aria-label="Site">
+            <a
+              href={siteYolu('/')}
+              aria-current={aktif === 'kategoriler' ? 'page' : undefined}
+            >
+              Kategoriler
+            </a>
+            <a href={siteYolu('/ara')} aria-current={aktif === 'ara' ? 'page' : undefined}>
+              Ara
+            </a>
+          </nav>
+          <TemaSecici />
+        </div>
       </div>
     </header>
 
@@ -57,7 +96,10 @@ const tamBaslik = baslik === SITE.name ? SITE.name : `${baslik} — ${SITE.name}
 
     <footer class="site-alt">
       <div class="kabuk">
-        <p>{SITE.description}</p>
+        <p class="site-alt__metin">
+          Topluluk tarafından yazılıyor. Eksik ya da yanlış bulduğun bir terim varsa
+          düzeltmesi hoş karşılanır.
+        </p>
       </div>
     </footer>
   </body>

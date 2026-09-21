@@ -18,13 +18,22 @@ kazanır.
 | Eksen         | Karar                                                          | Gerekçe                                                                                                                               |
 | ------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
 | **Palet**     | Tek vurgu: koyu indigo (OKLCH hue 275). Nötrler aynı hue'ya boyalı. | Vurgu tek bir iş yapar: "buraya gidebilirsin". Kuruma bağlı değil — çalışma adı değişebilir ve proje tarafsız kalmak zorunda.            |
+| **Kimlik**    | Köşeli parantez işareti; marka `[ ODTÜ Blockchain Sözlüğü ]` biçiminde. | `[[slug]]` sözdiziminden geliyor: terimleri birbirine bağlayan şey o. Ada değil işe bağlı olduğu için ad değişse de ayakta kalır. |
 | **Tipografi** | IBM Plex Sans (arayüz) + Source Serif 4 (terim gövdesi) + IBM Plex Mono (kod). | Serif gövde "başvuru eseri" der ve 200–400 kelimelik Türkçe açıklamayı telefonda rahat okutur. Inter/Roboto/Open Sans bilerek elenmiştir. |
 | **Boşluk**    | Tek birim 4px, dokuz basamaklı ölçek.                           | "Yamuk duran" düzenlerin çoğu tutarsız dolgudur, kötü renk değil.                                                                       |
 | **Yoğunluk**  | **Okuma önce.** Terim sayfası ferah (66ch, 1.65 satır aralığı); kategori ve arama listeleri yoğun. | Sözlükte iki farklı iş var: bir tanımı okumak ve 176 terimlik bir listeyi taramak. Aynı yoğunluk ikisine birden hizmet etmez.            |
 
 **Vurgu rengi nerede kullanılmaz:** bölüm süslemesinde, başlık arkasında,
-gradient'te, kart zemininde. Sayfada tek bir dolu vurgu bloğu vardır (ana
-sayfadaki arama girişi) çünkü sözlüğün birincil eylemi odur.
+gradient'te, kart zemininde. **Hiçbir temada büyük dolu vurgu bloğu yoktur.**
+Vurgu bağlantılar, odak halkası, girdi kenarlığı ve küçük öğelerle sınırlıdır.
+
+Bu kural sonradan sıkılaştırıldı. Ana sayfada bir zamanlar tam genişlikte dolu
+bir vurgu bloğu vardı; koyu temada vurgu açıldığı için o blok ekranın en parlak
+nesnesine dönüşüyordu — tam da "telefonda gece okuyan" okur için. Kaldırıldı.
+
+**Kimlik:** marka, favicon'la aynı köşeli parantez geometrisini kullanır ama
+kutucuk olmadan, `currentColor` ile — böylece işaret de dolu vurgu bloğu
+üretmez. Dar ekranda kısa ad, 48rem üstünde tam ad görünür.
 
 ---
 
@@ -59,6 +68,9 @@ Bunlardan çıkan kararlar:
   yine okunur.
 - **Açık tema birincildir** — aydınlık odada ayakta kalan odur. Koyu tema
   gece telefonda okuyanlar için ve aynı kontrast tabanına uyar.
+- **Tema seçici** başlıkta: açık / koyu / sistem. Seçim `<html data-theme>`
+  üzerinden uygulanır, localStorage'da saklanır ve boyamadan önce çalışan
+  satır içi bir betikle yanıp sönme engellenir.
 
 ### latin-ext zorunludur
 
@@ -75,6 +87,10 @@ onlar kiril, yunan ve vietnamca alt kümelerini de derlemeye sokuyordu
 
 - **`src/styles/tokens.css`** — bütün değerler. Renk, tip ölçeği, boşluk,
   yarıçap, hareket, odak, dokunma hedefi, düzen ölçüleri.
+  Her renk `light-dark(açık, koyu)` ile **tek yerde** tanımlıdır; hangi yarının
+  geçerli olacağını `color-scheme` belirler. İkinci bir koyu tema bloğu
+  olmadığı için iki tema birbirinden ayrışamaz. `npm run contrast` her iki
+  yarıyı da ayrı ayrı denetler.
 - **`src/styles/fonts.css`** — `@font-face` bildirimleri.
 - **`src/styles/global.css`** — element temelleri ve paylaşılan bileşenler;
   yalnızca token'lardan okur. `import '../styles/global.css'` ile
@@ -136,13 +152,37 @@ bitmiş standartta ve yukarıdaki durumlarıyla birlikte.
 
 | Sayfa                       | Yoğunluk | Öne çıkan durum                            |
 | --------------------------- | -------- | ------------------------------------------- |
-| `src/pages/index.astro`     | Tarama   | Gerçek sayılarla ilerleme, birincil arama girişi |
+| `src/pages/index.astro`     | Tarama   | Gerçek arama girdisi, satır içi sonuçlar, kapsam gerçeği, aile listeleri |
 | `src/pages/ara.astro`       | Tarama   | Yükleniyor / sonuç yok / indeks çöktü / JS kapalı |
 | `src/pages/terim/[slug].astro` | **Okuma** | Stub, taslak, incelendi, tarihe duyarlı, anlam ayrımı |
 | `src/pages/kategori/[slug].astro` | Tarama | Kategori hiç yazılmamış                     |
 
 Gerçek veriyle kuruldu: 1338 terim, gerçek kategori sayıları, en uzun Türkçe
 terimler dahil. Yer tutucu içerik kullanılmadı.
+
+### Ana sayfa neden yeniden kurgulandı
+
+İlk sürüm 19 eşit kart gösteriyordu ve arama, `/ara`'ya giden bir bağlantıydı.
+Bağımsız bir tasarım incelemesi ve `impeccable detect` çıktısı şunları buldu:
+
+- Birincil eylem **girdi değil bağlantıydı**: terim aramak iki sayfa geçişi
+  ve bir indeks indirmesi gerektiriyordu. Artık girdi ana sayfada, sonuçlar
+  aynı sayfada açılıyor, `/` tuşu odaklıyor.
+- 19 kart **hiçbir terim göstermiyordu**. Sözlük ana sayfası sözlükten tek
+  kelime göstermiyordu. Yerine 5 aile ve kompakt kategori listesi geldi;
+  tanımı yazılmış terimi olan kategorilerin yanında 3 örnek terim görünüyor.
+- Kart başına yazılmış sayısı **yalnızca sıfırdan büyükse** yazılıyordu, yani
+  18 kart "176 terim" deyip var olmayan içerik vaat ediyordu. Artık her satır
+  iki durumu da söylüyor: `78 terim · 27 yazıldı` ya da `176 terim · yazım sırada`.
+- Kapsam gerçeği (1338'de 27) en küçük puntoda dipnottu; şimdi listenin
+  başında açık bir kutu.
+- Dolu vurgu bloğu koyu temada ekranın en parlak nesnesine dönüşüyordu.
+- `:focus-visible` kuralı `border-radius` da atıyordu: odaklanan her öğenin
+  **kendi köşesi** 18px'ten 6px'e düşüyordu. Halka artık yalnızca halka.
+- Detektör 1280px'te üç sayfada ~137 karakterlik satırlar buldu (alt bilgi ve
+  terim satırı açıklaması). İkisine de ölçü sınırı kondu.
+- `--card-min: 17rem` 320px'lik ekranda yatay kaydırma üretiyordu; kart
+  ızgarası kalktığı için sorun da kalktı.
 
 ---
 

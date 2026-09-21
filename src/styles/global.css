@@ -98,10 +98,12 @@ a:hover {
   color: var(--color-accent-hover);
 }
 
+/* Yalnızca halka çizilir. Buraya border-radius koymak öğenin KENDİ köşesini
+ * odakta değiştirirdi (18px konteyner bir anda 6px'e düşerdi); halkanın
+ * yuvarlaklığını tarayıcı zaten öğenin şeklinden alır. */
 :focus-visible {
   outline: var(--focus-width) solid var(--color-accent);
   outline-offset: var(--focus-offset);
-  border-radius: var(--radius-chip);
 }
 
 code,
@@ -150,25 +152,19 @@ svg {
   border-bottom: 1px solid var(--color-line);
 }
 
-.site-ust > .kabuk {
+.site-ust__ic {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-4);
+  gap: var(--space-3);
   min-height: var(--target-min);
   padding-block: var(--space-2);
 }
 
-.site-ust__ad {
-  font-weight: var(--weight-semibold);
-  font-size: var(--text-small);
-  color: var(--color-text);
-  text-decoration: none;
-  letter-spacing: var(--tracking-wide);
-}
-
-.site-ust__ad:hover {
-  color: var(--color-accent);
+.site-ust__sag {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
 }
 
 .site-ust__nav {
@@ -182,10 +178,66 @@ svg {
   align-items: center;
   min-height: var(--target-min);
   text-decoration: none;
+  color: var(--color-text-muted);
 }
 
 .site-ust__nav a:hover {
+  color: var(--color-accent);
   text-decoration: underline;
+}
+
+/* Bulunduğun sayfa bağlantı gibi görünmesin. */
+.site-ust__nav a[aria-current='page'] {
+  color: var(--color-text);
+  font-weight: var(--weight-medium);
+}
+
+/* --- Marka ---------------------------------------------------------
+ * Köşeli parantezler favicon'la aynı geometriden geliyor. İşaret
+ * currentColor kullandığı için dolu vurgu bloğu üretmez.
+ * ------------------------------------------------------------------- */
+
+.marka {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--target-min);
+  text-decoration: none;
+  color: var(--color-text);
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-small);
+  letter-spacing: var(--tracking-wide);
+}
+
+.marka:hover {
+  color: var(--color-text);
+}
+
+.marka:hover .isaret {
+  color: var(--color-accent);
+}
+
+.marka__ad--uzun {
+  display: none;
+}
+
+/* --- Atla bağlantısı ----------------------------------------------- */
+/* Görünmez ama odaklanınca ortaya çıkar; klavyeyle gezen okur için. */
+
+.atla {
+  position: absolute;
+  inset-inline-start: var(--space-4);
+  inset-block-start: var(--space-2);
+  z-index: 20;
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-surface);
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-control);
+  transform: translateY(-200%);
+}
+
+.atla:focus-visible {
+  transform: translateY(0);
 }
 
 /* --- Alt bilgi ---------------------------------------------------- */
@@ -196,6 +248,11 @@ svg {
   color: var(--color-text-muted);
   font-size: var(--text-small);
   padding-block: var(--space-5);
+}
+
+/* Geniş ekranda alt bilgi metni satır boyunu aşmasın. */
+.site-alt__metin {
+  max-width: var(--measure);
 }
 
 /* ===================================================================
@@ -319,71 +376,6 @@ svg {
   font-weight: var(--weight-semibold);
 }
 
-/* --- Kart ızgarası ------------------------------------------------ */
-
-.izgara {
-  display: grid;
-  gap: var(--space-4);
-  grid-template-columns: repeat(auto-fill, minmax(var(--card-min), 1fr));
-  list-style: none;
-  padding: 0;
-}
-
-.kart {
-  position: relative;
-  background: var(--color-surface);
-  border-radius: var(--radius-container);
-  padding: var(--space-5);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  /* Ayrım zemin tonuyla; gölge yalnızca hover'da bir katman. */
-  transition:
-    transform var(--motion) var(--ease),
-    box-shadow var(--motion) var(--ease);
-}
-
-.kart:hover,
-.kart:focus-within {
-  box-shadow: var(--shadow-lift);
-  transform: translateY(calc(-1 * var(--lift)));
-}
-
-.kart__baslik {
-  font-size: var(--text-h3);
-}
-
-.kart__baslik a {
-  text-decoration: none;
-  color: var(--color-text);
-}
-
-.kart__baslik a:hover {
-  color: var(--color-accent);
-}
-
-/* Kartın tamamı tıklanabilir olsun ama metin yine seçilebilsin. */
-.kart__baslik a::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-}
-
-.kart__aciklama {
-  color: var(--color-text-muted);
-  font-size: var(--text-small);
-  text-wrap: pretty;
-}
-
-.kart__sayi {
-  font-size: var(--text-small);
-  color: var(--color-text-muted);
-  font-variant-numeric: tabular-nums;
-  margin-top: auto;
-  padding-top: var(--space-2);
-}
-
 /* --- Terim listesi -------------------------------------------------
  * Tarama yüzeyi: okuma yüzeyinden bilerek daha yoğun.
  * ------------------------------------------------------------------- */
@@ -433,6 +425,172 @@ svg {
   font-size: var(--text-small);
   flex-basis: 100%;
   text-wrap: pretty;
+}
+
+/* --- Giriş bloğu --------------------------------------------------- */
+
+.giris {
+  max-width: var(--measure);
+  margin-bottom: var(--space-5);
+}
+
+.giris__baslik {
+  margin-bottom: var(--space-3);
+}
+
+.giris__ozet {
+  font-size: var(--text-lead);
+  color: var(--color-text-muted);
+  text-wrap: pretty;
+}
+
+/* --- Arama --------------------------------------------------------
+ * Sayfanın odağı. Dolu vurgu bloğu yok: vurgu yalnızca odak halkasında
+ * ve kenarlıkta görünür, koyu temada da ekranın en parlak nesnesi olmaz.
+ * ------------------------------------------------------------------- */
+
+.arama {
+  max-width: var(--measure);
+}
+
+.arama__girdi {
+  width: 100%;
+  min-height: var(--target-min);
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-ui);
+  font-size: var(--text-h3);
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-control);
+  transition: border-color var(--motion-fast) var(--ease);
+}
+
+.arama__girdi::placeholder {
+  color: var(--color-text-muted);
+  font-size: var(--text-body);
+}
+
+.arama__girdi:focus-visible {
+  border-color: var(--color-accent);
+}
+
+.arama__ipucu {
+  margin-top: var(--space-2);
+  font-size: var(--text-small);
+  color: var(--color-text-muted);
+  text-wrap: pretty;
+}
+
+.arama__ipucu b {
+  font-weight: var(--weight-medium);
+  color: var(--color-text);
+}
+
+.tus {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-chip);
+  padding: 0 var(--space-1);
+  color: var(--color-text);
+}
+
+.arama-durum {
+  margin-block: var(--space-4);
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+  max-width: var(--measure);
+}
+
+/* İndeks yüklenemediğinde: ağ sorunu olduğunu söyle, okuru suçlama. */
+.arama-durum[data-durum='hata'] {
+  color: var(--color-text);
+  background: var(--color-danger-subtle);
+  border-inline-start: var(--border-accent) solid var(--color-danger);
+  border-radius: var(--radius-card);
+  padding: var(--space-3) var(--space-4);
+}
+
+.kapsam {
+  max-width: var(--measure);
+  margin-bottom: var(--space-7);
+}
+
+/* --- Aileler -------------------------------------------------------
+ * 19 eşit kartın yerine: birkaç aile, altlarında kompakt kategori
+ * listesi. Tarama yüzeyi, kart duvarı değil.
+ * ------------------------------------------------------------------- */
+
+.aile + .aile {
+  margin-top: var(--space-7);
+}
+
+.aile__baslik {
+  font-size: var(--text-h2);
+}
+
+.aile__aciklama {
+  margin-top: var(--space-1);
+  margin-bottom: var(--space-4);
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+  max-width: var(--measure);
+  text-wrap: pretty;
+}
+
+.kategori-listesi {
+  list-style: none;
+  padding: 0;
+  background: var(--color-surface);
+  border-radius: var(--radius-container);
+  overflow: hidden;
+}
+
+.kategori-satiri {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-1) var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  min-height: var(--target-min);
+  align-content: center;
+}
+
+.kategori-satiri + .kategori-satiri {
+  border-top: 1px solid var(--color-line);
+}
+
+.kategori-satiri__ad {
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+  overflow-wrap: break-word;
+}
+
+.kategori-satiri__ad:hover {
+  text-decoration: underline;
+}
+
+.kategori-satiri__sayi {
+  font-size: var(--text-small);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.kategori-satiri__ornek {
+  font-size: var(--text-small);
+  color: var(--color-text-muted);
+  text-wrap: pretty;
+}
+
+.noscript-kategoriler {
+  columns: 2;
+  column-gap: var(--space-5);
+  margin-top: var(--space-2);
+}
+
+/* Yazılmamış terim arama sonucunda da rozetsiz ama okunur biçimde belli olur. */
+.terim-satiri__kisa[data-yazilmadi] {
+  font-style: italic;
 }
 
 /* --- Bölüm başlığı ------------------------------------------------ */
@@ -524,17 +682,12 @@ svg {
 }
 
 /* Shiki çift tema. Kod bloğunun zemini token'dan gelir; yalnızca
- * sözdizimi renkleri temadan. Ayrıntı ve gerekçe DESIGN.md içinde. */
+ * sözdizimi renkleri temadan. Ayrıntı ve gerekçe DESIGN.md içinde.
+ * `light-dark()` kullanılır ki tema seçici burada da geçerli olsun —
+ * prefers-color-scheme sorgusu kullanıcının açık seçimini duymazdı. */
 .astro-code,
 .astro-code span {
-  color: var(--shiki-light);
-}
-
-@media (prefers-color-scheme: dark) {
-  .astro-code,
-  .astro-code span {
-    color: var(--shiki-dark);
-  }
+  color: light-dark(var(--shiki-light), var(--shiki-dark));
 }
 
 .okuma table {
@@ -596,6 +749,15 @@ svg {
     font-size: var(--text-display);
   }
 
+  /* Dar ekranda kısa ad, geniş ekranda tam ad. */
+  .marka__ad--kisa {
+    display: none;
+  }
+
+  .marka__ad--uzun {
+    display: inline;
+  }
+
   .terim-satiri {
     flex-wrap: nowrap;
   }
@@ -604,8 +766,23 @@ svg {
     flex: 0 0 var(--term-name-col);
   }
 
+  /* `flex: 1 1 auto` bunu 1280px'te ~137 karakterlik satırlara çıkarıyordu;
+   * ölçü sınırı hem burada hem alt bilgide tutulur. */
   .terim-satiri__kisa {
     flex: 1 1 auto;
     flex-basis: auto;
+    max-width: var(--measure);
+  }
+
+  /* Kategori satırı: ad | sayı | örnek terimler. */
+  .kategori-satiri {
+    grid-template-columns: var(--cat-name-col) auto 1fr;
+    align-items: baseline;
+  }
+
+  .kategori-satiri__ornek {
+    justify-self: end;
+    text-align: end;
+    max-width: var(--measure);
   }
 }

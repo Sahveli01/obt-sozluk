@@ -1,23 +1,21 @@
 ---
 /**
- * Arama sayfası. Tamamen istemci tarafında: derlemede üretilen
- * `search-index.json` indirilir, MiniSearch tarayıcıda indeksler.
+ * Arama sayfası. Ana sayfadaki aramayla aynı kodu kullanır
+ * (`src/lib/arama-ui.ts`); buradaki fark, her sayfadan bağlantıyla
+ * gelinebilen kalıcı bir adres olması.
  *
  * Yollar `data-*` ile geçirilir; `define:vars` script'i satır içine alıp
  * paketlemeyi kapatır ve `minisearch` içe aktarımı tarayıcıda çözülemez.
  */
-import { KATEGORILER } from '../data/kategoriler.ts';
+import { AILELER } from '../data/aileler.ts';
+import { KATEGORI_HARITASI } from '../data/kategoriler.ts';
 import Temel from '../layouts/Temel.astro';
 import { kategoriYolu, siteYolu } from '../lib/yol.ts';
 ---
 
-<Temel baslik="Ara" aciklama="Sözlükteki terimlerde ara.">
-  <div class="sayfa-basi">
-    <h1>Ara</h1>
-    <p class="sayfa-basi__giris">
-      Türkçe karakter kullanmana gerek yok. "akilli sozlesme" yazarsan "Akıllı
-      Sözleşme"yi de bulur.
-    </p>
+<Temel baslik="Ara" aciklama="Sözlükteki terimlerde ara." aktif="ara">
+  <div class="giris">
+    <h1 class="giris__baslik">Ara</h1>
   </div>
 
   <form
@@ -38,9 +36,12 @@ import { kategoriYolu, siteYolu } from '../lib/yol.ts';
       enterkeyhint="search"
       autofocus
     />
+    <p class="arama__ipucu">
+      Türkçe karakter kullanmana gerek yok — <b>akilli sozlesme</b> yazarsan{' '}
+      <b>Akıllı Sözleşme</b>'yi de bulur. <kbd class="tus">/</kbd> tuşu buraya atlar.
+    </p>
   </form>
 
-  <!-- Yükleniyor / sonuç yok / hata durumları hep burada duyurulur. -->
   <p class="arama-durum" id="arama-durumu" role="status" aria-live="polite">
     İndeks yükleniyor…
   </p>
@@ -54,159 +55,29 @@ import { kategoriYolu, siteYolu } from '../lib/yol.ts';
       <span>Kategorilerden göz atabilirsin:</span>
       <ul class="noscript-kategoriler">
         {
-          KATEGORILER.map((kategori) => (
-            <li>
-              <a href={kategoriYolu(kategori.slug)}>{kategori.ad}</a>
-            </li>
-          ))
+          AILELER.flatMap((aile) =>
+            aile.kategoriler.map((slug) => (
+              <li>
+                <a href={kategoriYolu(slug)}>{KATEGORI_HARITASI.get(slug)!.ad}</a>
+              </li>
+            )),
+          )
         }
       </ul>
     </div>
   </noscript>
 </Temel>
 
-<style>
-  .arama__girdi {
-    width: 100%;
-    min-height: var(--target-min);
-    padding: var(--space-3) var(--space-4);
-    font-family: var(--font-ui);
-    font-size: var(--text-lead);
-    color: var(--color-text);
-    background: var(--color-surface);
-    border: 1px solid var(--color-line-strong);
-    border-radius: var(--radius-control);
-    transition: border-color var(--motion-fast) var(--ease);
-  }
-
-  .arama__girdi::placeholder {
-    color: var(--color-text-muted);
-  }
-
-  .arama__girdi:focus-visible {
-    border-color: var(--color-accent);
-    outline: var(--focus-width) solid var(--color-accent);
-    outline-offset: var(--focus-offset);
-  }
-
-  .arama-durum {
-    margin-block: var(--space-4);
-    color: var(--color-text-muted);
-    font-size: var(--text-small);
-  }
-
-  /* İndeks yüklenemediğinde: ağ sorunu olduğunu söyle, okuru suçlama. */
-  .arama-durum[data-durum='hata'] {
-    color: var(--color-text);
-    background: var(--color-danger-subtle);
-    border-inline-start: var(--border-accent) solid var(--color-danger);
-    border-radius: var(--radius-card);
-    padding: var(--space-3) var(--space-4);
-  }
-
-  .noscript-kategoriler {
-    columns: 2;
-    column-gap: var(--space-5);
-    margin-top: var(--space-2);
-  }
-</style>
-
 <script>
-  import MiniSearch from 'minisearch';
+  import { aramayiBagla, kisayolBagla } from '../lib/arama-ui.ts';
 
-  import { ARAMA_AYARLARI, type AramaIndeksi } from '../lib/arama.ts';
+  const form = document.querySelector<HTMLFormElement>('#arama-formu');
+  const girdi = document.querySelector<HTMLInputElement>('#arama-girdisi');
+  const durum = document.querySelector<HTMLElement>('#arama-durumu');
+  const sonuclar = document.querySelector<HTMLElement>('#arama-sonuclari');
 
-  const form = document.querySelector<HTMLFormElement>('#arama-formu')!;
-  const girdi = document.querySelector<HTMLInputElement>('#arama-girdisi')!;
-  const durum = document.querySelector<HTMLParagraphElement>('#arama-durumu')!;
-  const liste = document.querySelector<HTMLUListElement>('#arama-sonuclari')!;
-
-  const indeksUrl = form.dataset['indeksUrl']!;
-  const terimTabani = form.dataset['terimTabani']!;
-
-  /** Bir ekranı dolduracak kadar sonuç yeter. */
-  const EN_FAZLA = 30;
-
-  form.addEventListener('submit', (olay) => olay.preventDefault());
-
-  let miniSearch: MiniSearch | null = null;
-
-  function durumYaz(metin: string, tur: 'bilgi' | 'hata' = 'bilgi'): void {
-    durum.textContent = metin;
-    if (tur === 'hata') durum.dataset['durum'] = 'hata';
-    else delete durum.dataset['durum'];
+  if (form && girdi && durum && sonuclar) {
+    aramayiBagla({ form, girdi, durum, sonuclar });
+    kisayolBagla(girdi);
   }
-
-  function goster(sorgu: string): void {
-    liste.replaceChildren();
-    if (!miniSearch) return;
-
-    const temiz = sorgu.trim();
-    if (temiz === '') {
-      liste.hidden = true;
-      durumYaz(`${miniSearch.documentCount} terim aranabilir.`);
-      return;
-    }
-
-    const sonuclar = miniSearch.search(temiz).slice(0, EN_FAZLA);
-
-    if (sonuclar.length === 0) {
-      liste.hidden = true;
-      durumYaz(
-        `"${temiz}" için sonuç yok. Terimin İngilizcesini ya da kısaltmasını dene.`,
-      );
-      return;
-    }
-
-    durumYaz(`${sonuclar.length} sonuç.`);
-    liste.hidden = false;
-
-    for (const sonuc of sonuclar) {
-      const satir = document.createElement('li');
-      satir.className = 'terim-satiri';
-
-      const bag = document.createElement('a');
-      bag.className = 'terim-satiri__ad';
-      bag.href = `${terimTabani}/${sonuc['id']}`;
-      bag.textContent = sonuc['term'];
-      satir.append(bag);
-
-      if (sonuc['tr']) {
-        const tr = document.createElement('span');
-        tr.className = 'terim-satiri__tr';
-        tr.textContent = sonuc['tr'];
-        satir.append(tr);
-      }
-
-      // Tanım yazıldıysa görünür; yazılmadıysa satır yalnızca addan ibaret
-      // kalır ve bu, okura rozet takmadan durumu söyler.
-      const kisaMetin = sonuc['short'] || sonuc['kategoriAdi'];
-      const kisa = document.createElement('span');
-      kisa.className = 'terim-satiri__kisa';
-      kisa.textContent = kisaMetin;
-      satir.append(kisa);
-
-      liste.append(satir);
-    }
-  }
-
-  try {
-    const yanit = await fetch(indeksUrl);
-    if (!yanit.ok) throw new Error(`HTTP ${yanit.status}`);
-    const indeks = (await yanit.json()) as AramaIndeksi;
-
-    miniSearch = new MiniSearch(ARAMA_AYARLARI);
-    miniSearch.addAll(indeks.belgeler);
-
-    durumYaz(`${indeks.belgeler.length} terim aranabilir.`);
-    // İndeks hazır olmadan yazılmış olabilir.
-    goster(girdi.value);
-  } catch (sebep) {
-    durumYaz(
-      `Arama indeksi yüklenemedi — bağlantı sorunu olabilir. Sayfayı yenileyip tekrar dene. (${(sebep as Error).message})`,
-      'hata',
-    );
-  }
-
-  girdi.addEventListener('input', () => goster(girdi.value));
 </script>

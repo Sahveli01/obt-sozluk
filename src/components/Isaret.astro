@@ -1,0 +1,46 @@
+---
+/**
+ * Köşeli parantez işareti — sitenin kimliği.
+ *
+ * `[[slug]]` sözdiziminden geliyor: sözlüğün terimleri birbirine onunla
+ * bağlanıyor. Favicon ile aynı geometri (public/favicon.svg), farkı
+ * kutucuğun olmaması: burada `currentColor` kullanılır, böylece büyük dolu
+ * vurgu bloğu üretmez ve her iki temada da metinle aynı tonda durur.
+ */
+
+interface Props {
+  yon: 'sol' | 'sag';
+  class?: string;
+}
+
+const { yon, class: sinif } = Astro.props;
+
+// Favicon'daki 32'lik ızgaranın aynısı, yalnızca parantez kadarı kırpılmış.
+const cizim = yon === 'sol' ? 'M10 3 H4 V29 H10' : 'M4 3 H10 V29 H4';
+---
+
+<svg
+  class:list={['isaret', sinif]}
+  viewBox="0 0 14 32"
+  width="14"
+  height="32"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="3"
+  stroke-linecap="butt"
+  stroke-linejoin="miter"
+  aria-hidden="true"
+  focusable="false"
+>
+  <path d={cizim} />
+</svg>
+
+<style>
+  .isaret {
+    /* Metnin yanında optik olarak hizalansın diye yüksekliğe bağlanır. */
+    height: 1em;
+    width: auto;
+    flex: none;
+    color: var(--color-line-strong);
+  }
+</style>

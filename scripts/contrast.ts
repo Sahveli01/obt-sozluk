@@ -65,23 +65,81 @@ const HUE: Record<string, number> = {
   '--hue-success': 155,
 };
 
-const TOKEN_DESENI =
-  /(--color-[a-z-]+):\s*oklch\(\s*([\d.]+)\s+([\d.]+)\s+(var\(--hue-[a-z]+\)|[\d.]+)\s*\)/g;
+const OKLCH_DESENI =
+  /^oklch\(\s*([\d.]+)\s+([\d.]+)\s+(var\(--hue-[a-z]+\)|[\d.]+)\s*\)$/;
 
-function tokenlariTopla(blok: string): Map<string, RGB> {
-  const harita = new Map<string, RGB>();
-  TOKEN_DESENI.lastIndex = 0;
-  let eslesme: RegExpExecArray | null;
-  while ((eslesme = TOKEN_DESENI.exec(blok)) !== null) {
-    const hamHue = eslesme[4]!;
-    const hue = hamHue.startsWith('var(') ? HUE[hamHue.slice(4, -1)] : Number(hamHue);
-    if (hue === undefined) continue;
-    harita.set(
-      eslesme[1]!,
-      oklchToLinearSrgb(Number(eslesme[2]), Number(eslesme[3]), hue),
-    );
+/** `oklch(L C H)` metnini renge çevirir; tanımadığı biçimde `undefined`. */
+function oklchCozumle(metin: string): RGB | undefined {
+  const e = OKLCH_DESENI.exec(metin.trim());
+  if (!e) return undefined;
+  const hamHue = e[3]!;
+  const hue = hamHue.startsWith('var(') ? HUE[hamHue.slice(4, -1)] : Number(hamHue);
+  if (hue === undefined) return undefined;
+  return oklchToLinearSrgb(Number(e[1]), Number(e[2]), hue);
+}
+
+/** Parantezleri dengeleyerek `baslangic`taki '(' ile eşleşen ')' konumunu bulur. */
+function kapanisBul(metin: string, baslangic: number): number {
+  let derinlik = 0;
+  for (let i = baslangic; i < metin.length; i += 1) {
+    if (metin[i] === '(') derinlik += 1;
+    else if (metin[i] === ')') {
+      derinlik -= 1;
+      if (derinlik === 0) return i;
+    }
   }
-  return harita;
+  return -1;
+}
+
+/** Üst seviyedeki (parantez içinde olmayan) ilk virgülü bulur. */
+function ustSeviyeVirgul(metin: string): number {
+  let derinlik = 0;
+  for (let i = 0; i < metin.length; i += 1) {
+    if (metin[i] === '(') derinlik += 1;
+    else if (metin[i] === ')') derinlik -= 1;
+    else if (metin[i] === ',' && derinlik === 0) return i;
+  }
+  return -1;
+}
+
+/**
+ * `--color-*: light-dark(açık, koyu);` bildirimlerini okur ve iki temanın
+ * renk haritasını birlikte döndürür. `light-dark()` kullanmayan düz bir
+ * `oklch()` değeri her iki temaya da aynı renk olarak girer.
+ */
+function tokenlariTopla(css: string): { acik: Map<string, RGB>; koyu: Map<string, RGB> } {
+  const acik = new Map<string, RGB>();
+  const koyu = new Map<string, RGB>();
+
+  const adDeseni = /(--color-[a-z-]+)\s*:/g;
+  let eslesme: RegExpExecArray | null;
+  while ((eslesme = adDeseni.exec(css)) !== null) {
+    const ad = eslesme[1]!;
+    const noktaliVirgul = css.indexOf(';', eslesme.index);
+    if (noktaliVirgul === -1) continue;
+    const deger = css.slice(eslesme.index + eslesme[0].length, noktaliVirgul).trim();
+
+    if (deger.startsWith('light-dark(')) {
+      const ac = deger.indexOf('(');
+      const kapanis = kapanisBul(deger, ac);
+      if (kapanis === -1) continue;
+      const ic = deger.slice(ac + 1, kapanis);
+      const virgul = ustSeviyeVirgul(ic);
+      if (virgul === -1) continue;
+      const a = oklchCozumle(ic.slice(0, virgul));
+      const k = oklchCozumle(ic.slice(virgul + 1));
+      if (a) acik.set(ad, a);
+      if (k) koyu.set(ad, k);
+    } else {
+      const tek = oklchCozumle(deger);
+      if (tek) {
+        acik.set(ad, tek);
+        koyu.set(ad, tek);
+      }
+    }
+  }
+
+  return { acik, koyu };
 }
 
 /** Yük taşıyan çiftler. Dekoratif `--color-line` bilerek listede değil. */
@@ -111,16 +169,13 @@ const CIFTLER: ReadonlyArray<readonly [string, string, number, string]> = [
 
 async function main(): Promise<void> {
   const css = await readFile(TOKEN_YOLU, 'utf8');
-  const koyuBaslangic = css.indexOf('@media (prefers-color-scheme: dark)');
-  if (koyuBaslangic === -1) {
-    console.error('HATA: tokens.css içinde koyu tema bloğu bulunamadı.');
+  const { acik, koyu } = tokenlariTopla(css);
+
+  if (acik.size === 0 || koyu.size === 0) {
+    console.error('HATA: tokens.css içinde renk token\'ı okunamadı.');
     process.exitCode = 1;
     return;
   }
-
-  const acik = tokenlariTopla(css.slice(0, koyuBaslangic));
-  // Koyu tema yalnızca bazı token'ları ezer; kalanlar açık temadan gelir.
-  const koyu = new Map([...acik, ...tokenlariTopla(css.slice(koyuBaslangic))]);
 
   let dusen = 0;
 

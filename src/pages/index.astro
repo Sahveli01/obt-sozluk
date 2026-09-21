@@ -2,112 +2,166 @@
 import { getCollection } from 'astro:content';
 
 import { SITE } from '../config.ts';
-import { KATEGORILER } from '../data/kategoriler.ts';
+import { AILELER } from '../data/aileler.ts';
+import { KATEGORI_HARITASI } from '../data/kategoriler.ts';
 import Temel from '../layouts/Temel.astro';
-import { kategoriYolu, siteYolu } from '../lib/yol.ts';
+import { kategoriYolu, siteYolu, terimYolu } from '../lib/yol.ts';
 
 const terimler = await getCollection('terimler');
 
-const sayimlar = new Map<string, { toplam: number; yazilmis: number }>(
-  KATEGORILER.map((k) => [k.slug, { toplam: 0, yazilmis: 0 }]),
-);
+/** Seviye sırası: örnek olarak önce en yeni başlayana uygun olanları göster. */
+const SEVIYE_SIRASI: Record<string, number> = { baslangic: 0, orta: 1, ileri: 2 };
+
+interface KategoriOzeti {
+  slug: string;
+  ad: string;
+  toplam: number;
+  yazilmis: number;
+  ornekler: Array<{ slug: string; ad: string }>;
+}
+
+const ozetler = new Map<string, KategoriOzeti>();
+for (const [slug, kategori] of KATEGORI_HARITASI) {
+  ozetler.set(slug, { slug, ad: kategori.ad, toplam: 0, yazilmis: 0, ornekler: [] });
+}
+
+const yazilmisSecim = new Map<string, typeof terimler>();
 for (const terim of terimler) {
-  const sayim = sayimlar.get(terim.data.category);
-  if (!sayim) continue;
-  sayim.toplam += 1;
-  if (terim.data.status !== 'stub') sayim.yazilmis += 1;
+  const ozet = ozetler.get(terim.data.category);
+  if (!ozet) continue;
+  ozet.toplam += 1;
+  if (terim.data.status === 'stub') continue;
+  ozet.yazilmis += 1;
+  const liste = yazilmisSecim.get(terim.data.category) ?? [];
+  liste.push(terim);
+  yazilmisSecim.set(terim.data.category, liste);
+}
+
+for (const [slug, liste] of yazilmisSecim) {
+  const ozet = ozetler.get(slug);
+  if (!ozet) continue;
+  ozet.ornekler = liste
+    .sort((a, b) => {
+      const seviye =
+        (SEVIYE_SIRASI[a.data.level] ?? 9) - (SEVIYE_SIRASI[b.data.level] ?? 9);
+      return seviye !== 0 ? seviye : a.data.term.localeCompare(b.data.term, 'tr');
+    })
+    .slice(0, 3)
+    .map((t) => ({ slug: t.id, ad: t.data.term }));
 }
 
 const toplamTerim = terimler.length;
 const toplamYazilmis = terimler.filter((t) => t.data.status !== 'stub').length;
-const sayiBicimi = new Intl.NumberFormat('tr-TR');
+const sayi = new Intl.NumberFormat('tr-TR');
 ---
 
-<Temel baslik={SITE.name}>
-  <div class="sayfa-basi">
-    <h1>{SITE.name}</h1>
-    <p class="sayfa-basi__giris">{SITE.description}</p>
+<Temel baslik={SITE.name} aktif="kategoriler">
+  <div class="giris">
+    <h1 class="giris__baslik">Blockchain ve yazılım sözlüğü</h1>
+    <p class="giris__ozet">
+      Bir terimi ara, iki cümlede ne olduğunu oku, gerekirse derine in. Türkçe
+      yazılıyor, topluluk tarafından büyütülüyor.
+    </p>
   </div>
 
-  <a class="buyuk-arama" href={siteYolu('/ara')}>
-    <span class="buyuk-arama__etiket">Terim ara</span>
-    <span class="buyuk-arama__ipucu"
-      >Türkçe karakter kullanmana gerek yok — "akilli sozlesme" de bulur.</span
-    >
-  </a>
+  {/* Sayfanın odağı: gerçek girdi, sonuçlar aşağıda aynı sayfada açılır. */}
+  <form
+    class="arama"
+    id="arama-formu"
+    role="search"
+    autocomplete="off"
+    data-indeks-url={siteYolu('/search-index.json')}
+    data-terim-tabani={siteYolu('/terim')}
+  >
+    <label class="sadece-ekran-okuyucu" for="arama-girdisi">Terim ara</label>
+    <input
+      class="arama__girdi"
+      id="arama-girdisi"
+      name="q"
+      type="search"
+      placeholder="terim, kısaltma ya da Türkçe karşılık"
+      enterkeyhint="search"
+      autofocus
+    />
+    <p class="arama__ipucu">
+      Türkçe karakter kullanmana gerek yok — <b>akilli sozlesme</b> yazarsan{' '}
+      <b>Akıllı Sözleşme</b>'yi de bulur. <kbd class="tus">/</kbd> tuşu buraya atlar.
+    </p>
+  </form>
 
-  <p class="ilerleme">
-    {sayiBicimi.format(toplamTerim)} terim listede.{' '}
-    {
-      toplamYazilmis === 0
-        ? 'Henüz hiçbiri yazılmadı; sözlük yeni kuruldu.'
-        : `${sayiBicimi.format(toplamYazilmis)} tanesi yazıldı.`
-    }
+  <p class="arama-durum" id="arama-durumu" role="status" aria-live="polite">
+    İndeks yükleniyor…
   </p>
 
-  <section class="bolum">
-    <h2 class="bolum__baslik">
-      Kategoriler <span class="bolum__sayi">{KATEGORILER.length}</span>
-    </h2>
+  <ul class="terim-listesi" id="arama-sonuclari" hidden></ul>
 
-    <ul class="izgara">
-      {
-        KATEGORILER.map((kategori) => {
-          const sayim = sayimlar.get(kategori.slug)!;
-          return (
-            <li class="kart">
-              <h3 class="kart__baslik">
-                <a href={kategoriYolu(kategori.slug)}>{kategori.ad}</a>
-              </h3>
-              <p class="kart__aciklama">{kategori.aciklama}</p>
-              <p class="kart__sayi">
-                {sayiBicimi.format(sayim.toplam)} terim
-                {sayim.yazilmis > 0 && ` · ${sayiBicimi.format(sayim.yazilmis)} yazıldı`}
-              </p>
-            </li>
-          );
-        })
-      }
-    </ul>
-  </section>
+  <div id="gozat">
+    {/*
+      Sözlüğün bugünkü en önemli gerçeği bu; en küçük puntoda dipnot değil,
+      listenin başında açık bir cümle olarak duruyor.
+    */}
+    <div class="bildirim bildirim--notr kapsam">
+      <span class="bildirim__baslik">
+        {sayi.format(toplamTerim)} terim listelendi, {sayi.format(toplamYazilmis)} tanesi
+        yazıldı.
+      </span>
+      <span>
+        Geri kalanların adı listede duruyor ama tanımı henüz yok. Aşağıda tanımı
+        yazılmış terimi olan kategorilerin yanında örnekleri görünür.
+      </span>
+    </div>
+
+    {
+      AILELER.map((aile) => (
+        <section class="aile">
+          <h2 class="aile__baslik">{aile.ad}</h2>
+          <p class="aile__aciklama">{aile.aciklama}</p>
+
+          <ul class="kategori-listesi">
+            {aile.kategoriler.map((slug) => {
+              const ozet = ozetler.get(slug)!;
+              return (
+                <li class="kategori-satiri">
+                  <a class="kategori-satiri__ad" href={kategoriYolu(ozet.slug)}>
+                    {ozet.ad}
+                  </a>
+                  <span class="kategori-satiri__sayi">
+                    {sayi.format(ozet.toplam)} terim
+                    {ozet.yazilmis > 0
+                      ? ` · ${sayi.format(ozet.yazilmis)} yazıldı`
+                      : ' · yazım sırada'}
+                  </span>
+                  {ozet.ornekler.length > 0 && (
+                    <span class="kategori-satiri__ornek">
+                      {ozet.ornekler.map((ornek, i) => (
+                        <>
+                          {i > 0 && <span>, </span>}
+                          <a href={terimYolu(ornek.slug)}>{ornek.ad}</a>
+                        </>
+                      ))}
+                    </span>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      ))
+    }
+  </div>
 </Temel>
 
-<style>
-  /* Sözlükte birincil eylem aramadır; sayfadaki tek dolu vurgu odur. */
-  .buyuk-arama {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-    background: var(--color-accent);
-    color: var(--color-text-on-accent);
-    text-decoration: none;
-    padding: var(--space-4) var(--space-5);
-    border-radius: var(--radius-container);
-    min-height: var(--target-min);
-    transition: background var(--motion-fast) var(--ease);
-  }
+<script>
+  import { aramayiBagla, kisayolBagla } from '../lib/arama-ui.ts';
 
-  .buyuk-arama:hover {
-    background: var(--color-accent-hover);
-    color: var(--color-text-on-accent);
-  }
+  const form = document.querySelector<HTMLFormElement>('#arama-formu');
+  const girdi = document.querySelector<HTMLInputElement>('#arama-girdisi');
+  const durum = document.querySelector<HTMLElement>('#arama-durumu');
+  const sonuclar = document.querySelector<HTMLElement>('#arama-sonuclari');
+  const gozat = document.querySelector<HTMLElement>('#gozat');
 
-  .buyuk-arama__etiket {
-    font-size: var(--text-h3);
-    font-weight: var(--weight-semibold);
+  if (form && girdi && durum && sonuclar) {
+    aramayiBagla({ form, girdi, durum, sonuclar, gozat });
+    kisayolBagla(girdi);
   }
-
-  /* Hiyerarşi boyuttan gelir, soldurmadan değil: vurgu zemini üstünde
-   * ikinci bir metin tonu yok, çünkü kontrast tabanını delerdi. */
-  .buyuk-arama__ipucu {
-    font-size: var(--text-small);
-    font-weight: var(--weight-regular);
-  }
-
-  .ilerleme {
-    margin-top: var(--space-4);
-    color: var(--color-text-muted);
-    font-size: var(--text-small);
-    max-width: var(--measure);
-  }
-</style>
+</script>
