@@ -1,6 +1,6 @@
 ---
 term: "Uncle Block"
-tr: "Amca blok"
+tr: ""
 aliases: ["amca blok", "ommer", "ommer block"]
 category: temeller
 subcategory: "Bloklar ve işlemler"
@@ -19,7 +19,7 @@ updated: 2026-09-21
 
 ## Nedir?
 
-Amca blok, geçerli biçimde üretilmiş ama ana zincire giremeyen bir bloğun, sonraki bloklardan biri tarafından referans verilerek kayda geçmiş hâlidir. Terk edilen blokları tamamen çöpe atmak yerine kısmen saymayı seçen bir tasarım tercihidir. İngilizcede "uncle", cinsiyetten bağımsız biçimiyle "ommer" denir.
+Amca blok, geçerli biçimde üretilmiş ama ana zincire giremeyen bir bloğun, sonraki bloklardan biri tarafından referans verilerek kayda geçmiş hâlidir. Terk edilen blokları tamamen çöpe atmak yerine kısmen saymayı seçen bir tasarım tercihidir. İngilizcede "uncle", cinsiyetten bağımsız biçimiyle "ommer" denir. Türkçede yerleşik bir karşılığı yok: "amca blok" birebir çeviri olarak duyulsa da yaygınlaşmadığı için terim İngilizce hâliyle kullanılır.
 
 ## Nasıl çalışır?
 

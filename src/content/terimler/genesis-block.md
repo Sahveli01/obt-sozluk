@@ -19,7 +19,7 @@ updated: 2026-09-21
 
 ## Nedir?
 
-Genesis bloğu, bir zincirin ilk bloğudur. Diğer bütün bloklardan tek bir farkı vardır: kendinden önce bir blok olmadığı için bir öncekinin özetini taşımaz. Zincirin en dibindeki taş budur.
+Genesis bloğu, bir zincirin ilk bloğudur. Diğer bütün bloklardan tek bir farkı vardır: kendinden önce bir blok olmadığı için anlamlı bir öncekini işaret etmez. Zincirin en dibindeki taş budur.
 
 İçeriği üretilerek bulunmaz, zincir kurulurken elle yazılır. Başlangıç bakiyeleri, protokolün ilk parametreleri ve ağın kimliğine dair alanlar burada tanımlanır. Bir düğüm yazılımı açıldığında önce bu bloğu kabul eder; sonraki her [[block|blok]] onun üstüne kurulur.
 

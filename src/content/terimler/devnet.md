@@ -31,4 +31,6 @@ Kontrol sende olduğu için normalde imkânsız şeyleri deneyebilirsin: zamanı
 
 ## Dikkat
 
-Devnet'te çalışan kod, gerçek ağda çalışacağının garantisi değildir: orada tek bir node ve sıfır rekabet vardır, [[mainnet|mainnet'te]] ise ücret piyasası, sıralama ve başka kullanıcılarla yarış. "Devnet" kelimesinin sınırı da projeden projeye kayar — bir ekip devnet dediğinde herkese açık bir ağı kastediyor olabilir, bağlanmadan önce hangisini kastettiğine bak.
+Test ortamında çalışan kodun gerçek ağda da çalışacağı garanti değildir; bunun sebepleri yukarıda bağlantısı verilen testnet maddesinde duruyor. Devnet'te fark yalnızca daha keskindir: tek node, sıfır rekabet, [[mainnet|mainnet'teki]] ücret piyasasından ve sıralama yarışından hiçbir iz yok.
+
+"Devnet" kelimesinin sınırı da projeden projeye kayar — bir ekip devnet dediğinde herkese açık bir ağı kastediyor olabilir; bağlanmadan önce hangisini kastettiğine bak.

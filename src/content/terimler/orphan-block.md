@@ -33,4 +33,4 @@ Bu olayların sıklığı [[block-time|blok süresiyle]] ilgilidir; bloklar ne k
 
 "Öksüz" kelimesi tarihsel olarak iki ayrı şey için kullanılmıştır: ebeveyni bilinmeyen blok ve geçerli ama terk edilmiş blok. Bugün yaygın kullanım ikincisidir; İngilizcede buna "stale block" da denir.
 
-Bazı ağlarda bu bloklar tamamen çöpe gitmez, [[uncle-block|amca blok]] olarak kısmen ödüllendirilir. Kullanıcı tarafındaki dersi ise şu: az sayıda onay taşıyan bir işlemi kesinleşmiş sayma, terk edilecek bir dalda olabilir.
+Bazı ağlarda bu bloklar tamamen çöpe gitmez, [[uncle-block|amca blok]] olarak kısmen ödüllendirilir. Bunun kullanıcı için ne anlama geldiği — kaç onay beklemek gerektiği ve onayın kesinlikten farkı — [[confirmation|onay]] maddesinde.
