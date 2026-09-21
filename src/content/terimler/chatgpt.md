@@ -1,23 +1,30 @@
 ---
 term: "ChatGPT"
 tr: ""
-aliases: []
+aliases: ["chat gpt"]
 category: yapay-zeka
 subcategory: "Ajanlar ve araçlar"
-level: orta
-short: ""
-related: []
+level: baslangic
+short: "OpenAI'ın GPT model ailesini sohbet arayüzüyle sunduğu ürün; 2022 sonunda yayımlandı."
+related: [openai, claude, gemini, large-language-model-llm, prompt]
 disambiguation: []
 tags: []
-status: stub
+status: taslak
 reviewedBy: []
-dateSensitive: false
+dateSensitive: true
 sources: []
 added: 2026-09-21
-updated: 2026-09-21
+updated: 2026-09-22
 ---
 
-<!-- Bu terim henüz yazılmadı.
-     Gövde başlıkları ve yazım kuralları için CLAUDE.md'ye bak.
-     Yazarken: tr, short, related, level alanlarını da doldur ve
-     status değerini taslak yap. -->
+## Nedir?
+
+ChatGPT, [[openai|OpenAI]]'ın GPT model ailesini sohbet arayüzüyle sunduğu üründür. 2022'nin sonunda yayımlandı ve [[large-language-model-llm|büyük dil modellerinin]] geniş bir kullanıcı kitlesiyle ilk kez doğrudan buluştuğu yer oldu; "yapay zekâya bir şey sormak" ifadesinin yaygınlaşması bu döneme denk gelir.
+
+Kullanım biçimleri birbirinden ayrıdır: web ve mobil uygulamadan sohbet, zaman içinde eklenen dosya yükleme ve arama gibi yetenekler, bir de geliştiricilerin aynı modelleri çağırdığı ayrı bir API. Arayüzdeki davranışla API'deki davranış aynı olmak zorunda değildir.
+
+## Dikkat
+
+Ürün adı ile model adı sık karıştırılır: ChatGPT arayüzün adıdır, altında çalışan modeller ayrı adlar taşır ve zaman içinde değişir.
+
+Bütün dil modelleri gibi emin bir üslupla yanlış bilgi üretebilir ([[hallucination|halüsinasyon]]) ve bir bilgi kesim tarihi vardır. Yeteneklerin ve sınırların tarifi yazıldığı tarih itibarıyla geçerlidir.
