@@ -25,7 +25,7 @@ Kayıt iki adımlıdır: önce hangi değişikliklerin bu kayda gireceğini seç
 
 ## Benzetme
 
-Satranç maçında her hamleden sonra hamleyi kâğıda yazmak gibi. Maçın sonunda kâğıda bakıp istediğin hamleye dönebilir, tahtayı tam o andaki hâliyle yeniden kurabilirsin.
+Tırmanışta kayaya çakılan emniyet noktaları gibi. Düşersen en başa değil, en son çaktığın noktaya kadar inersin. Her noktayı neden oraya çaktığını da yanına not edersin; geri dönmek gerektiğinde hangisine ineceğini o not söyler.
 
 ## Örnek
 

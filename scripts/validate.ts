@@ -300,7 +300,12 @@ function baglantiKontrolu(terim: TerimDosyasi, taslak: Taslak): void {
     if (!Array.isArray(hedefler)) return;
     for (const hedef of hedefler) {
       if (typeof hedef !== 'string') {
-        hata(terim.dosya, `${alan} içinde metin olmayan bir değer var.`);
+        hata(
+          terim.dosya,
+          `${alan} içinde metin olmayan bir değer var (${JSON.stringify(hedef)}). ` +
+            'YAML bazı slug\'ları özel değer sayar; "null" gibi bir slug tırnak ' +
+            'içinde yazılmalıdır.',
+        );
         continue;
       }
       if (hedef === terim.slug) {
