@@ -1,6 +1,6 @@
 ---
 term: "Build"
-tr: "Derleme"
+tr: ""
 aliases: []
 category: araclar
 subcategory: "Derleme ve dağıtım süreci"
@@ -19,7 +19,7 @@ updated: 2026-09-22
 
 ## Nedir?
 
-Build, yazdığın kaynak kodu olduğu gibi değil, çalıştırılabilir ya da sunucuya konulabilir bir bütün hâline getirme işidir. İçinde [[compilation|derleme]] adımı bulunabilir, ama iş oradan ibaret değildir: bağımlılıklar toplanır, dosyalar tek pakette birleştirilir ([[module-bundler|bundler]]), gereksiz karakterler atılır, görseller kopyalanır, sürüm bilgisi gömülür. Türkçede "derleme" denir; ne var ki derleme dar anlamda yalnızca kodu makinenin anlayacağı biçime çevirmeyi anlatır, build bunun etrafındaki bütün adımları kapsar.
+Build, yazdığın kaynak kodu olduğu gibi değil, çalıştırılabilir ya da sunucuya konulabilir bir bütün hâline getirme işidir. İçinde [[compilation|derleme]] adımı bulunabilir, ama iş oradan ibaret değildir: bağımlılıklar toplanır, dosyalar tek pakette birleştirilir ([[module-bundler|bundler]]), gereksiz karakterler atılır, görseller kopyalanır, sürüm bilgisi gömülür. Konuşurken "derleme" dendiği olur ama bu madde başında karşılık olarak yazılmadı: "derleme" dar anlamda yalnızca kodu makinenin anlayacağı biçime çevirmeyi anlatır ve o işin kendi terimi compilation'dır. Build, derlemenin etrafındaki bütün adımları kapsadığı için sektörde İngilizce hâliyle kullanılır.
 
 Önemli olan, bu adımların akıldan değil tek komutla ve her seferinde aynı sırayla yapılmasıdır.
 

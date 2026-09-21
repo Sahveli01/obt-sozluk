@@ -19,7 +19,7 @@ updated: 2026-09-21
 
 ## Nedir?
 
-HODL, bir kripto varlığı fiyat inip çıkarken satmadan elde tutma tavrını anlatan topluluk sözüdür. Sözcüğün bir forum yazısındaki "hold" yazım hatasından doğduğu yaygın biçimde aktarılır; sonradan türetilen "hold on for dear life" açılımı da sıkça tekrarlanır. Türkçede de İngilizce hâliyle söylendiği için madde başında bir çeviri verilmemiştir.
+HODL, bir kripto varlığı fiyat inip çıkarken satmadan elde tutma tavrını anlatan topluluk sözüdür. Sözcük 2013'te bir Bitcoin forumunda yazılan "I AM HODLING" başlıklı gönderideki "hold" yazım hatasından doğdu; "hold on for dear life" açılımı ise sonradan türetilmiş bir yakıştırmadır. Türkçede de İngilizce hâliyle söylendiği için madde başında bir çeviri verilmemiştir.
 
 Kelime bir strateji adı değil, bir tutumun etiketidir. Birisi "hodl'luyorum" dediğinde yalnızca "satmıyorum" demiş olur; neden satmadığını, ne kadar bekleyeceğini ya da bunun sonucunun ne olacağını söylemez.
 

@@ -31,6 +31,6 @@ Bir sokaktaki bütün dükkânların tabelasını aynı boyda ve aynı yazıyla 
 
 ## Dikkat
 
-Formatter [[linter|linter]] değildir. Formatter kodun görünüşünü düzeltir ve bir sorun bildirmez; linter kodun mantığındaki riskleri bildirir ve çoğunu kendiliğinden düzeltmez. İkisi aynı projede yan yana çalışır, biri diğerinin yerine geçmez.
+Formatter [[linter|linter]] değildir ve biri diğerinin yerine geçmez; ikisinin (ve tip denetleyicisinin) hangi işi yaptığı linter maddesinde ayrılıyor.
 
 Pratik bir uyarı: formatter'ı var olan bir projeye ilk kez kurduğunda neredeyse bütün dosyalar aynı anda değişir. Bu devasa değişikliği kendi [[commit|commit]]'inde tutmak önemlidir — aynı commit'in içine gerçek bir değişiklik de karıştırırsan, onu sonradan kimse bulamaz.

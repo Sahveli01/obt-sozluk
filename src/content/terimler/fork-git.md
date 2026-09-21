@@ -42,4 +42,4 @@ git merge upstream/main
 
 Blockchain'deki [[fork-blockchain|fork]] ile aynı kelime, bambaşka iş: orada canlı bir ağın ortak geçmişi bir noktadan sonra ikiye ayrılır; Git'te ise kimsenin geçmişi bölünmez, yalnızca deponun bir kopyası çıkarılır. Türkçedeki "çatallanma" karşılığı da ağırlıkla blockchain anlamı için kullanılır; Git tarafında "fork" olduğu gibi söylenir.
 
-Fork ile klon da karıştırılır: fork sunucuda durur ve senin adına kayıtlıdır, klon ise kendi bilgisayarındaki kopyadır.
+Fork ile klon da sık karıştırılır; ayrımı klon maddesinde.

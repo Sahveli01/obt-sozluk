@@ -52,6 +52,6 @@ selamla(42);     // Hata: 'number' tipi 'string' parametresine atanamaz
 
 ## Dikkat
 
-Tip denetleyicisi [[linter|linter]] değildir: linter riskli alışkanlıkları kural listesine göre işaretler, tip denetleyicisi ise dilin tip sistemine göre uyumsuzluk arar.
+Tip denetleyicisi [[linter|linter]] değildir; kodu çalıştırmadan inceleyen üç aracın (linter, formatter, tip denetleyicisi) hangisinin neye baktığı linter maddesinde ayrılıyor.
 
 Daha önemlisi, "tip hatası yok" demek "kod doğru çalışıyor" demek değildir. Tipleri kusursuz ama mantığı baştan sona yanlış bir fonksiyon denetimden sorunsuz geçer. [[type-safety|Tip güvenliği]] bütün hata sınıflarından birini kapatır, hepsini değil.

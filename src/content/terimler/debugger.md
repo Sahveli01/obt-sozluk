@@ -31,6 +31,6 @@ Kol saatinin arka kapağını açmak gibi. Dışarıdan yalnızca akrebin yanlı
 
 ## Dikkat
 
-Debugger, araya bastırma satırları serpiştirmenin yerini büyük ölçüde tutar ama tamamen değil. Sunucuda çalışan ya da uzun süre ayakta kalan bir programı durdurup beklemek çoğu zaman mümkün değildir; orada [[logging|log kaydı]] daha işe yarar.
+Debugger, araya bastırma satırları serpiştirmenin yerini büyük ölçüde tutar ama tamamen değil: çalışan bir sunucuyu durdurup bekleyemezsin. Orada neyin işe yaradığı [[logging|log kaydı]] maddesinde.
 
 Bir de sıralamayı karıştırma: bir hata ortaya çıktığında ilk bakılacak şey genelde [[stack-trace|yığın izidir]], çünkü nerede patladığını bedavaya söyler. Debugger asıl olarak "neden" sorusuna geçtiğinde, yani değerlerin ne zaman bozulduğunu görmen gerektiğinde işe yarar.

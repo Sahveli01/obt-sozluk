@@ -39,4 +39,4 @@ Hem bash'te hem PowerShell'de aynı çalışır; `.` "bulunduğum klasör" demek
 
 Her eklenti açılış süresinden ve bellekten bir parça götürür; onlarca eklenti kurulu bir editör gözle görülür biçimde yavaşlar.
 
-Eklentiler üçüncü taraf yazılımlardır ve editörün yetkileriyle çalışır: açtığın dosyaları okuyabilir, ağa çıkabilir. Yayıncısına ve indirme sayısına bakmadan kurma — popüler eklentilerin adına çok benzeyen sahte kopyalar görülmüştür.
+Eklentiler üçüncü taraf yazılımlardır ve editörün yetkileriyle çalışır; taşıdıkları risk ve sahte kopya meselesi eklenti maddesinde.

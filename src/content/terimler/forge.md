@@ -41,4 +41,4 @@ forge fmt
 
 Testlerin geçmesi sözleşmenin doğru olduğunu değil, yazdığın senaryolarda beklediğin davranışı verdiğini gösterir. Fuzz ve değişmez testleri arama uzayını genişletir ama tüketmez; bir karşı örnek bulunamaması, olmadığı anlamına gelmez.
 
-Test içinde ölçülen [[gas-reporter|gas rakamları]] da o senaryoya bağlıdır; aynı işlev farklı bir sırada çağrıldığında başka bir değer çıkabilir.
+Test içinde ölçülen [[gas-reporter|gas rakamları]] da mutlak değildir; neden senaryoya bağlı olduğu orada anlatılıyor.

@@ -29,7 +29,7 @@ Yeni yapılmış bir köprünün açılıştan önce yüklü kamyonlarla denenme
 
 ## Nasıl çalışır?
 
-[[ci-cd|CI/CD]] hattı, testleri geçen [[build-artifact|artifact]]'ı önce staging'e kurar. Ekip burada elle bakar: ekranlar beklendiği gibi mi, veritabanı göçleri sorunsuz uygulandı mı, dış servislerle konuşma çalışıyor mu, biraz yük bindiğinde ne oluyor. Sorun çıkmazsa aynı artifact üretime taşınır; yeniden derlenmez.
+[[ci-cd|CI/CD]] hattı, testleri geçen [[build-artifact|artifact]]'ı önce staging'e kurar. Ekip burada elle bakar: ekranlar beklendiği gibi mi, veritabanı göçleri sorunsuz uygulandı mı, dış servislerle konuşma çalışıyor mu, biraz yük bindiğinde ne oluyor. Sorun çıkmazsa aynı artifact olduğu gibi üretime taşınır.
 
 Dış servislerin çoğu bu iş için ayrı bir deneme hesabı sunar: ödeme sağlayıcısının test anahtarları, e-posta servisinin kum havuzu ya da bir zincirin [[testnet|testnet]]'i staging'e bağlanır.
 

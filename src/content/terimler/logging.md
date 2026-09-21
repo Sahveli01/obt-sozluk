@@ -1,6 +1,6 @@
 ---
 term: "Logging"
-tr: "Günlük kaydı"
+tr: "Loglama"
 aliases: ["loglama", "günlük kaydı"]
 category: araclar
 subcategory: "Test ve kalite"

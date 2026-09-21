@@ -1,7 +1,7 @@
 ---
 term: "Virtual Machine (Bilgisayar)"
 tr: "Sanal makine"
-aliases: []
+aliases: ["sanal makine"]
 category: araclar
 subcategory: "Derleme ve dağıtım süreci"
 level: orta

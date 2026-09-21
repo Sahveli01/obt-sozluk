@@ -31,6 +31,6 @@ Boş bir A4 kâğıdı ile çizgili, satırları numaralı bir müsvedde defteri
 
 ## Dikkat
 
-"Editör mü [[ide|IDE]] mi" tartışması başlangıçta zaman kaybıdır; ikisinin sınırı zaten bulanıktır. Asıl fark yaratan şey hangi programı açtığın değil, dosyalar arası aramayı ve birkaç kısayolu öğrenmendir.
+"Editör mü [[ide|IDE]] mi" sorusunun başlangıçta bir cevabı yok; ikisinin sınırının neden bulanık olduğu IDE maddesinde anlatılıyor.
 
 Not Defteri gibi basit editörler de kod yazmaya yeter ama satır sonu karakterleri ve karakter kodlaması konusunda sessiz sürprizler çıkarır; bu yüzden kod için kod editörü kullanılır.
