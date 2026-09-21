@@ -6,7 +6,8 @@
  *  2. Dosyası olup taslakta olmayan terim.
  *  3. Taslakta aynı slug'a düşen iki terim.
  *  4. `category` / `subcategory` alanlarının taslakla ve kategoriler.ts ile uyumu.
- *  5. `related`, `disambiguation` ve `[[wiki-link]]` hedeflerinin taslakta var olması.
+ *  5. `related`, `disambiguation` ve `[[wiki-link]]` hedeflerinin taslakta var olması,
+ *     ve aynı hedefe gövdede birden fazla kez bağlanılmaması.
  *  6. Aynı alias'ın (ya da bir slug'a eşit alias'ın) iki terimde kullanılması.
  *  7. `short` uzunluğu (<= 160) ve stub olmayan terimlerde boş olmaması.
  *  8. Stub olmayan terimlerde `## Nedir?` başlığının varlığı.
@@ -324,10 +325,23 @@ function baglantiKontrolu(terim: TerimDosyasi, taslak: Taslak): void {
     uyari(terim.dosya, `related ${related.length} slug içeriyor, en az ${RELATED_MIN} bekleniyor.`);
   }
 
+  const gorulenHedefler = new Set<string>();
   for (const hedef of wikiLinkHedefleri(terim.govde)) {
     if (!taslak.slugHaritasi.has(hedef)) {
       hata(terim.dosya, `[[${hedef}]] taslakta olmayan bir slug'a bağlanıyor.`);
     }
+    // CLAUDE.md: bir terime yalnızca ilk geçtiği yerde bağlanılır.
+    if (gorulenHedefler.has(hedef)) {
+      hata(
+        terim.dosya,
+        `[[${hedef}]] birden fazla kez bağlanmış; yalnızca ilk kullanımda bağla.`,
+      );
+    }
+    gorulenHedefler.add(hedef);
+  }
+
+  if (gorulenHedefler.has(terim.slug)) {
+    uyari(terim.dosya, `gövde [[${terim.slug}]] ile kendine bağlanıyor.`);
   }
 }
 

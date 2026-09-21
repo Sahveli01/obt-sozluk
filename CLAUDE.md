@@ -36,7 +36,7 @@ scripts/stats.ts             kategori ve durum bazında ilerleme raporu
 ```yaml
 ---
 term: "Reentrancy Attack"          # İngilizce kanonik ad (taslaktaki gibi)
-tr: "Yeniden Giriş Saldırısı"      # yerleşik Türkçe karşılık yoksa boş bırak, uydurma
+tr: "Yeniden Giriş Saldırısı"      # yerleşik karşılık yoksa boş bırak (aşağıdaki ölçüte bak)
 aliases: ["reentrancy", "re-entrancy"]
 category: guvenlik                 # kategori slug'ı
 subcategory: "Sözleşme açıkları"   # taslaktaki alt başlık
@@ -47,7 +47,7 @@ disambiguation: []                 # aynı kelimenin diğer anlamlarının slug'
 tags: []
 status: taslak                     # stub | taslak | incelendi
 reviewedBy: []                     # sadece insanlar yazar
-dateSensitive: false               # rakam, sürüm, "şu anda" içeriyorsa true
+dateSensitive: false               # zamanla yanlışlanabilecek iddia varsa true
 sources: []                        # isteğe bağlı güvenilir URL'ler
 added: 2026-09-21
 updated: 2026-09-21
@@ -56,6 +56,8 @@ updated: 2026-09-21
 Gövde başlıkları (bu sırayla, bu adlarla):
 1. `## Nedir?` — her terimde zorunlu.
 2. `## Benzetme` — başlangıç seviyesinde zorunlu, diğerlerinde işe yarıyorsa.
+   İstisna: kişi, ağ, proje, ürün gibi **özel isimlerde** başlangıç seviyesinde de
+   isteğe bağlıdır. Bir kavram benzetmeyle açılır; bir isim açılmaz, zorlarsan yapay durur.
 3. `## Nasıl çalışır?` — orta ve ileri seviyede.
 4. `## Örnek` — kod veya somut senaryo gerçekten açıklıyorsa.
 5. `## Dikkat` — yaygın yanlış anlama, risk veya karıştırılan terim varsa.
@@ -64,8 +66,22 @@ Gövde başlıkları (bu sırayla, bu adlarla):
 - Dil: sade, samimi ama ciddi Türkçe. Okur, konuyu ilk kez duyan zeki bir öğrenci.
 - Teknik terimler sektörde İngilizce kullanılıyorsa İngilizce kalır; ilk geçtiği yerde kısa Türkçe açıklama eklenir.
 - Metinde başka bir terim geçiyorsa ilk kullanımında `[[slug]]` şeklinde bağla (ör. `[[gas]]`, `[[smart-contract|akıllı sözleşme]]`). Sadece `docs/terim-taslagi.md` içinde var olan slug'lara bağla.
-- Uzunluk: `short` ≤ 160 karakter; gövde başlangıçta 120–250, orta/ileride 200–400 kelime.
-- **Uydurma yok.** Emin olmadığın bilgiyi yazma. Rakam, tarih, sürüm, "en büyük/ilk" gibi iddialar varsa `dateSensitive: true` yap ve "yazıldığı tarih itibarıyla" ifadesini kullan.
+- Uzunluk: `short` ≤ 160 karakter; gövde başlangıçta 90–200, orta/ileride 150–320 kelime.
+  Bu aralıklar Türkçeye göre ayarlıdır: Türkçe sondan eklemeli olduğu için bir kelime
+  çoğu zaman iki üç İngilizce kelimenin işini görür. İngilizce metinlerden alınmış
+  kelime hedeflerini doğrudan uygulama.
+- **Uydurma yok.** Emin olmadığın bilgiyi yazma.
+- `dateSensitive: true` **yalnızca zamanla yanlışlanabilecek iddialar için**: güncel
+  durum ("şu anda", "henüz", "bilinmiyor"), sıralama ("en büyük", "ilk"), sürüm
+  numarası, değişken rakam. Böyle bir iddia varsa "yazıldığı tarih itibarıyla"
+  ifadesini de kullan.
+  Sabit tarihsel olgular `false` kalır: "1982'de yayımlanan makale" ya da
+  "2008'de duyuruldu" bayatlamaz, dolayısıyla uyarı gerektirmez.
+- `tr` alanı: TDK'da, resmî bir metinde (TCMB, SPK vb.) ya da Türk teknoloji
+  topluluklarında yaygın kullanım varsa yaz. Yoksa boş bırak **ve gövdede neden
+  çevrilmediğini bir cümleyle belirt** — okur karşılığı aramasın diye.
+  Açıklama zorunluluğu özel isimlerde geçerli değildir (`## Benzetme` ile aynı istisna):
+  `Satoshi Nakamoto` ya da `Web3` için "çevrilmiyor" demek gereksizdir.
 - Yatırım tavsiyesi, fiyat tahmini, belirli bir projeyi övme/yerme yok.
 - Anlam ayrımlı terimlerde (`Fork (Blockchain)` / `Fork (Git)`) her iki dosyanın `disambiguation` alanı birbirini göstersin ve `## Dikkat` bölümünde farkı bir cümleyle belirt.
 - Kod örnekleri kısa (≤ 15 satır), çalışır ve dilinin güncel sözdizimiyle yazılır.

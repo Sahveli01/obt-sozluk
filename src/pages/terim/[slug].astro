@@ -118,10 +118,10 @@ const tarihBicimi = new Intl.DateTimeFormat('tr-TR', { dateStyle: 'long' });
          yoksa rakam uydurulmuş sayılır. */
       terim.data.dateSensitive && !stub && (
         <div class="bildirim bildirim--uyari">
-          <span class="bildirim__baslik">Bu tanım tarihe duyarlı bilgi içeriyor.</span>
+          <span class="bildirim__baslik">Bu tanım zamanla değişebilecek bilgi içeriyor.</span>
           <span>
-            Rakamlar ve sürümler {tarihBicimi.format(terim.data.updated)} tarihi
-            itibarıyla geçerlidir.
+            İçindeki güncel durum ve rakamlar{' '}
+            {tarihBicimi.format(terim.data.updated)} tarihi itibarıyla geçerlidir.
           </span>
         </div>
       )

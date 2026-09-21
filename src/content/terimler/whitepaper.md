@@ -11,7 +11,7 @@ disambiguation: []
 tags: []
 status: taslak
 reviewedBy: []
-dateSensitive: true
+dateSensitive: false
 sources: ["https://bitcoin.org/bitcoin.pdf"]
 added: 2026-09-21
 updated: 2026-09-21

@@ -33,4 +33,4 @@ Asıl zor kısım teknik değil [[governance|yönetişimdir]]: yeni üye nasıl 
 
 Konsorsiyumun en kırılgan yeri çoğu zaman kuruluş anından sonra ortaya çıkar. Ağ kurulurken üyeler heveslidir; asıl sınav, bir üyenin çıkarına aykırı bir kararın oylandığı gündür. Kuralların ne olacağı kadar, kural değiştirmenin ne kadar zor olduğu da önceden belirlenmelidir.
 
-Güvenlik, üyelerin çıkarlarının ne kadar ayrıştığına bağlıdır. Birbirinden gerçekten bağımsız kurumlar birleşmekte zorlanır ve bu iyi bir şeydir. Ama üyelerin hepsi aynı holdingin şirketleriyse ya da biri diğerleri üzerinde baskı kurabiliyorsa yapı, adı konsorsiyum olsa da fiilen [[private-blockchain|özel zincire]] döner.
+Güvenlik, üyelerin çıkarlarının ne kadar ayrıştığına bağlıdır. Birbirinden gerçekten bağımsız kurumlar birleşmekte zorlanır ve bu iyi bir şeydir. Ama üyelerin hepsi aynı holdingin şirketleriyse ya da biri diğerleri üzerinde baskı kurabiliyorsa yapı, adı konsorsiyum olsa da fiilen özel zincire döner.
