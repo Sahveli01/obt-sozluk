@@ -19,7 +19,7 @@ updated: 2026-09-22
 
 ## Nedir?
 
-Benchmark, farklı sistemleri aynı koşulda karşılaştırmak için hazırlanmış standart bir testtir: sabit sorular, sabit ölçüt, herkes için aynı kurallar. Amacı tek bir sistemin "ne kadar iyi" olduğunu söylemek değil, iki sistemi kıyaslanabilir hâle getirmektir. Türkçede yerleşik tek bir karşılığı olmadığı için İngilizce adıyla, bazen de "kıyas testi" diye anılır.
+Benchmark, farklı sistemleri aynı koşulda karşılaştırmak için hazırlanmış standart bir testtir: sabit sorular, sabit ölçüt, herkes için aynı kurallar. Amacı tek bir sistemin "ne kadar iyi" olduğunu söylemek değil, iki sistemi kıyaslanabilir hâle getirmektir. [[evals|Değerlendirme]] pratiğinin herkese açık ve standart olan türüdür; kurumların kendi kullanım senaryosundan çıkardığı özel setler de aynı pratiğin parçasıdır ama kıyas testi sayılmaz. Türkçede yerleşik tek bir karşılığı olmadığı için İngilizce adıyla, bazen de "kıyas testi" diye anılır.
 
 ## Nasıl çalışır?
 
@@ -35,4 +35,4 @@ En bilinen sorun sızıntıdır. Test soruları internette yayımlandığı içi
 
 İkinci sorun, puanın kendisinin hedefe dönüşmesidir. Bir ölçüt başarı göstergesi olarak kullanılmaya başlandığında sistemler o ölçüte göre ayarlanır ve ölçüt ayırt ediciliğini kaybeder.
 
-Bu sözlük benchmark puanı vermez; sayılar hızla eskir. Bir karşılaştırma okurken puanla birlikte [[evals|değerlendirme]] kurulumuna ve testin neyi ölçmediğine bak.
+Bir karşılaştırma okurken puanın kendisi kadar kurulumuna ve testin neyi ölçmediğine bak; puanlar hızla eskir, kurulumun mantığı eskimez.

@@ -19,7 +19,7 @@ updated: 2026-09-22
 
 ## Nedir?
 
-DePIN, "decentralized physical infrastructure network" ifadesinin kısaltmasıdır. Fikir şudur: gerçek dünyadaki bir altyapıyı tek bir şirketin kurması yerine, cihazı kendi parasıyla alıp evine ya da çatısına kuran çok sayıda kişiden toplamak. Cihaz bir anten, bir hava sensörü, bir disk ya da bir kamera olabilir. Ağ, katkı verene karşılığında [[token-blockchain|token]] dağıtır ve kimin ne kadar katkı verdiğinin kaydı zincirde tutulur. Aynı mantığın hesaplama gücüne uygulanmış hali [[decentralized-compute|dağıtık hesaplamadır]].
+DePIN, "decentralized physical infrastructure network" ifadesinin kısaltmasıdır. Fikir şudur: gerçek dünyadaki bir altyapıyı tek bir şirketin kurması yerine, cihazı kendi parasıyla alıp evine ya da çatısına kuran çok sayıda kişiden toplamak. Cihaz bir anten, bir hava sensörü, bir disk ya da bir kamera olabilir. Ağ, katkı verene karşılığında [[token-blockchain|token]] dağıtır ve kimin ne kadar katkı verdiğinin kaydı zincirde tutulur. DePIN'in konusu arzı toplamaktır: cihazın kurulup ağa bağlanması. Üretilen kapasitenin satıldığı pazar ayrı bir terimdir — hesap gücü için olanı [[decentralized-compute|dağıtık hesaplamadır]].
 
 ## Benzetme
 

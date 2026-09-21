@@ -6,7 +6,7 @@ category: yapay-zeka
 subcategory: "Ajanlar ve araçlar"
 level: baslangic
 short: "Google tarafından geliştirilen çok modlu model ailesinin ve bu modelleri kullanan asistanın adı."
-related: [claude, chatgpt, openai, multimodal, large-language-model-llm]
+related: [claude-model, chatgpt, openai, multimodal, large-language-model-llm]
 disambiguation: []
 tags: []
 status: taslak

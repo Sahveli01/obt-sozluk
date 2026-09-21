@@ -85,6 +85,8 @@ Gövde başlıkları (bu sırayla, bu adlarla):
   Açıklama zorunluluğu özel isimlerde geçerli değildir (`## Benzetme` ile aynı istisna):
   `Satoshi Nakamoto` ya da `Web3` için "çevrilmiyor" demek gereksizdir.
 - Yatırım tavsiyesi, fiyat tahmini, belirli bir projeyi övme/yerme yok.
+- **Benchmark puanı ve model sıralaması yazılmaz; hızla eskir.** Bunun yerine ölçütün
+  neyi ölçtüğünü, neyi ölçemediğini ve sonucun nasıl okunması gerektiğini anlat.
 - Anlam ayrımlı terimlerde (`Fork (Blockchain)` / `Fork (Git)`) her iki dosyanın `disambiguation` alanı birbirini göstersin ve `## Dikkat` bölümünde farkı bir cümleyle belirt.
 - Kod örnekleri kısa (≤ 15 satır), çalışır ve dilinin güncel sözdizimiyle yazılır.
 - `status: incelendi` değerini **asla** sen koyma. Sen en fazla `taslak` yazarsın; insan inceleyince değiştirir.

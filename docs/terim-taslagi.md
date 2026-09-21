@@ -1348,7 +1348,7 @@ Not: Bu bölüm genel kültür içindir. Her ağ tek terim olarak kalır, alt ka
 - Hugging Face
 - Anthropic
 - OpenAI
-- Claude
+- Claude {slug: claude-model}
 - Claude Code
 - ChatGPT
 - Gemini

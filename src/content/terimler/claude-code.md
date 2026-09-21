@@ -6,7 +6,7 @@ category: yapay-zeka
 subcategory: "Ajanlar ve araçlar"
 level: orta
 short: "Anthropic'in terminalde çalışan kodlama ajanı; bulunduğu dizinde dosya okur, düzenler ve komut çalıştırır."
-related: [coding-agent, claude, agent-instructions-file-claude-md-agents-md, slash-command, subagent]
+related: [coding-agent, claude-model, agent-instructions-file-claude-md-agents-md, slash-command, subagent]
 disambiguation: []
 tags: []
 status: taslak
@@ -19,7 +19,7 @@ updated: 2026-09-22
 
 ## Nedir?
 
-Claude Code, [[anthropic|Anthropic]]'in terminalde çalışan [[coding-agent|kodlama ajanıdır]]. Bulunduğu dizinde dosya arar, okur, düzenler ve komut çalıştırır; yani sohbet penceresine kod kopyalamak yerine ajan doğrudan projenin içinde çalışır. Altında [[claude|Claude]] modelleri çalışır.
+Claude Code, [[anthropic|Anthropic]]'in terminalde çalışan [[coding-agent|kodlama ajanıdır]]. Bulunduğu dizinde dosya arar, okur, düzenler ve komut çalıştırır; yani sohbet penceresine kod kopyalamak yerine ajan doğrudan projenin içinde çalışır. Altında [[claude-model|Claude]] modelleri çalışır.
 
 ## Nasıl çalışır?
 

@@ -19,9 +19,9 @@ updated: 2026-09-22
 
 ## Nedir?
 
-Bir yapay zekâ modelini eğitmek ya da çalıştırmak güçlü donanım ister ve bu donanım ağırlıkla birkaç büyük bulut sağlayıcısının elindedir. Dağıtık hesaplama, aynı işi tek bir sağlayıcıdan değil, makinesini kiraya veren çok sayıda bağımsız sahipten oluşan bir pazardan satın almayı önerir.
+Bir yapay zekâ modelini eğitmek ya da çalıştırmak güçlü donanım ister ve bu donanım ağırlıkla birkaç büyük bulut sağlayıcısının elindedir. Dağıtık hesaplama, aynı işi tek bir sağlayıcıdan değil, makinesini kiraya veren çok sayıda bağımsız sahipten oluşan bir pazardan satın almayı önerir. Terimin konusu bu pazardır — donanımın nasıl toplandığı değil; onu [[depin|DePIN]] anlatır.
 
-Arz tarafında boşta duran [[gpu|GPU]]'lar vardır: oyun bilgisayarları, küçük veri merkezleri, eski madencilik donanımı; bu donanımın bir kısmı [[depin|DePIN]] mantığıyla toplanır. Talep tarafında hesap gücü arayan geliştiriciler durur. Zincir arada eşleştirme, ödeme ve kayıt işini üstlenir.
+Arz tarafında boşta duran [[gpu|GPU]]'lar vardır: oyun bilgisayarları, küçük veri merkezleri, eski madencilik donanımı; bu donanımın bir kısmı DePIN mantığıyla toplanır. Talep tarafında hesap gücü arayan geliştiriciler durur. Zincir arada eşleştirme, ödeme ve kayıt işini üstlenir.
 
 ## Benzetme
 
