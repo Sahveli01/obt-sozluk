@@ -56,8 +56,10 @@ updated: 2026-09-21
 Gövde başlıkları (bu sırayla, bu adlarla):
 1. `## Nedir?` — her terimde zorunlu.
 2. `## Benzetme` — başlangıç seviyesinde zorunlu, diğerlerinde işe yarıyorsa.
-   İstisna: kişi, ağ, proje, ürün gibi **özel isimlerde** başlangıç seviyesinde de
-   isteğe bağlıdır. Bir kavram benzetmeyle açılır; bir isim açılmaz, zorlarsan yapay durur.
+   İstisna: **özel isimlerde** (kişi, ağ, proje, ürün) ve **açıklanacak bir mekanizması
+   olmayan kalıp ifadelerde / argoda** (`gm`, `wen`, `DYOR`, `LFG` gibi) başlangıç
+   seviyesinde de isteğe bağlıdır. Bir kavram benzetmeyle açılır; bir isim ya da bir
+   kalıp açılmaz — zorlarsan benzetme tanımın yeniden ifadesine dönüşür ve yapay durur.
 3. `## Nasıl çalışır?` — orta ve ileri seviyede.
 4. `## Örnek` — kod veya somut senaryo gerçekten açıklıyorsa.
 5. `## Dikkat` — yaygın yanlış anlama, risk veya karıştırılan terim varsa.

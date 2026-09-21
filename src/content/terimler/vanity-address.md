@@ -12,7 +12,7 @@ tags: []
 status: taslak
 reviewedBy: []
 dateSensitive: false
-sources: []
+sources: ["https://1inch.com/blog/post/a-vulnerability-disclosed-in-profanity-an-ethereum-vanity-address-tool"]
 added: 2026-09-21
 updated: 2026-09-21
 ---
@@ -35,6 +35,6 @@ Bulunan anahtar, sıradan bir anahtardan farksızdır. Onu özel kılan tek şey
 
 ## Dikkat
 
-Asıl risk adresin kendisinde değil, onu üreten araçtadır. Anahtarı üreten program yeterince rastgele davranmazsa ([[entropy|entropi]] zayıfsa) üretilen anahtar tahmin edilebilir hâle gelir; geçmişte yaygın kullanılan bir vanity adres üreticisindeki böyle bir zayıflık yüzünden bu adreslerdeki varlıklar çalınmıştır. Adresi başkasına ürettirmek ise [[private-key|özel anahtarı]] doğrudan ona vermek demektir.
+Asıl risk adresin kendisinde değil, onu üreten araçtadır. Anahtarı üreten program yeterince rastgele davranmazsa ([[entropy|entropi]] zayıfsa) üretilen anahtar tahmin edilebilir hâle gelir; 2022'de yaygın kullanılan bir vanity adres üreticisinde tam olarak böyle bir zayıflık bulundu: araç 256 bitlik anahtarları 32 bitlik bir tohumdan türetiyordu, dolayısıyla arama uzayı kaba kuvvetle taranabilecek kadar küçüktü ve o araçla üretilmiş adreslerdeki varlıklar çalındı. Adresi başkasına ürettirmek ise [[private-key|özel anahtarı]] doğrudan ona vermek demektir.
 
 Bir de ters etkisi var. Tanıdık görünen adreslere alışan kullanıcı, adresi baştan sona kontrol etme alışkanlığını bırakır; [[address-poisoning|adres zehirleme]] saldırıları tam olarak bunu kullanır.
