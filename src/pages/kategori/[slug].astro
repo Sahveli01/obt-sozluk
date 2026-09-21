@@ -1,0 +1,56 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection } from 'astro:content';
+
+import { KATEGORILER } from '../../data/kategoriler.ts';
+import Temel from '../../layouts/Temel.astro';
+import { terimYolu } from '../../lib/yol.ts';
+
+export const getStaticPaths = (async () => {
+  const terimler = await getCollection('terimler');
+
+  return KATEGORILER.map((kategori) => ({
+    params: { slug: kategori.slug },
+    props: {
+      kategori,
+      terimler: terimler
+        .filter((terim) => terim.data.category === kategori.slug)
+        .sort((a, b) => a.data.term.localeCompare(b.data.term, 'tr')),
+    },
+  }));
+}) satisfies GetStaticPaths;
+
+const { kategori, terimler } = Astro.props;
+
+/** Alt başlıklar taslaktaki sırayla; başlıksızlar en sonda. */
+const bloklar = [...kategori.altBasliklar, '']
+  .map((altBaslik) => ({
+    altBaslik,
+    terimler: terimler.filter((terim) => terim.data.subcategory === altBaslik),
+  }))
+  .filter((blok) => blok.terimler.length > 0);
+---
+
+<Temel baslik={kategori.ad} aciklama={kategori.aciklama}>
+  <h1>{kategori.ad}</h1>
+  <p>{kategori.aciklama}</p>
+  <p>{terimler.length} terim</p>
+
+  {
+    bloklar.map((blok) => (
+      <section>
+        {blok.altBaslik !== '' && <h2>{blok.altBaslik}</h2>}
+        <ul>
+          {blok.terimler.map((terim) => (
+            <li>
+              <a href={terimYolu(terim.id)}>{terim.data.term}</a>
+              {terim.data.tr !== '' && <span> ({terim.data.tr})</span>}
+              {terim.data.short !== '' && <span> — {terim.data.short}</span>}
+              {terim.data.status === 'stub' && <span> [yazılmadı]</span>}
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+</Temel>

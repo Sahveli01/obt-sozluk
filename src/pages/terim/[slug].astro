@@ -1,0 +1,129 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection, getEntry, render } from 'astro:content';
+
+import { kategoriBul } from '../../data/kategoriler.ts';
+import Temel from '../../layouts/Temel.astro';
+import { kategoriYolu, terimYolu } from '../../lib/yol.ts';
+
+export const getStaticPaths = (async () => {
+  const terimler = await getCollection('terimler');
+  return terimler.map((terim) => ({
+    params: { slug: terim.id },
+    props: { terim },
+  }));
+}) satisfies GetStaticPaths;
+
+const { terim } = Astro.props;
+const { Content } = await render(terim);
+
+const kategori = kategoriBul(terim.data.category);
+
+/** İlgili ve anlam ayrımı bağlantıları için terim adlarını çöz. */
+async function baglantilar(sluglar: readonly string[]) {
+  const sonuc = [];
+  for (const slug of sluglar) {
+    const hedef = await getEntry('terimler', slug);
+    sonuc.push({ slug, ad: hedef?.data.term ?? slug, var: hedef !== undefined });
+  }
+  return sonuc;
+}
+
+const ilgili = await baglantilar(terim.data.related);
+const anlamAyrimi = await baglantilar(terim.data.disambiguation);
+
+const tarihBicimi = new Intl.DateTimeFormat('tr-TR', { dateStyle: 'medium' });
+---
+
+<Temel baslik={terim.data.term} aciklama={terim.data.short || terim.data.term}>
+  <article>
+    <h1>{terim.data.term}</h1>
+    {terim.data.tr !== '' && <p>Türkçesi: {terim.data.tr}</p>}
+    {terim.data.short !== '' && <p>{terim.data.short}</p>}
+
+    <p>
+      {
+        kategori && (
+          <a href={kategoriYolu(kategori.slug)}>{kategori.ad}</a>
+        )
+      }
+      {terim.data.subcategory !== '' && <span> › {terim.data.subcategory}</span>}
+      <span> · Seviye: {terim.data.level}</span>
+      <span> · Durum: {terim.data.status}</span>
+    </p>
+
+    {
+      terim.data.status === 'stub' && (
+        <p>Bu terim henüz yazılmadı.</p>
+      )
+    }
+
+    {
+      terim.data.dateSensitive && (
+        <p>
+          Bu tanım tarihe duyarlı bilgi içerir; son güncelleme{' '}
+          {tarihBicimi.format(terim.data.updated)}.
+        </p>
+      )
+    }
+
+    <Content />
+
+    {
+      anlamAyrimi.length > 0 && (
+        <section>
+          <h2>Aynı adı taşıyan diğer terimler</h2>
+          <ul>
+            {anlamAyrimi.map((hedef) => (
+              <li>
+                <a href={terimYolu(hedef.slug)}>{hedef.ad}</a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    {
+      ilgili.length > 0 && (
+        <section>
+          <h2>İlgili terimler</h2>
+          <ul>
+            {ilgili.map((hedef) => (
+              <li>
+                <a href={terimYolu(hedef.slug)}>{hedef.ad}</a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    {
+      terim.data.sources.length > 0 && (
+        <section>
+          <h2>Kaynaklar</h2>
+          <ul>
+            {terim.data.sources.map((kaynak) => (
+              <li>
+                <a href={kaynak} rel="noreferrer">
+                  {kaynak}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <footer>
+      <p>
+        Eklendi: {tarihBicimi.format(terim.data.added)} · Güncellendi:{' '}
+        {tarihBicimi.format(terim.data.updated)}
+        {terim.data.reviewedBy.length > 0 && (
+          <span> · İnceleyen: {terim.data.reviewedBy.join(', ')}</span>
+        )}
+      </p>
+    </footer>
+  </article>
+</Temel>

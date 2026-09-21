@@ -1,0 +1,112 @@
+---
+/**
+ * Arama sayfası. Tamamen istemci tarafında çalışır: derlemede üretilen
+ * `search-index.json` indirilir, MiniSearch tarayıcıda indeksler.
+ *
+ * Yollar `data-*` özniteliğiyle geçirilir; `define:vars` kullanılmaz çünkü o,
+ * script'i satır içine alıp paketlemeyi kapatır ve `minisearch` içe aktarımı
+ * tarayıcıda çözülemez.
+ */
+import Temel from '../layouts/Temel.astro';
+import { siteYolu } from '../lib/yol.ts';
+---
+
+<Temel baslik="Ara" aciklama="Sözlükteki terimlerde ara.">
+  <h1>Ara</h1>
+
+  <form
+    id="arama-formu"
+    role="search"
+    autocomplete="off"
+    data-indeks-url={siteYolu('/search-index.json')}
+    data-terim-tabani={siteYolu('/terim')}
+  >
+    <label for="arama-girdisi">Terim ara</label>
+    <input
+      id="arama-girdisi"
+      name="q"
+      type="search"
+      placeholder="akilli sozlesme"
+      autofocus
+    />
+  </form>
+
+  <p id="arama-durumu">İndeks yükleniyor…</p>
+  <ol id="arama-sonuclari"></ol>
+
+  <noscript>
+    <p>
+      Arama JavaScript gerektiriyor. <a href={siteYolu('/')}>Kategori listesinden</a>
+      göz atabilirsin.
+    </p>
+  </noscript>
+</Temel>
+
+<script>
+  import MiniSearch from 'minisearch';
+
+  import { ARAMA_AYARLARI, type AramaIndeksi } from '../lib/arama.ts';
+
+  const form = document.querySelector<HTMLFormElement>('#arama-formu')!;
+  const girdi = document.querySelector<HTMLInputElement>('#arama-girdisi')!;
+  const durum = document.querySelector<HTMLParagraphElement>('#arama-durumu')!;
+  const liste = document.querySelector<HTMLOListElement>('#arama-sonuclari')!;
+
+  const indeksUrl = form.dataset['indeksUrl']!;
+  const terimTabani = form.dataset['terimTabani']!;
+
+  /** Bir ekranı dolduracak kadar sonuç yeter. */
+  const EN_FAZLA = 30;
+
+  form.addEventListener('submit', (olay) => olay.preventDefault());
+
+  let miniSearch: MiniSearch | null = null;
+
+  function goster(sorgu: string): void {
+    liste.replaceChildren();
+    if (!miniSearch) return;
+
+    const temiz = sorgu.trim();
+    if (temiz === '') {
+      durum.textContent = `${miniSearch.documentCount} terim aranabilir.`;
+      return;
+    }
+
+    const sonuclar = miniSearch.search(temiz).slice(0, EN_FAZLA);
+    durum.textContent =
+      sonuclar.length === 0
+        ? `"${temiz}" için sonuç yok.`
+        : `${sonuclar.length} sonuç gösteriliyor.`;
+
+    for (const sonuc of sonuclar) {
+      const satir = document.createElement('li');
+      const bag = document.createElement('a');
+      bag.href = `${terimTabani}/${sonuc['id']}`;
+      bag.textContent = sonuc['term'];
+      satir.append(bag);
+
+      const ek = [sonuc['tr'], sonuc['short']].filter((parca: string) => parca !== '');
+      if (ek.length > 0) satir.append(document.createTextNode(` — ${ek.join(' · ')}`));
+      if (sonuc['durum'] === 'stub') satir.append(document.createTextNode(' [yazılmadı]'));
+
+      liste.append(satir);
+    }
+  }
+
+  try {
+    const yanit = await fetch(indeksUrl);
+    if (!yanit.ok) throw new Error(`HTTP ${yanit.status}`);
+    const indeks = (await yanit.json()) as AramaIndeksi;
+
+    miniSearch = new MiniSearch(ARAMA_AYARLARI);
+    miniSearch.addAll(indeks.belgeler);
+
+    durum.textContent = `${indeks.belgeler.length} terim aranabilir.`;
+    // İndeks hazır olmadan yazılmış olabilir.
+    goster(girdi.value);
+  } catch (sebep) {
+    durum.textContent = `Arama indeksi yüklenemedi: ${(sebep as Error).message}`;
+  }
+
+  girdi.addEventListener('input', () => goster(girdi.value));
+</script>

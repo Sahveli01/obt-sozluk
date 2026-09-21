@@ -1,0 +1,47 @@
+---
+import { getCollection } from 'astro:content';
+
+import { SITE } from '../config.ts';
+import { KATEGORILER } from '../data/kategoriler.ts';
+import Temel from '../layouts/Temel.astro';
+import { kategoriYolu } from '../lib/yol.ts';
+
+const terimler = await getCollection('terimler');
+
+const sayimlar = new Map<string, { toplam: number; yazilmis: number }>(
+  KATEGORILER.map((k) => [k.slug, { toplam: 0, yazilmis: 0 }]),
+);
+for (const terim of terimler) {
+  const sayim = sayimlar.get(terim.data.category);
+  if (!sayim) continue;
+  sayim.toplam += 1;
+  if (terim.data.status !== 'stub') sayim.yazilmis += 1;
+}
+
+const toplamTerim = terimler.length;
+const toplamYazilmis = terimler.filter((t) => t.data.status !== 'stub').length;
+---
+
+<Temel baslik={SITE.name}>
+  <h1>{SITE.name}</h1>
+  <p>{SITE.description}</p>
+  <p>
+    {toplamTerim} terim, {toplamYazilmis} tanesi yazıldı.
+  </p>
+
+  <h2>Kategoriler</h2>
+  <ol>
+    {
+      KATEGORILER.map((kategori) => {
+        const sayim = sayimlar.get(kategori.slug)!;
+        return (
+          <li>
+            <a href={kategoriYolu(kategori.slug)}>{kategori.ad}</a>
+            <span> — {sayim.toplam} terim, {sayim.yazilmis} yazıldı</span>
+            <p>{kategori.aciklama}</p>
+          </li>
+        );
+      })
+    }
+  </ol>
+</Temel>

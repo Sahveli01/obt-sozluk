@@ -1,0 +1,45 @@
+---
+/**
+ * Tüm sayfaların iskeleti.
+ *
+ * Bu aşamada bilerek stilsizdir: görsel tasarım bir sonraki aşamada
+ * /hack-design çıktısıyla `src/styles/tokens.css` üzerinden gelecek.
+ */
+import { SITE } from '../config.ts';
+import { siteYolu } from '../lib/yol.ts';
+
+interface Props {
+  baslik: string;
+  aciklama?: string;
+}
+
+const { baslik, aciklama = SITE.description } = Astro.props;
+const tamBaslik = baslik === SITE.name ? SITE.name : `${baslik} — ${SITE.name}`;
+---
+
+<!doctype html>
+<html lang={SITE.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{tamBaslik}</title>
+    <meta name="description" content={aciklama} />
+  </head>
+  <body>
+    <header>
+      <a href={siteYolu('/')}>{SITE.name}</a>
+      <nav>
+        <a href={siteYolu('/')}>Kategoriler</a>
+        <a href={siteYolu('/ara')}>Ara</a>
+      </nav>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer>
+      <p>{SITE.description}</p>
+    </footer>
+  </body>
+</html>
