@@ -4,7 +4,7 @@ import { getCollection, getEntry, render } from 'astro:content';
 
 import { kategoriBul } from '../../data/kategoriler.ts';
 import Temel from '../../layouts/Temel.astro';
-import { kategoriYolu, terimYolu } from '../../lib/yol.ts';
+import { kategoriYolu, siteYolu, terimYolu } from '../../lib/yol.ts';
 
 export const getStaticPaths = (async () => {
   const terimler = await getCollection('terimler');
@@ -18,13 +18,18 @@ const { terim } = Astro.props;
 const { Content } = await render(terim);
 
 const kategori = kategoriBul(terim.data.category);
+const stub = terim.data.status === 'stub';
 
-/** İlgili ve anlam ayrımı bağlantıları için terim adlarını çöz. */
+/** İlgili ve anlam ayrımı bağlantıları için gerçek terim adlarını çöz. */
 async function baglantilar(sluglar: readonly string[]) {
   const sonuc = [];
   for (const slug of sluglar) {
     const hedef = await getEntry('terimler', slug);
-    sonuc.push({ slug, ad: hedef?.data.term ?? slug, var: hedef !== undefined });
+    sonuc.push({
+      slug,
+      ad: hedef?.data.term ?? slug,
+      kisa: hedef?.data.short ?? '',
+    });
   }
   return sonuc;
 }
@@ -32,51 +37,107 @@ async function baglantilar(sluglar: readonly string[]) {
 const ilgili = await baglantilar(terim.data.related);
 const anlamAyrimi = await baglantilar(terim.data.disambiguation);
 
-const tarihBicimi = new Intl.DateTimeFormat('tr-TR', { dateStyle: 'medium' });
+const SEVIYE_ADLARI: Record<string, string> = {
+  baslangic: 'Başlangıç',
+  orta: 'Orta',
+  ileri: 'İleri',
+};
+
+const tarihBicimi = new Intl.DateTimeFormat('tr-TR', { dateStyle: 'long' });
 ---
 
 <Temel baslik={terim.data.term} aciklama={terim.data.short || terim.data.term}>
-  <article>
-    <h1>{terim.data.term}</h1>
-    {terim.data.tr !== '' && <p>Türkçesi: {terim.data.tr}</p>}
-    {terim.data.short !== '' && <p>{terim.data.short}</p>}
-
-    <p>
+  <article class="terim">
+    <nav class="izlek" aria-label="Konum">
+      <a href={siteYolu('/')}>Kategoriler</a>
+      <span class="izlek__ayrac" aria-hidden="true">/</span>
       {
         kategori && (
           <a href={kategoriYolu(kategori.slug)}>{kategori.ad}</a>
         )
       }
-      {terim.data.subcategory !== '' && <span> › {terim.data.subcategory}</span>}
-      <span> · Seviye: {terim.data.level}</span>
-      <span> · Durum: {terim.data.status}</span>
-    </p>
+      {
+        terim.data.subcategory !== '' && (
+          <>
+            <span class="izlek__ayrac" aria-hidden="true">
+              /
+            </span>
+            <span>{terim.data.subcategory}</span>
+          </>
+        )
+      }
+    </nav>
+
+    <header class="terim__bas">
+      <h1>{terim.data.term}</h1>
+      {terim.data.tr !== '' && <p class="terim__tr">{terim.data.tr}</p>}
+      {terim.data.short !== '' && <p class="terim__kisa">{terim.data.short}</p>}
+
+      <div class="satir terim__etiketler">
+        <span class="rozet rozet--seviye">{SEVIYE_ADLARI[terim.data.level]}</span>
+        {
+          terim.data.status === 'taslak' && (
+            <span class="rozet rozet--taslak">Taslak</span>
+          )
+        }
+        {
+          terim.data.status === 'incelendi' && (
+            <span class="rozet rozet--incelendi">İncelendi</span>
+          )
+        }
+      </div>
+    </header>
 
     {
-      terim.data.status === 'stub' && (
-        <p>Bu terim henüz yazılmadı.</p>
+      /* "Yazılmadı" bir hata değil, sözlüğün dürüst bir durumu. Kırmızı
+         yok, uyarı yok: okurun buradan nereye gidebileceğini söylüyoruz. */
+      stub && (
+        <div class="bildirim bildirim--notr terim__bos">
+          <span class="bildirim__baslik">Bu terim henüz yazılmadı.</span>
+          <span>
+            Terim sözlüğün listesinde var, tanımı sırada.
+            {kategori && (
+              <>
+                {' '}
+                Bu arada{' '}
+                <a href={kategoriYolu(kategori.slug)}>{kategori.ad}</a> kategorisindeki
+                diğer terimlere bakabilirsin.
+              </>
+            )}
+          </span>
+        </div>
       )
     }
 
     {
-      terim.data.dateSensitive && (
-        <p>
-          Bu tanım tarihe duyarlı bilgi içerir; son güncelleme{' '}
-          {tarihBicimi.format(terim.data.updated)}.
-        </p>
+      /* Tarihe duyarlı içerik kaynağını ve tarihini göstermek zorunda;
+         yoksa rakam uydurulmuş sayılır. */
+      terim.data.dateSensitive && !stub && (
+        <div class="bildirim bildirim--uyari">
+          <span class="bildirim__baslik">Bu tanım tarihe duyarlı bilgi içeriyor.</span>
+          <span>
+            Rakamlar ve sürümler {tarihBicimi.format(terim.data.updated)} tarihi
+            itibarıyla geçerlidir.
+          </span>
+        </div>
       )
     }
 
-    <Content />
+    {!stub && <div class="okuma"><Content /></div>}
 
     {
       anlamAyrimi.length > 0 && (
-        <section>
-          <h2>Aynı adı taşıyan diğer terimler</h2>
-          <ul>
+        <section class="bolum">
+          <h2 class="bolum__baslik">Aynı adı taşıyan diğer terimler</h2>
+          <ul class="terim-listesi">
             {anlamAyrimi.map((hedef) => (
-              <li>
-                <a href={terimYolu(hedef.slug)}>{hedef.ad}</a>
+              <li class="terim-satiri">
+                <a class="terim-satiri__ad" href={terimYolu(hedef.slug)}>
+                  {hedef.ad}
+                </a>
+                {hedef.kisa !== '' && (
+                  <span class="terim-satiri__kisa">{hedef.kisa}</span>
+                )}
               </li>
             ))}
           </ul>
@@ -86,12 +147,17 @@ const tarihBicimi = new Intl.DateTimeFormat('tr-TR', { dateStyle: 'medium' });
 
     {
       ilgili.length > 0 && (
-        <section>
-          <h2>İlgili terimler</h2>
-          <ul>
+        <section class="bolum">
+          <h2 class="bolum__baslik">İlgili terimler</h2>
+          <ul class="terim-listesi">
             {ilgili.map((hedef) => (
-              <li>
-                <a href={terimYolu(hedef.slug)}>{hedef.ad}</a>
+              <li class="terim-satiri">
+                <a class="terim-satiri__ad" href={terimYolu(hedef.slug)}>
+                  {hedef.ad}
+                </a>
+                {hedef.kisa !== '' && (
+                  <span class="terim-satiri__kisa">{hedef.kisa}</span>
+                )}
               </li>
             ))}
           </ul>
@@ -101,9 +167,9 @@ const tarihBicimi = new Intl.DateTimeFormat('tr-TR', { dateStyle: 'medium' });
 
     {
       terim.data.sources.length > 0 && (
-        <section>
-          <h2>Kaynaklar</h2>
-          <ul>
+        <section class="bolum">
+          <h2 class="bolum__baslik">Kaynaklar</h2>
+          <ul class="kaynaklar">
             {terim.data.sources.map((kaynak) => (
               <li>
                 <a href={kaynak} rel="noreferrer">
@@ -116,14 +182,73 @@ const tarihBicimi = new Intl.DateTimeFormat('tr-TR', { dateStyle: 'medium' });
       )
     }
 
-    <footer>
+    <footer class="terim__alt">
       <p>
-        Eklendi: {tarihBicimi.format(terim.data.added)} · Güncellendi:{' '}
-        {tarihBicimi.format(terim.data.updated)}
-        {terim.data.reviewedBy.length > 0 && (
-          <span> · İnceleyen: {terim.data.reviewedBy.join(', ')}</span>
-        )}
+        Güncellendi: {tarihBicimi.format(terim.data.updated)}
+        {
+          terim.data.reviewedBy.length > 0 &&
+            ` · İnceleyen: ${terim.data.reviewedBy.join(', ')}`
+        }
       </p>
     </footer>
   </article>
 </Temel>
+
+<style>
+  .terim {
+    max-width: var(--measure);
+  }
+
+  .terim__bas > * + * {
+    margin-top: var(--space-3);
+  }
+
+  .terim__tr {
+    font-size: var(--text-lead);
+    color: var(--color-text-muted);
+  }
+
+  /* Tek cümlelik tanım sayfanın en çok okunan satırı: okuma yüzeyinin
+   * serifiyle ve gövdeden büyük. */
+  .terim__kisa {
+    font-family: var(--font-reading);
+    font-size: var(--text-h3);
+    line-height: var(--leading-body);
+    text-wrap: pretty;
+  }
+
+  .terim__etiketler {
+    padding-top: var(--space-1);
+  }
+
+  .terim__bos,
+  .bildirim {
+    margin-top: var(--space-5);
+  }
+
+  .okuma {
+    margin-top: var(--space-6);
+  }
+
+  .kaynaklar {
+    list-style: none;
+    padding: 0;
+    font-size: var(--text-small);
+  }
+
+  .kaynaklar li + li {
+    margin-top: var(--space-2);
+  }
+
+  .kaynaklar a {
+    overflow-wrap: anywhere;
+  }
+
+  .terim__alt {
+    margin-top: var(--space-8);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-line);
+    color: var(--color-text-muted);
+    font-size: var(--text-small);
+  }
+</style>

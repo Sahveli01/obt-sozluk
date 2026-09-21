@@ -1,0 +1,205 @@
+/**
+ * Tasarım token'ları — /hack-design çıktısı.
+ *
+ * Gerekçeler ve kapsam dışı bırakılanlar DESIGN.md içinde.
+ * Ürün kimliği (kitle, ton, yazım kuralları) CLAUDE.md'nin sorumluluğunda.
+ *
+ * KURAL: Bu dosyada olmayan hiçbir renk, boyut, yazı tipi ya da süre
+ * değeri bileşenlerde yazılmaz. Sabit değer gören her yer hatadır.
+ *
+ * Renkler OKLCH ile tanımlı. Bütün nötrler vurgu rengiyle aynı hue'ya
+ * (275) hafifçe boyanmıştır; bu tek değişiklik algılanan kaliteyi
+ * başka hiçbir şeyin yapmadığı kadar değiştirir.
+ */
+
+:root {
+  /* ---------------------------------------------------------------
+   * Hue çıpaları. Semantik renkler vurgudan hue olarak açıkça ayrışır
+   * (275 / 25 / 75 / 155) çünkü projeksiyonda ve güneşte renk tek
+   * başına anlam taşıyamaz; her biri ayrıca etiket ya da konumla eşlenir.
+   * --------------------------------------------------------------- */
+  --hue-accent: 275;
+  --hue-danger: 25;
+  --hue-warning: 75;
+  --hue-success: 155;
+
+  /* --- Yüzeyler -------------------------------------------------- */
+  /* Ayrım gölgeyle değil zemin tonuyla yapılır. */
+  --color-bg: oklch(0.974 0.005 var(--hue-accent));
+  --color-surface: oklch(1 0 0);
+  --color-surface-sunken: oklch(0.951 0.008 var(--hue-accent));
+
+  /* --- Metin ----------------------------------------------------- */
+  /* Bilerek yalnızca iki metin tonu var. Üçüncü, daha soluk bir ton
+   * eklemek kontrast tabanını delmenin en kolay yolu olurdu. */
+  --color-text: oklch(0.248 0.021 var(--hue-accent));
+  --color-text-muted: oklch(0.452 0.019 var(--hue-accent));
+  --color-text-on-accent: oklch(1 0 0);
+
+  /* --- Çizgiler -------------------------------------------------- */
+  /* --color-line yalnızca dekoratiftir. Anlam taşıyan hiçbir ayrım
+   * ona dayanmaz: ince çizgiler projeksiyonda tamamen kaybolur. */
+  --color-line: oklch(0.885 0.012 var(--hue-accent));
+  --color-line-strong: oklch(0.598 0.022 var(--hue-accent));
+
+  /* --- Vurgu: tek renk, tek iş ----------------------------------- */
+  /* "Buraya gidebilirsin / bunu yapabilirsin" demektir. Bölüm
+   * süslemesinde, başlık arkasında, gradient'te kullanılmaz. */
+  --color-accent: oklch(0.443 0.163 var(--hue-accent));
+  --color-accent-hover: oklch(0.362 0.152 var(--hue-accent));
+  --color-accent-subtle: oklch(0.955 0.024 var(--hue-accent));
+  --color-accent-line: oklch(0.836 0.062 var(--hue-accent));
+
+  /* --- Semantik -------------------------------------------------- */
+  --color-success: oklch(0.432 0.114 var(--hue-success));
+  --color-success-subtle: oklch(0.957 0.029 var(--hue-success));
+  --color-warning: oklch(0.474 0.106 var(--hue-warning));
+  --color-warning-subtle: oklch(0.955 0.039 var(--hue-warning));
+  --color-danger: oklch(0.479 0.176 var(--hue-danger));
+  --color-danger-subtle: oklch(0.955 0.03 var(--hue-danger));
+
+  /* --- Yazı tipleri ---------------------------------------------- */
+  /* İki ses + bir işlevsel mono. Hepsi kendi sunucumuzdan yüklenir
+   * (CDN yok) ve latin-ext alt kümesi zorunludur: ğ ş ı İ orada.
+   * Yedek zincirler font yüklenmezse de Türkçeyi doğru gösterir. */
+  --font-ui:
+    'IBM Plex Sans Variable', ui-sans-serif, 'Segoe UI', system-ui, sans-serif;
+  --font-reading:
+    'Source Serif 4 Variable', ui-serif, Georgia, 'Times New Roman', serif;
+  --font-mono:
+    'IBM Plex Mono', ui-monospace, 'Cascadia Mono', 'Consolas', monospace;
+
+  /* --- Tip ölçeği ------------------------------------------------ */
+  /* Taban 17px (html üzerinde %106.25). Telefonda, aydınlık ortamda,
+   * uzun Türkçe kelimelerle okunacak; 16px tabana göre bilerek büyük.
+   * Basamaklar arası sıçrama belirgin: 1 -> 1.25 -> 1.5 -> 2 -> 2.75 */
+  --text-micro: 0.8125rem; /* YALNIZCA dekoratif. Bilgi taşımaz. */
+  --text-small: 0.9375rem;
+  --text-body: 1rem;
+  --text-lead: 1.125rem;
+  --text-h3: 1.25rem;
+  --text-h2: 1.5rem;
+  --text-h1: 2rem;
+  --text-display: 2.75rem;
+
+  /* Okunabilir alt sınır. Bunun altındaki her şey dekoratiftir. */
+  --text-min-readable: var(--text-small);
+
+  --leading-tight: 1.15;
+  --leading-heading: 1.25;
+  --leading-body: 1.65; /* Türkçe uzun kelimeler için bol */
+
+  /* 28px üstü boyutlarda negatif tracking. */
+  --tracking-display: -0.021em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.02em;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+
+  /* Okuma satır uzunluğu. */
+  --measure: 66ch;
+  --measure-narrow: 52ch;
+
+  /* --- Boşluk: tek birim 4px ------------------------------------- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+
+  /* --- Yarıçap: hiyerarşi, tek değer değil ----------------------- */
+  /* İç içe öğe her zaman ebeveyninden küçük yarıçap alır. */
+  --radius-container: 1.125rem;
+  --radius-card: 0.75rem;
+  --radius-control: 0.625rem;
+  --radius-chip: 0.375rem;
+  --radius-full: 999px;
+
+  /* --- Derinlik --------------------------------------------------- */
+  /* Tek katman, geniş ve çok düşük opaklık. Kart altına varsayılan
+   * kutu gölgesi konmaz; ayrım için önce zemin tonu denenir. */
+  --shadow-lift: 0 1px 2px oklch(0.248 0.021 var(--hue-accent) / 0.04),
+    0 12px 28px -12px oklch(0.248 0.021 var(--hue-accent) / 0.16);
+
+  /* --- Hareket ---------------------------------------------------- */
+  /* Yay benzeri eğri, ease-in-out değil. Zıplama/elastik yok. */
+  --ease: cubic-bezier(0.32, 0.72, 0, 1);
+  --motion-fast: 140ms;
+  --motion: 240ms;
+
+  /* --- Dokunma ve odak -------------------------------------------- */
+  --target-min: 2.75rem; /* 44px+ */
+  --focus-width: 2px;
+  --focus-offset: 2px;
+
+  /* --- Düzen ------------------------------------------------------ */
+  /* İçerik genişliği, en dar makul projeksiyonda (1024px) da sığar. */
+  --layout-max: 68rem;
+  --layout-gutter: var(--space-4);
+
+  /* Kategori kartının en dar hâli. Bundan darda ızgara tek sütuna iner. */
+  --card-min: 17rem;
+  /* Geniş ekranda terim adı sütunu; en uzun Türkçe terimler sığsın diye. */
+  --term-name-col: 16rem;
+
+  /* Anlam taşıyan kenar şeridi. Renk körlüğünde ve projeksiyonda
+   * zemin renginin yanında ikinci işaret olarak durur, o yüzden
+   * hairline değil kalın. */
+  --border-accent: 3px;
+  /* Kartın hover'da kalkma mesafesi. */
+  --lift: 2px;
+  /* Kod, içinde bulunduğu metne göre bir tık küçük. */
+  --text-code-ratio: 0.9em;
+
+  /*
+   * Bilinçli istisnalar — token'a bağlanmayan değerler:
+   *  - 1px hairline çizgiler (dekoratif ayrım)
+   *  - em cinsinden optik düzeltmeler (alt çizgi mesafesi, kod dolgusu)
+   *  - 100dvh
+   *  - @media kırılma noktası 48rem: medya sorgusu CSS değişkeni kabul etmez
+   *  - Shiki sözdizimi renkleri (DESIGN.md'de gerekçesi var)
+   */
+}
+
+/* -------------------------------------------------------------------
+ * Koyu tema.
+ *
+ * Açık tema birincildir: aydınlık bir salonda ve projeksiyonda ayakta
+ * kalan odur. Koyu tema telefonda gece okuyanlar için var; aynı
+ * kontrast tabanına uyar.
+ * ------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: oklch(0.176 0.013 var(--hue-accent));
+    --color-surface: oklch(0.216 0.015 var(--hue-accent));
+    --color-surface-sunken: oklch(0.146 0.012 var(--hue-accent));
+
+    --color-text: oklch(0.945 0.008 var(--hue-accent));
+    --color-text-muted: oklch(0.748 0.016 var(--hue-accent));
+    --color-text-on-accent: oklch(0.155 0.02 var(--hue-accent));
+
+    --color-line: oklch(0.312 0.016 var(--hue-accent));
+    --color-line-strong: oklch(0.562 0.024 var(--hue-accent));
+
+    --color-accent: oklch(0.793 0.122 var(--hue-accent));
+    --color-accent-hover: oklch(0.874 0.093 var(--hue-accent));
+    --color-accent-subtle: oklch(0.272 0.046 var(--hue-accent));
+    --color-accent-line: oklch(0.414 0.084 var(--hue-accent));
+
+    --color-success: oklch(0.786 0.126 var(--hue-success));
+    --color-success-subtle: oklch(0.268 0.042 var(--hue-success));
+    --color-warning: oklch(0.812 0.122 var(--hue-warning));
+    --color-warning-subtle: oklch(0.276 0.044 var(--hue-warning));
+    --color-danger: oklch(0.755 0.135 var(--hue-danger));
+    --color-danger-subtle: oklch(0.281 0.056 var(--hue-danger));
+
+    --shadow-lift: 0 1px 2px oklch(0 0 0 / 0.3),
+      0 12px 28px -12px oklch(0 0 0 / 0.55);
+  }
+}

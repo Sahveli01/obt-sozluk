@@ -2,9 +2,11 @@
 /**
  * Tüm sayfaların iskeleti.
  *
- * Bu aşamada bilerek stilsizdir: görsel tasarım bir sonraki aşamada
- * /hack-design çıktısıyla `src/styles/tokens.css` üzerinden gelecek.
+ * Tasarım yönü DESIGN.md, ürün kimliği CLAUDE.md. Buradaki hiçbir değer
+ * sabit değil; hepsi src/styles/tokens.css üzerinden gelir.
  */
+import '../styles/global.css';
+
 import { SITE } from '../config.ts';
 import { siteYolu } from '../lib/yol.ts';
 
@@ -24,22 +26,31 @@ const tamBaslik = baslik === SITE.name ? SITE.name : `${baslik} — ${SITE.name}
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{tamBaslik}</title>
     <meta name="description" content={aciklama} />
+    <meta name="color-scheme" content="light dark" />
   </head>
   <body>
-    <header>
-      <a href={siteYolu('/')}>{SITE.name}</a>
-      <nav>
-        <a href={siteYolu('/')}>Kategoriler</a>
-        <a href={siteYolu('/ara')}>Ara</a>
-      </nav>
+    <a class="sadece-ekran-okuyucu" href="#icerik">İçeriğe geç</a>
+
+    <header class="site-ust">
+      <div class="kabuk">
+        <a class="site-ust__ad" href={siteYolu('/')}>{SITE.name}</a>
+        <nav class="site-ust__nav" aria-label="Site">
+          <a href={siteYolu('/')}>Kategoriler</a>
+          <a href={siteYolu('/ara')}>Ara</a>
+        </nav>
+      </div>
     </header>
 
-    <main>
-      <slot />
+    <main class="icerik" id="icerik">
+      <div class="kabuk">
+        <slot />
+      </div>
     </main>
 
-    <footer>
-      <p>{SITE.description}</p>
+    <footer class="site-alt">
+      <div class="kabuk">
+        <p>{SITE.description}</p>
+      </div>
     </footer>
   </body>
 </html>

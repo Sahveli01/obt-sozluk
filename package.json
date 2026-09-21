@@ -13,10 +13,14 @@
     "seed": "tsx scripts/seed.ts",
     "validate": "tsx scripts/validate.ts",
     "stats": "tsx scripts/stats.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "contrast": "tsx scripts/contrast.ts"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "7.3.1",
+    "@fontsource-variable/ibm-plex-sans": "5.3.0",
+    "@fontsource-variable/source-serif-4": "5.3.0",
+    "@fontsource/ibm-plex-mono": "5.3.0",
     "astro": "7.3.3",
     "minisearch": "7.2.0",
     "zod": "4.6.5"

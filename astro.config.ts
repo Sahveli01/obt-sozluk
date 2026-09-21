@@ -12,6 +12,14 @@ export default defineConfig({
   trailingSlash: 'ignore',
   markdown: {
     remarkPlugins: [remarkWikiLink],
-    shikiConfig: { theme: 'github-light', wrap: true },
+    shikiConfig: {
+      // Çift tema: Shiki her token için --shiki-light / --shiki-dark
+      // değişkenleri basar, global.css koyu temada onlara geçer.
+      // Sözdizimi renkleri token dosyasının bilinçli tek istisnasıdır;
+      // gerekçesi DESIGN.md içinde.
+      themes: { light: 'github-light', dark: 'github-dark' },
+      defaultColor: false,
+      wrap: true,
+    },
   },
 });

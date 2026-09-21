@@ -1,0 +1,611 @@
+/**
+ * Element temelleri ve paylaşılan bileşenler.
+ *
+ * Buradaki her değer tokens.css'ten gelir. Sabit renk, boyut, süre ya da
+ * yazı tipi yazılmaz — tek istisna 0, 1px hairline ve yüzde değerleridir.
+ */
+
+@import './tokens.css';
+
+@import './fonts.css';
+
+/* ===================================================================
+ * Reset
+ * =================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+/* ===================================================================
+ * Element temelleri
+ * =================================================================== */
+
+html {
+  /* 16px tabandan 17px'e. Yüzde kullanıldığı için kullanıcının kendi
+   * yazı tipi boyutu ayarı korunur. */
+  font-size: 106.25%;
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-ui);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-ui);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+  text-wrap: balance;
+  /* Türkçede uzun bileşik terimler var: taşma yerine bölünsün. */
+  overflow-wrap: break-word;
+}
+
+h1 {
+  font-size: var(--text-h1);
+  letter-spacing: var(--tracking-display);
+  line-height: var(--leading-tight);
+}
+
+h2 {
+  font-size: var(--text-h2);
+}
+
+h3 {
+  font-size: var(--text-h3);
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  transition: color var(--motion-fast) var(--ease);
+}
+
+a:hover {
+  color: var(--color-accent-hover);
+}
+
+:focus-visible {
+  outline: var(--focus-width) solid var(--color-accent);
+  outline-offset: var(--focus-offset);
+  border-radius: var(--radius-chip);
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--font-mono);
+  font-size: var(--text-code-ratio);
+}
+
+ul,
+ol {
+  padding-inline-start: var(--space-5);
+}
+
+img,
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ===================================================================
+ * Düzen
+ * =================================================================== */
+
+.kabuk {
+  width: 100%;
+  max-width: var(--layout-max);
+  margin-inline: auto;
+  padding-inline: var(--layout-gutter);
+}
+
+.icerik {
+  flex: 1;
+  padding-block: var(--space-6) var(--space-9);
+}
+
+/* --- Üst çubuk ---------------------------------------------------- */
+/* Krom geri planda: düşük ağırlık, tek renk, blur yok. Sözlükte en sık
+ * yapılan iş "başka bir terime bakmak", o yüzden yapışkan. */
+.site-ust {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.site-ust > .kabuk {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-height: var(--target-min);
+  padding-block: var(--space-2);
+}
+
+.site-ust__ad {
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-small);
+  color: var(--color-text);
+  text-decoration: none;
+  letter-spacing: var(--tracking-wide);
+}
+
+.site-ust__ad:hover {
+  color: var(--color-accent);
+}
+
+.site-ust__nav {
+  display: flex;
+  gap: var(--space-4);
+  font-size: var(--text-small);
+}
+
+.site-ust__nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target-min);
+  text-decoration: none;
+}
+
+.site-ust__nav a:hover {
+  text-decoration: underline;
+}
+
+/* --- Alt bilgi ---------------------------------------------------- */
+
+.site-alt {
+  border-top: 1px solid var(--color-line);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+  padding-block: var(--space-5);
+}
+
+/* ===================================================================
+ * Bileşenler
+ * =================================================================== */
+
+/* --- Sayfa başlığı bloğu ------------------------------------------ */
+
+.sayfa-basi {
+  max-width: var(--measure);
+  margin-bottom: var(--space-6);
+}
+
+.sayfa-basi > * + * {
+  margin-top: var(--space-3);
+}
+
+.sayfa-basi__giris {
+  font-size: var(--text-lead);
+  color: var(--color-text-muted);
+  text-wrap: pretty;
+}
+
+/* --- Üst izlek ---------------------------------------------------- */
+
+.izlek {
+  font-size: var(--text-small);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-3);
+}
+
+.izlek a {
+  text-decoration: none;
+}
+
+.izlek a:hover {
+  text-decoration: underline;
+}
+
+.izlek__ayrac {
+  padding-inline: var(--space-2);
+  color: var(--color-line-strong);
+}
+
+/* --- Rozet --------------------------------------------------------
+ * Renk asla tek başına anlam taşımaz: her rozetin yazılı etiketi var.
+ * Projeksiyonda hue ayrımı güvenilmezdir.
+ * ------------------------------------------------------------------ */
+
+.rozet {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--font-ui);
+  font-size: var(--text-small);
+  font-weight: var(--weight-medium);
+  line-height: 1.4;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-chip);
+  white-space: nowrap;
+}
+
+/* "Yazılmadı" bir hata değil. Sözlüğün doğal ve dürüst bir durumu;
+ * kırmızıyla işaretlemek okuru yanıltırdı. */
+.rozet--stub {
+  background: var(--color-surface-sunken);
+  color: var(--color-text-muted);
+}
+
+.rozet--taslak {
+  background: var(--color-accent-subtle);
+  color: var(--color-accent);
+}
+
+.rozet--incelendi {
+  background: var(--color-success-subtle);
+  color: var(--color-success);
+}
+
+.rozet--uyari {
+  background: var(--color-warning-subtle);
+  color: var(--color-warning);
+}
+
+.rozet--seviye {
+  background: var(--color-surface-sunken);
+  color: var(--color-text-muted);
+  font-weight: var(--weight-regular);
+}
+
+/* --- Bildirim kutusu ---------------------------------------------- */
+
+.bildirim {
+  border-radius: var(--radius-card);
+  padding: var(--space-4);
+  font-size: var(--text-small);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.bildirim--notr {
+  background: var(--color-surface-sunken);
+  color: var(--color-text);
+}
+
+.bildirim--uyari {
+  background: var(--color-warning-subtle);
+  color: var(--color-text);
+  /* Renk körlüğü ve projeksiyon için ikinci bir işaret. */
+  border-inline-start: var(--border-accent) solid var(--color-warning);
+}
+
+.bildirim--hata {
+  background: var(--color-danger-subtle);
+  color: var(--color-text);
+  border-inline-start: var(--border-accent) solid var(--color-danger);
+}
+
+.bildirim__baslik {
+  font-weight: var(--weight-semibold);
+}
+
+/* --- Kart ızgarası ------------------------------------------------ */
+
+.izgara {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fill, minmax(var(--card-min), 1fr));
+  list-style: none;
+  padding: 0;
+}
+
+.kart {
+  position: relative;
+  background: var(--color-surface);
+  border-radius: var(--radius-container);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  /* Ayrım zemin tonuyla; gölge yalnızca hover'da bir katman. */
+  transition:
+    transform var(--motion) var(--ease),
+    box-shadow var(--motion) var(--ease);
+}
+
+.kart:hover,
+.kart:focus-within {
+  box-shadow: var(--shadow-lift);
+  transform: translateY(calc(-1 * var(--lift)));
+}
+
+.kart__baslik {
+  font-size: var(--text-h3);
+}
+
+.kart__baslik a {
+  text-decoration: none;
+  color: var(--color-text);
+}
+
+.kart__baslik a:hover {
+  color: var(--color-accent);
+}
+
+/* Kartın tamamı tıklanabilir olsun ama metin yine seçilebilsin. */
+.kart__baslik a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.kart__aciklama {
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+  text-wrap: pretty;
+}
+
+.kart__sayi {
+  font-size: var(--text-small);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+  margin-top: auto;
+  padding-top: var(--space-2);
+}
+
+/* --- Terim listesi -------------------------------------------------
+ * Tarama yüzeyi: okuma yüzeyinden bilerek daha yoğun.
+ * ------------------------------------------------------------------- */
+
+.terim-listesi {
+  list-style: none;
+  padding: 0;
+  background: var(--color-surface);
+  border-radius: var(--radius-container);
+  overflow: hidden;
+}
+
+.terim-satiri {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  min-height: var(--target-min);
+}
+
+.terim-satiri + .terim-satiri {
+  border-top: 1px solid var(--color-line);
+}
+
+.terim-satiri:hover {
+  background: var(--color-surface-sunken);
+}
+
+.terim-satiri__ad {
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.terim-satiri__ad:hover {
+  text-decoration: underline;
+}
+
+.terim-satiri__tr {
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+}
+
+.terim-satiri__kisa {
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+  flex-basis: 100%;
+  text-wrap: pretty;
+}
+
+/* --- Bölüm başlığı ------------------------------------------------ */
+
+.bolum {
+  margin-top: var(--space-6);
+}
+
+.bolum__baslik {
+  font-size: var(--text-h3);
+  margin-bottom: var(--space-3);
+}
+
+.bolum__sayi {
+  font-weight: var(--weight-regular);
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ===================================================================
+ * Okuma yüzeyi
+ * Terim gövdesi. Tek yerde serif kullanılır: 200-400 kelimelik Türkçe
+ * açıklamayı telefonda rahat okutmak için.
+ * =================================================================== */
+
+.okuma {
+  font-family: var(--font-reading);
+  font-size: var(--text-lead);
+  line-height: var(--leading-body);
+  max-width: var(--measure);
+}
+
+.okuma > * + * {
+  margin-top: var(--space-4);
+}
+
+.okuma h2 {
+  font-family: var(--font-ui);
+  font-size: var(--text-h2);
+  margin-top: var(--space-7);
+}
+
+.okuma h3 {
+  font-family: var(--font-ui);
+  font-size: var(--text-h3);
+  margin-top: var(--space-6);
+}
+
+.okuma ul,
+.okuma ol {
+  padding-inline-start: var(--space-5);
+}
+
+.okuma li + li {
+  margin-top: var(--space-2);
+}
+
+.okuma a {
+  /* Wiki bağlantıları gövdede sık geçer; alt çizgi bırakılır ki renk
+   * tek işaret olmasın. */
+  text-decoration: underline;
+}
+
+.okuma blockquote {
+  border-inline-start: var(--border-accent) solid var(--color-accent-line);
+  padding-inline-start: var(--space-4);
+  color: var(--color-text-muted);
+}
+
+.okuma code {
+  background: var(--color-surface-sunken);
+  padding: 0.1em var(--space-1);
+  border-radius: var(--radius-chip);
+}
+
+.okuma pre {
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-card);
+  padding: var(--space-4);
+  overflow-x: auto;
+  font-size: var(--text-small);
+  line-height: 1.6;
+}
+
+.okuma pre code {
+  background: none;
+  padding: 0;
+}
+
+/* Shiki çift tema. Kod bloğunun zemini token'dan gelir; yalnızca
+ * sözdizimi renkleri temadan. Ayrıntı ve gerekçe DESIGN.md içinde. */
+.astro-code,
+.astro-code span {
+  color: var(--shiki-light);
+}
+
+@media (prefers-color-scheme: dark) {
+  .astro-code,
+  .astro-code span {
+    color: var(--shiki-dark);
+  }
+}
+
+.okuma table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-ui);
+  font-size: var(--text-small);
+}
+
+.okuma th,
+.okuma td {
+  text-align: start;
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--color-line);
+}
+
+/* ===================================================================
+ * Yardımcılar
+ * =================================================================== */
+
+.yigin > * + * {
+  margin-top: var(--space-4);
+}
+
+.satir {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.sadece-ekran-okuyucu {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ===================================================================
+ * Geniş ekran
+ * Taban düzen telefon içindir; 1024px'lik bir projeksiyonda da aynı
+ * düzen sığar, yalnızca tipografi bir basamak büyür.
+ * =================================================================== */
+
+@media (min-width: 48rem) {
+  :root {
+    --layout-gutter: var(--space-6);
+  }
+
+  .icerik {
+    padding-block: var(--space-7) var(--space-9);
+  }
+
+  h1 {
+    font-size: var(--text-display);
+  }
+
+  .terim-satiri {
+    flex-wrap: nowrap;
+  }
+
+  .terim-satiri__ad {
+    flex: 0 0 var(--term-name-col);
+  }
+
+  .terim-satiri__kisa {
+    flex: 1 1 auto;
+    flex-basis: auto;
+  }
+}

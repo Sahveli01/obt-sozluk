@@ -4,7 +4,7 @@ import { getCollection } from 'astro:content';
 
 import { KATEGORILER } from '../../data/kategoriler.ts';
 import Temel from '../../layouts/Temel.astro';
-import { terimYolu } from '../../lib/yol.ts';
+import { siteYolu, terimYolu } from '../../lib/yol.ts';
 
 export const getStaticPaths = (async () => {
   const terimler = await getCollection('terimler');
@@ -29,24 +29,64 @@ const bloklar = [...kategori.altBasliklar, '']
     terimler: terimler.filter((terim) => terim.data.subcategory === altBaslik),
   }))
   .filter((blok) => blok.terimler.length > 0);
+
+const yazilmis = terimler.filter((t) => t.data.status !== 'stub').length;
+const sayiBicimi = new Intl.NumberFormat('tr-TR');
 ---
 
 <Temel baslik={kategori.ad} aciklama={kategori.aciklama}>
-  <h1>{kategori.ad}</h1>
-  <p>{kategori.aciklama}</p>
-  <p>{terimler.length} terim</p>
+  <nav class="izlek" aria-label="Konum">
+    <a href={siteYolu('/')}>Kategoriler</a>
+    <span class="izlek__ayrac" aria-hidden="true">/</span>
+    <span>{kategori.ad}</span>
+  </nav>
+
+  <div class="sayfa-basi">
+    <h1>{kategori.ad}</h1>
+    <p class="sayfa-basi__giris">{kategori.aciklama}</p>
+    <p class="kategori-sayi">
+      {sayiBicimi.format(terimler.length)} terim
+      {yazilmis > 0 && ` · ${sayiBicimi.format(yazilmis)} yazıldı`}
+    </p>
+  </div>
+
+  {
+    /* Boş durum gerçek iş ister: bugün okurun ilk gördüğü ekran bu.
+       Terim adları listede ama tanımlar henüz yok — bunu söylemek,
+       okuru tek tek tıklatıp boş sayfa bulmasına yeğdir. */
+    yazilmis === 0 && (
+      <div class="bildirim bildirim--notr">
+        <span class="bildirim__baslik">Bu kategori henüz yazılmadı.</span>
+        <span>
+          Terim listesi hazır, tanımlar sırada. Aşağıdaki adlar sözlüğe girecek
+          terimlerdir; tanımı yazılanlar bu listede tek cümlelik açıklamalarıyla
+          birlikte görünür.
+        </span>
+      </div>
+    )
+  }
 
   {
     bloklar.map((blok) => (
-      <section>
-        {blok.altBaslik !== '' && <h2>{blok.altBaslik}</h2>}
-        <ul>
+      <section class="bolum">
+        {blok.altBaslik !== '' && (
+          <h2 class="bolum__baslik">
+            {blok.altBaslik}{' '}
+            <span class="bolum__sayi">{sayiBicimi.format(blok.terimler.length)}</span>
+          </h2>
+        )}
+        <ul class="terim-listesi">
           {blok.terimler.map((terim) => (
-            <li>
-              <a href={terimYolu(terim.id)}>{terim.data.term}</a>
-              {terim.data.tr !== '' && <span> ({terim.data.tr})</span>}
-              {terim.data.short !== '' && <span> — {terim.data.short}</span>}
-              {terim.data.status === 'stub' && <span> [yazılmadı]</span>}
+            <li class="terim-satiri">
+              <a class="terim-satiri__ad" href={terimYolu(terim.id)}>
+                {terim.data.term}
+              </a>
+              {terim.data.tr !== '' && (
+                <span class="terim-satiri__tr">{terim.data.tr}</span>
+              )}
+              {terim.data.short !== '' && (
+                <span class="terim-satiri__kisa">{terim.data.short}</span>
+              )}
             </li>
           ))}
         </ul>
@@ -54,3 +94,11 @@ const bloklar = [...kategori.altBasliklar, '']
     ))
   }
 </Temel>
+
+<style>
+  .kategori-sayi {
+    color: var(--color-text-muted);
+    font-size: var(--text-small);
+    font-variant-numeric: tabular-nums;
+  }
+</style>

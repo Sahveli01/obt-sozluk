@@ -4,8 +4,9 @@ Blockchain, kriptografi, yazılım ve yapay zekâ terimlerinin Türkçe açıkla
 topluluk tarafından büyütülen bir sözlük. Astro ile üretilen statik site.
 
 Projenin kuralları (yazım kılavuzu, terim dosyası şeması, rol dağılımı)
-[`CLAUDE.md`](CLAUDE.md) içindedir. Buradaki metin yalnızca çalıştırma
-talimatıdır.
+[`CLAUDE.md`](CLAUDE.md) içindedir. Tasarım yönü — palet, tipografi, kontrast
+tabanı, durum matrisi — [`DESIGN.md`](DESIGN.md) içindedir. Buradaki metin
+yalnızca çalıştırma talimatıdır.
 
 ## Kurulum
 
@@ -24,6 +25,7 @@ npm install
 | `npm run seed`     | Taslaktaki eksik terimler için stub oluşturur                   |
 | `npm run validate` | Şema, bağlantı ve taslak/dosya uyumu kontrolü                   |
 | `npm run stats`    | Kategori × durum ilerleme raporu                                |
+| `npm run contrast` | Kontrast tabanı denetimi (açık + koyu tema)                      |
 | `npm run typecheck`| TypeScript denetimi                                             |
 
 ## Terim eklemek
@@ -53,14 +55,19 @@ src/lib/slug.ts              terim adından kalıcı slug üretimi
 src/lib/taslak.ts            taslak ayrıştırıcısı (seed/validate/stats ortak)
 src/lib/remark-wiki-link.ts  [[slug]] -> /terim/slug remark eklentisi
 src/lib/arama.ts             MiniSearch ayarları (derleme + tarayıcı ortak)
+src/styles/tokens.css        tasarım token'ları (tek kaynak)
+src/styles/fonts.css         @font-face bildirimleri (latin + latin-ext)
+src/styles/global.css        element temelleri ve paylaşılan bileşenler
 src/pages/                   sayfalar ve search-index.json uç noktası
 scripts/seed.ts              taslaktan eksik stub dosyalarını üretir
 scripts/validate.ts          tutarlılık kontrolleri
 scripts/stats.ts             ilerleme raporu
+scripts/contrast.ts          kontrast tabanı denetimi
 ```
 
 ## Yayın
 
-`main` dalına her push'ta GitHub Actions `validate` + `build` çalıştırıp
+`main` dalına her push'ta GitHub Actions `validate` + `contrast` + `build`
+çalıştırıp
 GitHub Pages'e yayımlar. Depo adı netleştiğinde `src/config.ts` içindeki
 `site` ve `base` değerleri güncellenmelidir.

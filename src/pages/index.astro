@@ -4,7 +4,7 @@ import { getCollection } from 'astro:content';
 import { SITE } from '../config.ts';
 import { KATEGORILER } from '../data/kategoriler.ts';
 import Temel from '../layouts/Temel.astro';
-import { kategoriYolu } from '../lib/yol.ts';
+import { kategoriYolu, siteYolu } from '../lib/yol.ts';
 
 const terimler = await getCollection('terimler');
 
@@ -20,28 +20,94 @@ for (const terim of terimler) {
 
 const toplamTerim = terimler.length;
 const toplamYazilmis = terimler.filter((t) => t.data.status !== 'stub').length;
+const sayiBicimi = new Intl.NumberFormat('tr-TR');
 ---
 
 <Temel baslik={SITE.name}>
-  <h1>{SITE.name}</h1>
-  <p>{SITE.description}</p>
-  <p>
-    {toplamTerim} terim, {toplamYazilmis} tanesi yazıldı.
+  <div class="sayfa-basi">
+    <h1>{SITE.name}</h1>
+    <p class="sayfa-basi__giris">{SITE.description}</p>
+  </div>
+
+  <a class="buyuk-arama" href={siteYolu('/ara')}>
+    <span class="buyuk-arama__etiket">Terim ara</span>
+    <span class="buyuk-arama__ipucu"
+      >Türkçe karakter kullanmana gerek yok — "akilli sozlesme" de bulur.</span
+    >
+  </a>
+
+  <p class="ilerleme">
+    {sayiBicimi.format(toplamTerim)} terim listede.{' '}
+    {
+      toplamYazilmis === 0
+        ? 'Henüz hiçbiri yazılmadı; sözlük yeni kuruldu.'
+        : `${sayiBicimi.format(toplamYazilmis)} tanesi yazıldı.`
+    }
   </p>
 
-  <h2>Kategoriler</h2>
-  <ol>
-    {
-      KATEGORILER.map((kategori) => {
-        const sayim = sayimlar.get(kategori.slug)!;
-        return (
-          <li>
-            <a href={kategoriYolu(kategori.slug)}>{kategori.ad}</a>
-            <span> — {sayim.toplam} terim, {sayim.yazilmis} yazıldı</span>
-            <p>{kategori.aciklama}</p>
-          </li>
-        );
-      })
-    }
-  </ol>
+  <section class="bolum">
+    <h2 class="bolum__baslik">
+      Kategoriler <span class="bolum__sayi">{KATEGORILER.length}</span>
+    </h2>
+
+    <ul class="izgara">
+      {
+        KATEGORILER.map((kategori) => {
+          const sayim = sayimlar.get(kategori.slug)!;
+          return (
+            <li class="kart">
+              <h3 class="kart__baslik">
+                <a href={kategoriYolu(kategori.slug)}>{kategori.ad}</a>
+              </h3>
+              <p class="kart__aciklama">{kategori.aciklama}</p>
+              <p class="kart__sayi">
+                {sayiBicimi.format(sayim.toplam)} terim
+                {sayim.yazilmis > 0 && ` · ${sayiBicimi.format(sayim.yazilmis)} yazıldı`}
+              </p>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </section>
 </Temel>
+
+<style>
+  /* Sözlükte birincil eylem aramadır; sayfadaki tek dolu vurgu odur. */
+  .buyuk-arama {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    background: var(--color-accent);
+    color: var(--color-text-on-accent);
+    text-decoration: none;
+    padding: var(--space-4) var(--space-5);
+    border-radius: var(--radius-container);
+    min-height: var(--target-min);
+    transition: background var(--motion-fast) var(--ease);
+  }
+
+  .buyuk-arama:hover {
+    background: var(--color-accent-hover);
+    color: var(--color-text-on-accent);
+  }
+
+  .buyuk-arama__etiket {
+    font-size: var(--text-h3);
+    font-weight: var(--weight-semibold);
+  }
+
+  /* Hiyerarşi boyuttan gelir, soldurmadan değil: vurgu zemini üstünde
+   * ikinci bir metin tonu yok, çünkü kontrast tabanını delerdi. */
+  .buyuk-arama__ipucu {
+    font-size: var(--text-small);
+    font-weight: var(--weight-regular);
+  }
+
+  .ilerleme {
+    margin-top: var(--space-4);
+    color: var(--color-text-muted);
+    font-size: var(--text-small);
+    max-width: var(--measure);
+  }
+</style>
