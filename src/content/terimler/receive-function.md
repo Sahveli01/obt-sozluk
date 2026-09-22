@@ -27,12 +27,9 @@ Sözleşmede `receive` yoksa ve [[fallback-function|`fallback`]] de [[payable|`p
 
 ## Nasıl çalışır?
 
-EVM gelen çağrıya bakar ve şu sırayı izler:
+`receive`'in çalışması tek bir koşula bağlıdır: gelen çağrının [[calldata|calldata]]'sı boş olacak. Veri varsa, yani bir fonksiyon çağrılıyorsa, `receive` hiç devreye girmez; çağrı eşleştiği fonksiyona, eşleşmiyorsa `fallback`'e gider. Hangi çağrının nereye düştüğünün tam karar sırası `fallback` sayfasındadır.
 
-1. Çağrıda veri **yoksa**: `receive` varsa o çalışır. Yoksa `fallback` `payable` ise o çalışır. İkisi de yoksa işlem geri çevrilir.
-2. Çağrıda veri **varsa**: `receive` hiç devreye girmez. Veri var olan bir fonksiyonla eşleşiyorsa o fonksiyon, eşleşmiyorsa `fallback` çalışır.
-
-Ayrımın ETH gönderilip gönderilmediğiyle değil, çağrıda veri olup olmadığıyla belirlendiğine dikkat et. "Cüzdanımdan sözleşmeye 0.1 ETH yolladım" dediğinde çalışan şey `receive`'dir.
+Ayrımın ETH gönderilip gönderilmediğiyle değil, çağrıda veri olup olmadığıyla kurulduğuna dikkat et. "Cüzdanımdan sözleşmeye 0.1 ETH yolladım" dediğinde çalışan şey `receive`'dir; bir fonksiyona ETH yolladığında ise `receive` değil o fonksiyon çalışır.
 
 Bir de gas tarafı var. `transfer` ve `send` ile gönderilen ETH, alıcıya yalnızca 2300 [[gas]] bırakır; bu, bir olay yayımlamaya bile zor yeten bir bütçedir. `receive` içine ağır iş koyarsan bu yolla sana para göndermeye çalışan herkesin işlemi başarısız olur. Bugün önerilen yol, gas sınırı dayatmayan [[call-low-level|`call`]] ile göndermektir.
 

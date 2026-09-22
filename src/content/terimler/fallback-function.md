@@ -25,17 +25,23 @@ Terim Türkçeye yerleşmiş bir karşılıkla çevrilmez; kodda anahtar sözcü
 
 ## Benzetme
 
-Bir binanın girişindeki danışma masası gibi. Hangi odaya gideceğini biliyorsan doğruca oraya yürürsün, kimseye uğramazsın. Odayı bilmiyorsan ya da öyle bir oda hiç yoksa masadaki görevliyle muhatap olursun: ya işini orada halleder ya da "burada böyle bir birim yok" deyip seni geri çevirir. Sözleşmenin `fallback`'i de bu masadır — adresini bulamayan her çağrı ona iner.
+Bir binanın girişindeki danışma masası gibi. Odayı biliyorsan doğruca oraya yürürsün, kimseye uğramazsın. Bilmiyorsan ya da öyle bir oda hiç yoksa masadaki görevliyle muhatap olursun: ya işini orada halleder ya da seni geri çevirir. Sözleşmenin `fallback`'i bu masadır — adresini bulamayan her çağrı ona iner.
 
 ## Nasıl çalışır?
 
-Bir çağrı geldiğinde sözleşme [[calldata|calldata]]'nın ilk dört baytına bakar; bu, çağrılmak istenen fonksiyonun seçicisidir. Seçici tablodaki hiçbir fonksiyonla eşleşmezse `fallback` çalışır. `fallback` de yoksa işlem geri alınır.
+Bir çağrı geldiğinde sözleşme [[calldata|calldata]]'nın ilk dört baytına bakar; bu, çağrılmak istenen fonksiyonun seçicisidir. Seçici tablodaki hiçbir fonksiyonla eşleşmezse `fallback` çalışır.
 
-Kardeşi [[receive-function|`receive`]] ile iş bölümü şöyledir: gelen çağrının verisi boşsa — yani düz bir para transferiyse — ve sözleşmede `receive` varsa o çalışır. `receive` yoksa aynı transfer `payable` bir `fallback`'e düşer. Veri doluysa `receive` hiç devreye girmez.
+Kardeşi [[receive-function|`receive`]] ile iş bölümünü, çağrıda **veri olup olmadığı** belirler. EVM'in izlediği sıra şudur:
+
+1. **Calldata boş** (düz ETH transferi): `receive` varsa o çalışır. Yoksa ve `fallback` `payable` ise `fallback` çalışır. İkisi de yoksa işlem geri alınır.
+2. **Calldata dolu**: `receive` hiç devreye girmez. Seçici bir fonksiyonla eşleşiyorsa o fonksiyon, eşleşmiyorsa `fallback` çalışır; o da yoksa geri alınır.
+3. **Çağrıyla ETH de geliyor**: çalışacak fonksiyonun — `fallback` dahil — `payable` olması gerekir, değilse işlem geri alınır.
+
+Ayrımın ETH gönderilip gönderilmediğiyle değil, çağrıda veri olup olmadığıyla kurulduğuna dikkat et.
 
 İki imzası vardır: `fallback() external` ve veriyi görüp cevap döndürebilen `fallback(bytes calldata) external returns (bytes memory)`. Her ikisi de isteğe bağlı olarak [[payable|`payable`]] işaretlenebilir.
 
-En yaygın ciddi kullanımı [[proxy-contract|proxy sözleşmelerdir]]: proxy'nin kendi fonksiyonu neredeyse yoktur, gelen her çağrı `fallback`'e düşer ve oradan mantık sözleşmesine iletilir.
+En yaygın ciddi kullanımı [[proxy-contract|proxy sözleşmelerdir]]: proxy'nin kendi fonksiyonu neredeyse yoktur, gelen her çağrı `fallback`'e düşüp mantık sözleşmesine iletilir.
 
 ## Örnek
 
@@ -57,4 +63,4 @@ contract Kapi {
 
 Asıl risk `fallback`'i kendin yazarken değil, **başkasının** `fallback`'ini tetiklerken doğar. Bir adrese ETH gönderdiğinde o adres bir sözleşmeyse `receive` ya da `fallback` kodu çalışır — ve o kod, senin fonksiyonun daha bitmeden seni geri çağırabilir. Bakiyeyi transferden sonra güncelleyen bir çekme fonksiyonu bu yüzden boşaltılabilir ([[reentrancy-attack|yeniden giriş saldırısı]]). Savunma iki adımdır: durumu transferden önce yaz, gerekiyorsa bir [[reentrancy-guard|yeniden giriş kilidi]] ekle.
 
-İkinci tuzak gas'tır. `transfer` ve `send` ile gelen ETH'de karşı tarafa yalnızca 2300 gas verilir; bu miktar depolamaya yazmaya yetmez. `fallback`'i ağır yazarsan sözleşmen bu yolla para alamaz hâle gelir.
+İkinci tuzak gas'tır. `transfer` ve `send` karşı tarafa yalnızca 2300 gas bırakır; bu, depolamaya yazmaya yetmez. `fallback`'i ağır yazarsan sözleşmen bu yolla para alamaz hâle gelir.

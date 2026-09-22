@@ -33,7 +33,7 @@ Her state variable derleme sırasında bir [[storage-slot|storage slotuna]] yerl
 
 Bu yüzden sözleşme yazarken "bu bilgiyi gerçekten zincirde tutmam gerekiyor mu?" sorusu sürekli sorulur. Bir fonksiyonun ortasında birkaç kez kullanılacak ara toplam, state variable değil yerel değişken olmalıdır. Aynı slotu bir döngü içinde tekrar tekrar güncellemek yerine sonucu yerel bir değişkende biriktirip en sonda tek seferde yazmak, en bilinen [[gas-optimization|gas iyileştirmelerinden]] biridir.
 
-Bir state variable'a [[visibility|görünürlük]] de verirsin. `public` yazarsan derleyici, değeri dışarıdan okumaya yarayan fonksiyonu senin yerine üretir.
+Bir state variable'a görünürlük de verirsin. `public` yazarsan derleyici, değeri dışarıdan okumaya yarayan fonksiyonu senin yerine üretir.
 
 ## Örnek
 
@@ -53,4 +53,4 @@ contract Sayac {
 
 ## Dikkat
 
-"Zincirde kalıcı" ile "gizli" aynı şey değildir. Bir state variable'ı `private` işaretlesen bile değeri zincirde durur ve bir düğüme o slotu okutan herkes görebilir. Zincirde sır saklanmaz; `private` yalnızca başka sözleşmelerin koddan erişmesini engeller.
+"Zincirde kalıcı" ile "gizli" aynı şey değildir: `private` işaretlesen bile değer slotunda açıkta durur. Belirteçlerin neyi engelleyip neyi engellemediği [[visibility|görünürlük]] terimindedir.
