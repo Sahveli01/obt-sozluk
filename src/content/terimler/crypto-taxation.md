@@ -12,7 +12,7 @@ tags: []
 status: taslak
 reviewedBy: []
 dateSensitive: true
-sources: []
+sources: ['https://www.gib.gov.tr']
 added: 2026-09-21
 updated: 2026-09-22
 ---

@@ -7,7 +7,7 @@ subcategory: "Regülasyon"
 level: orta
 short: "Düzenleyicinin gözetiminde, sınırlı kapsamlı ve süreli bir deneme alanı sunan program."
 related: [spk-sermaye-piyasasi-kurulu, mica, sec, startup]
-disambiguation: []
+disambiguation: [sandbox]
 tags: []
 status: taslak
 reviewedBy: []

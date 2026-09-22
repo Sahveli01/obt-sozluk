@@ -27,7 +27,7 @@ Vade yoktur; borcunu istediğin gün kapatabilirsin. Ama kapatmadığın her gü
 
 ## Benzetme
 
-Taksimetre gibi. Kapıyı kapattığın anda sayaç açılır ve yolculuk bitene kadar işler. Trafikte beklerken de işler, sen telefonla konuşurken de işler; durduran tek şey inip hesabı kapatmandır.
+Yokuş aşağı bırakılmış bir kar topu gibi. Bıraktıktan sonra sen hiçbir şey yapmasan da büyür; üstelik büyüdükçe daha hızlı büyür, çünkü işleyen faiz de borcun üstüne eklenir ve o da faiz getirir. Onu durduran tek şey aşağı inip önüne geçmendir — yani borcu kapatman.
 
 ## Dikkat
 

@@ -7,7 +7,7 @@ subcategory: "Ajanlar ve araçlar"
 level: orta
 short: "Bir programı ya da ajanı, dışarıya zarar veremeyeceği sınırları önceden çizilmiş bir ortamda çalıştırma yöntemi."
 related: [autonomous-agent, computer-use, principle-of-least-privilege, container, ai-agent]
-disambiguation: []
+disambiguation: [regulatory-sandbox]
 tags: []
 status: taslak
 reviewedBy: []

@@ -23,7 +23,7 @@ Deterministik yürütme, bir kodun aynı girdiyle her zaman ve her yerde aynı s
 
 ## Benzetme
 
-Çarpım tablosu ile zar arasındaki fark gibi. `7 × 8` sorusunu kime, nerede, hangi saatte sorarsan sor cevap aynıdır. "Zar kaç geldi" sorusunun cevabı ise her seferinde başkadır. Akıllı sözleşme ortamı, yalnızca birinci tür soruların sorulabildiği bir yerdir.
+Paketin üstündeki hazırlama talimatı gibi. "Bir litre suda dört dakika kaynat" yazıyorsa sonuç kimin elinde olursa olsun aynıdır: süre de, miktar da yazılıdır. Talimatta "göz kararı tuz at, kıvamına bakarak indir" yazsaydı iki ayrı yerden iki ayrı sonuç çıkardı. Sözleşme ortamı, yalnızca birinci türden talimatların yazılabildiği bir yerdir.
 
 ## Nasıl çalışır?
 
