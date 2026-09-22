@@ -7,7 +7,7 @@ subcategory: "Backend"
 level: orta
 short: "JavaScript'i tarayıcı dışında, doğrudan bilgisayarda çalıştıran çalışma ortamı."
 related: [javascript, npm, server, backend, typescript]
-disambiguation: []
+disambiguation: [node]
 tags: []
 status: taslak
 reviewedBy: []
@@ -48,4 +48,4 @@ Bu kadarı çalışır bir [[server|sunucudur]]: 3000 numaralı kapıyı dinler 
 
 Node.js ile npm aynı şey değildir. Biri kodu çalıştıran ortam, diğeri paketleri kuran araçtır; npm Node.js kurulumuyla birlikte gelse de ayrı bir programdır.
 
-Bir de kelime karışıklığı var: bu sözlükte [[node|node]] aynı zamanda blockchain ağındaki düğüm anlamına gelir. "Node çalıştırıyorum" cümlesi, bağlama göre bambaşka iki iş anlatır.
+Bir de adaş karışıklığı var: [[node|node]] bu sözlükte aynı zamanda blockchain ağına bağlanıp blokları doğrulayan bilgisayar anlamına gelir; ikisinin birbiriyle hiçbir ilgisi yoktur. "Node çalıştırıyorum" cümlesi bu yüzden bağlama göre bambaşka iki iş anlatır.

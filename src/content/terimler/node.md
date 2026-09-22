@@ -7,14 +7,14 @@ subcategory: "Ağ ve node"
 level: baslangic
 short: "Blockchain yazılımını çalıştıran, ağa bağlanıp gelen blokları ve işlemleri kendi doğrulayan bilgisayar."
 related: [full-node, light-node, archive-node, peer-to-peer-p2p, client-blockchain]
-disambiguation: []
+disambiguation: [node-js]
 tags: []
 status: taslak
 reviewedBy: []
 dateSensitive: false
 sources: []
 added: 2026-09-21
-updated: 2026-09-21
+updated: 2026-09-22
 ---
 
 ## Nedir?
@@ -30,3 +30,5 @@ Node'lar ağın telsiz istasyonları gibidir. Her istasyon duyduğu anonsu komş
 ## Dikkat
 
 Her node blok üretmez. Blok üretmek — [[mining|madencilik]] ya da [[validator|validator]] olmak — ayrı bir roldür; node'ların büyük kısmı blok üretmeden yalnızca doğrulama ve dağıtım yapar. Node'lar tuttukları veri miktarına göre de ayrışır: [[full-node|full node]], [[light-node|light node]] ve [[archive-node|archive node]] aynı ağda farklı işler görür.
+
+Adaş karışıklığına dikkat: [[node-js|Node.js]] bu terimle ilgisizdir — o, JavaScript kodunu tarayıcı dışında çalıştıran bir yazılım ortamının adıdır, blockchain ağındaki bir bilgisayar değil.

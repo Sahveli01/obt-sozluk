@@ -11,7 +11,7 @@ disambiguation: []
 tags: []
 status: taslak
 reviewedBy: []
-dateSensitive: false
+dateSensitive: true
 sources: []
 added: 2026-09-21
 updated: 2026-09-22
@@ -37,4 +37,4 @@ Blob'un kendisi ağdaki node'larda sınırlı bir süre tutulur, sonra düşür�
 
 Buradaki tasarım kararı şuna dayanır: [[data-availability|veri erişilebilirliği]] "veri sonsuza kadar zincirde dursun" demek değil, "veri bir kez, herkesin alabileceği biçimde yayımlanmış olsun" demektir. İtiraz etmek, durumu yeniden hesaplamak ya da rollup'ı sıfırdan kurmak isteyen bir tarafın bunu yapabilmesi için pencere açıktır.
 
-Bu yüzden blob kalıcı depolama değildir. Uzun vadede veriye ihtiyacı olan — arşivciler, gezginler, rollup işletmecileri — kendi kopyasını tutar. Kesin saklama süresi ağın parametrelerine bağlıdır; kalıcı sayılmayacak kadar kısa olduğunu bilmek yeterlidir.
+Bu yüzden blob kalıcı depolama değildir. Uzun vadede veriye ihtiyacı olan — arşivciler, gezginler, rollup işletmecileri — kendi kopyasını tutar. Kesin saklama süresi ağın parametrelerine bağlıdır ve yükseltmelerle değişebilir; yazıldığı tarih itibarıyla kalıcı sayılmayacak kadar kısadır.
