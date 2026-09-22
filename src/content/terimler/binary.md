@@ -25,7 +25,7 @@ Bilgisayarların bu sistemi kullanmasının sebebi, donanımın iki durumu ayır
 
 ## Benzetme
 
-Eczane terazisinin yanındaki ağırlık takımı gibi. Takımda 1, 2, 4, 8 ve 16 gramlık birer ağırlık vardır. Her ağırlık ya kefeye konur ya konmaz — arası yoktur. 11 gramı tartmak istersen tek bir yol vardır: 8, 2 ve 1. Hangi ağırlıkların konduğunu soldan sağa yazdığında elinde o sayının ikili yazımı kalır.
+Eski bir kefeli terazinin yanındaki ağırlık takımı gibi. Takımda 1, 2, 4, 8 ve 16 gramlık birer ağırlık vardır. Her ağırlık ya kefeye konur ya konmaz — arası yoktur. 11 gramı tartmak istersen tek bir yol vardır: 8, 2 ve 1. Hangi ağırlıkların konduğunu soldan sağa yazdığında elinde o sayının ikili yazımı kalır.
 
 ## Örnek
 
