@@ -34,3 +34,5 @@ Program, sanal makinenin komut setine derlenir. Çalıştırma sırasında her a
 Kolaylığın bedeli kanıt üretme maliyetidir. Genel amaçlı bir makinenin her adımını kanıtlamak, aynı işi yapan elle yazılmış bir devreyi kanıtlamaktan çok daha pahalıdır; makine, o programda hiç kullanılmayan komutları da desteklemek zorunda olduğu için fazladan yük taşır.
 
 İkincisi, kanıt **programın çalıştırıldığını** söyler, programın doğru yazıldığını değil. Hatalı bir kodun hatalı çıktısı da kusursuz biçimde kanıtlanır. zkVM denetim ihtiyacını ortadan kaldırmaz, yalnızca yerini değiştirir: devreyi denetlemek yerine kodu denetlersin.
+
+Üçüncüsü adlandırma: zkVM adı genellikle RISC-V gibi genel amaçlı bir komut setini çalıştıran makineler için kullanılır; zkEVM ise aynı fikrin EVM komut setine özelleşmiş bir türüdür, ayrı bir yaklaşım değil.

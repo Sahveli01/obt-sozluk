@@ -40,3 +40,5 @@ Sıradan programlama sezgisi burada çalışmaz. Devrede **erken çıkış yoktu
 İkincisi, kolay sandığın işlemler pahalı olabilir. Devrenin doğal dili toplama ve çarpmadır; karşılaştırma ve bit düzeyinde işlemler ise sayıyı bitlerine ayırmayı gerektirdiği için kısıt sayısını hızla şişirir.
 
 Üçüncüsü ve en tehlikelisi: eksik kısıt yazmak sessiz bir hatadır. Unuttuğun kontrol, ispat sisteminde bir uyarı üretmez — yalnızca kanıtın ne kadar şey söylediğini azaltır.
+
+Bu maliyet sezgisi klasik devre tabanlı sistemler içindir: [[zkvm|zkVM]]'lerde dallanma sabit bir komut setinin içinde çözülür, lookup tablosu kullanan ispat sistemlerinde ise karşılaştırma gibi işlemler sayıyı bitlerine ayırmadan yapılabildiği için bedeli çok daha düşük olur.
