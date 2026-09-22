@@ -1,23 +1,36 @@
 ---
 term: "Borrowing (DeFi)"
-tr: ""
+tr: "Borçlanma"
 aliases: []
 category: defi
 subcategory: "Borç verme ve alma"
-level: orta
-short: ""
-related: []
+level: baslangic
+short: "Elindeki varlığı satmadan, teminat kilitleyerek havuzdan başka bir varlık çekmek; borç açık kaldığı sürece faiz işler."
+related: [lending-protocol, collateral, overcollateralization, loan-to-value-ltv, liquidation, interest-rate-model]
 disambiguation: [borrowing-rust]
 tags: []
-status: stub
+status: taslak
 reviewedBy: []
 dateSensitive: false
 sources: []
 added: 2026-09-21
-updated: 2026-09-21
+updated: 2026-09-22
 ---
 
-<!-- Bu terim henüz yazılmadı.
-     Gövde başlıkları ve yazım kuralları için CLAUDE.md'ye bak.
-     Yazarken: tr, short, related, level alanlarını da doldur ve
-     status değerini taslak yap. -->
+## Nedir?
+
+DeFi'de borçlanmak, elindeki varlıktan vazgeçmeden onun değerini kullanıma almaktır. [[collateral|Teminatını]] kilitlersin, havuzdan başka bir varlık çekersin, işin bitince geri ödeyip teminatını çözersin.
+
+Kimse senden söz almaz, kimse seni aramaz. Tek güvence kilitlediğin teminattır — bu yüzden çekebileceğin tutar her zaman teminatının değerinden küçüktür ([[overcollateralization|aşırı teminatlandırma]]).
+
+Vade yoktur; borcunu istediğin gün kapatabilirsin. Ama kapatmadığın her gün faiz işler ve borcun kendiliğinden büyür.
+
+## Benzetme
+
+Taksimetre gibi. Kapıyı kapattığın anda sayaç açılır ve yolculuk bitene kadar işler. Trafikte beklerken de işler, sen telefonla konuşurken de işler; durduran tek şey inip hesabı kapatmandır.
+
+## Dikkat
+
+Aynı kelime Rust'ta bambaşka bir şeydir: orada [[borrowing-rust|ödünç alma]] bir değere geçici erişim izni almaktır, ortada ne teminat ne borç vardır.
+
+Borçlandığın anda tek değil iki fiyata birden bağlanırsın: teminatının fiyatına ve borçlandığın varlığın fiyatına. Teminat düşerse [[liquidation|tasfiyeye]] yaklaşırsın; borçlandığın varlık yükselirse de aynı yere yaklaşırsın, çünkü borcun değeri büyümüştür. İkisi aynı anda ters yöne giderse mesafe iki kat hızlı kapanır.
