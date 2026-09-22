@@ -21,10 +21,6 @@ updated: 2026-09-21
 
 MPC cüzdan, [[multi-party-computation-mpc|çok taraflı hesaplama]] kullanarak imzayı anahtarı hiçbir yerde birleştirmeden üreten cüzdandır. Anahtar ya üretildiği anda paylara bölünür ya da hiçbir zaman bütün hâlde var olmaz; imza gerektiğinde paylar birbirine kendi payını göstermeden ortak bir hesap yapar. Zincirin gördüğü şey, sıradan tek bir imzadır. Türkçede yerleşik bir adı yok; "çok taraflı hesaplama cüzdanı" diye açıklanır, kısaltma İngilizce kullanılır.
 
-## Benzetme
-
-Bir sınıfın not ortalamasını, kimse kendi notunu söylemeden hesaplayabilmesi gibi. Ortak sonuç çıkar, tek tek girdiler kimsenin eline geçmez.
-
 ## Nasıl çalışır?
 
 Paylar farklı yerlerde durur: kullanıcının telefonu, sağlayıcının sunucusu, ayrı bir yedek ortam gibi. İmza için önceden belirlenmiş sayıda payın katılması gerekir ([[threshold-signature-tss|eşik imza]]). Tek bir payı ele geçiren saldırgan imza üretemez; aynı şekilde tek bir payı kaybetmek de erişimi bitirmez, eşik hâlâ sağlanıyorsa işlem imzalanır.
