@@ -6,7 +6,7 @@ category: konsensus
 subcategory: "Ağ katmanı"
 level: orta
 short: "Blokların sırasına ve hangi dalın geçerli sayılacağına karar veren istemci katmanı; işlemleri kendisi çalıştırmaz."
-related: [execution-client, client-blockchain, validator, attestation, fork-choice-rule]
+related: [execution-client, consensus-layer, client-blockchain, validator, attestation, fork-choice-rule]
 disambiguation: []
 tags: []
 status: taslak
@@ -33,4 +33,4 @@ Node bir doğrulayıcı işletiyorsa ([[validator|validator]]) imzaların üreti
 
 Konsensüs istemcisi çalışmadan yürütme istemcisi tek başına zincirin ucunu bilemez. İkisinden biri durduğunda node'un tamamı işlevsiz kalır; ayrı yazılım olmaları onları ayrı node yapmaz.
 
-İkinci karışıklık: konsensüs istemcisi çalıştırmak seni doğrulayıcı yapmaz. Node olarak ağı izlemek ile doğrulayıcı olmak ayrı şeylerdir; ikincisi teminat yatırmayı ve imzalama anahtarlarını devreye almayı gerektirir ([[staking|staking]]).
+İkinci karışıklık: konsensüs istemcisi çalıştırmak seni doğrulayıcı yapmaz. Node olarak ağı izlemek ile doğrulayıcı olmak ayrı şeylerdir; ikincisi teminat yatırmayı ve imzalama anahtarlarını devreye almayı gerektirir ([[staking|staking]]). Üçüncüsü, bu yazılımın üstlendiği soyut role [[consensus-layer|konsensüs katmanı]] denir; modüler tasarımlarda o rolü bir program değil, bütün bir ayrı zincir doldurabilir.

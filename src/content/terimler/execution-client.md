@@ -6,7 +6,7 @@ category: konsensus
 subcategory: "Ağ katmanı"
 level: orta
 short: "İşlemleri çalıştırıp zincirin durumunu güncelleyen istemci katmanı; blokların sırasına kendisi karar vermez."
-related: [consensus-client, client-blockchain, state-blockchain, mempool, client-diversity]
+related: [consensus-client, execution-layer, client-blockchain, state-blockchain, mempool, client-diversity]
 disambiguation: []
 tags: []
 status: taslak
@@ -35,4 +35,4 @@ Yürütme kısmının kuralları katıdır: aynı blok, hangi yürütme istemcis
 
 "Yürütme istemcisi" bir rol adıdır, bir ürün adı değil. Aynı rolü dolduran, birbirinden bağımsız yazılmış birkaç yazılım vardır ([[client-diversity|istemci çeşitliliği]]).
 
-Bu ayrım her ağda yoktur; pek çok zincirde iki iş tek bir yazılımın içinde durur. Ayrımın kendisi bir tasarım tercihidir: katmanları ayırmak her birinin bağımsız geliştirilmesini ve değiştirilmesini kolaylaştırır, karşılığında aradaki arayüzün de bakımını gerektirir.
+Bu ayrım her ağda yoktur; pek çok zincirde iki iş tek bir yazılımın içinde durur. Ayrımın kendisi bir tasarım tercihidir: katmanları ayırmak her birinin bağımsız geliştirilmesini ve değiştirilmesini kolaylaştırır, karşılığında aradaki arayüzün de bakımını gerektirir. Bu yazılımın doldurduğu role mimaride [[execution-layer|yürütme katmanı]] denir; istemci o rolün bir uygulamasıdır, kendisi değil.
