@@ -7,7 +7,7 @@ subcategory: "Güvenlik ve değerlendirme"
 level: orta
 short: "Yapay zekâ sistemlerinin yol açabileceği zararları önceden bulmayı ve azaltmayı konu alan araştırma ve mühendislik alanı."
 related: [alignment, ai-bias, red-teaming, evals, guardrails]
-disambiguation: []
+disambiguation: [safety-consensus]
 tags: []
 status: taslak
 reviewedBy: []
@@ -34,3 +34,5 @@ Güvenlik tek bir aşamaya sıkıştırılmaz, katmanlara yayılır: eğitim ver
 ## Dikkat
 
 Tartışma çoğu zaman iki uca çekilir: "her şey felaketle bitecek" ve "tamamı abartı". İkisi de meseleyi basitleştirir; işin kendisi ölçüm, sınır ve sorumluluk tasarımıdır. "Güvenli model" de mutlak bir etiket değildir — güvenlik modelin tek başına bir özelliği değil, modelin hangi bağlamda, hangi yetkiyle ve kimin denetiminde çalıştığına bağlı bir sonuçtur.
+
+Kelimenin konsensüsteki kullanımıyla ilgisi yoktur: orada [[safety-consensus|güvenlik]], ağın çelişkili iki sonucu birden kesinleştirmemesini anlatan teknik bir özelliğin adıdır.

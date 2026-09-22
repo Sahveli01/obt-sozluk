@@ -7,7 +7,7 @@ subcategory: "Bellek ve depolama"
 level: ileri
 short: "Sözleşme storage'ındaki 32 baytlık numaralı hücre; state variable'lar derleme sırasında bu hücrelere yerleşir."
 related: [storage-evm, state-variable, storage-collision, mapping, keccak-256, upgradeable-contract]
-disambiguation: []
+disambiguation: [slot]
 tags: []
 status: taslak
 reviewedBy: []
@@ -54,3 +54,5 @@ contract Yerlesim {
 Paketleme her zaman kazanç değildir. Aynı slottaki bir alanı tek başına güncellemek, slotun okunup ilgili baytların maskelenip geri yazılmasını gerektirir; birlikte kullanılmayan alanları zorla yan yana dizmek bazen fayda yerine ek iş çıkarır.
 
 Asıl tehlike [[upgradeable-contract|yükseltilebilir sözleşmelerdedir]]. Yeni sürümde değişkenlerin sırasını değiştirir ya da araya bir değişken eklersen slot numaraları kayar — ama zincirdeki veri yerinde durur. Yeni kod eski veriyi yanlış anlamda okumaya başlar: bir bakiye adres, bir adres sayı olur. Bunun adı [[storage-collision|storage çakışmasıdır]]; bu yüzden yükseltilebilir sözleşmelerde yeni değişkenler yalnızca listenin sonuna eklenir.
+
+Konsensüsteki [[slot]] ile karıştırma: orası zamanın bölündüğü aralık, burası depolamanın bölündüğü hücredir.

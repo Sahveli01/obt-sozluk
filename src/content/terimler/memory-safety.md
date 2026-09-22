@@ -7,7 +7,7 @@ subcategory: "Çalışma zamanı ve bellek"
 level: ileri
 short: "Bir programın yalnızca kendisine ayrılmış ve o an hâlâ geçerli olan belleğe erişebilmesi güvencesi."
 related: [memory-management, pointer, rust, stack-and-heap, type-safety]
-disambiguation: []
+disambiguation: [safety-consensus]
 tags: []
 status: taslak
 reviewedBy: []
@@ -52,3 +52,5 @@ Buradaki asıl nokta çıktının ne olduğu değil, **belirli bir çıktısın�
 Bellek güvenli bir dil seçmek programı güvenli yapmaz, yalnızca bir hata sınıfını kapatır. Mantık hataları, eksik yetki kontrolü ve dışarıdan gelen veriye güvenmek her dilde mümkündür ([[type-safety|tip güvenliği]] de ayrı bir eksendir).
 
 Ayrıca çoğu bellek güvenli dilin bir kaçış kapısı vardır — Rust'ta [[unsafe-rust|`unsafe`]] blokları gibi. Güvence o blokların içinde askıya alınır; bu yüzden kod incelemesinde oralar ayrı ve dikkatli ele alınır.
+
+Aynı kelime konsensüste bambaşka bir şeydir: orada [[safety-consensus|güvenlik]], ağın birbiriyle çelişen iki sonucu asla birden kesinleştirmemesi demektir.
