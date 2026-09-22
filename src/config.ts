@@ -14,12 +14,12 @@ export const SITE = {
   /** Sayfa dili. */
   lang: 'tr',
   /**
-   * GitHub Pages yayın adresi.
-   * Depo adı netleştiğinde burası güncellenir; `astro.config.ts` buradan okur.
+   * GitHub Pages yayın adresi. `astro.config.ts` buradan okur.
+   * Özel bir alan adına geçilirse burası o alan adı olur ve `base` '/' döner.
    */
-  site: 'https://example.github.io',
-  /** Alt dizin yayını için taban yol. Kök alan adında '/' bırakılır. */
-  base: '/',
+  site: 'https://sahveli01.github.io',
+  /** Alt dizin yayını için taban yol. Depo adıyla aynı; kök alan adında '/' olur. */
+  base: '/obt-sozluk',
 } as const;
 
 /** Terim sayfalarının URL ön eki. Slug'lar kalıcıdır, bu ön ek de öyle. */

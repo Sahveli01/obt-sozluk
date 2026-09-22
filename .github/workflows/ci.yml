@@ -1,0 +1,41 @@
+name: Kontrol
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# Aynı dal için yeni commit gelirse eskisini iptal et.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  kontrol:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Bağımlılıkları kur
+        run: npm ci
+
+      # Şema, bağlantı hedefleri, taslak/dosya uyumu, alias çakışması.
+      - name: İçerik doğrulama
+        run: npm run validate
+
+      # Yayın iş akışı da bunu çalıştırır; burada takılması main'i korur.
+      - name: Kontrast tabanı
+        run: npm run contrast
+
+      - name: Derleme
+        run: npm run build
+
+      # Kırmızı değil, bilgi amaçlı: PR'ın ilerlemeye etkisi görünsün.
+      - name: İlerleme raporu
+        if: always()
+        run: npm run stats

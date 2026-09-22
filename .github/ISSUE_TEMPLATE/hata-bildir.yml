@@ -1,0 +1,64 @@
+name: Hata bildir
+description: Yanlış bilgi, bozuk bağlantı, yazım hatası ya da anlaşılmayan bir tanım
+title: "Hata: "
+labels: ["hata"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Küçük bir yazım hatası için issue açmak zorunda değilsin — dosyayı GitHub
+        web arayüzünden doğrudan düzeltip pull request açabilirsin. Nasıl
+        yapılacağı [`CONTRIBUTING.md`](../blob/main/CONTRIBUTING.md) içinde anlatılıyor.
+
+  - type: dropdown
+    id: tur
+    attributes:
+      label: Ne tür bir hata?
+      options:
+        - Yanlış ya da eksik bilgi
+        - Anlaşılmıyor / kafa karıştırıyor
+        - Yazım ya da dilbilgisi hatası
+        - Bozuk bağlantı veya eksik sayfa
+        - Bayatlamış bilgi (artık doğru değil)
+        - Ton sorunu (tavsiye gibi okunuyor, taraflı, abartılı)
+        - Sitenin kendisiyle ilgili (arama, görünüm, mobil)
+        - Diğer
+    validations:
+      required: true
+
+  - type: input
+    id: nerede
+    attributes:
+      label: Nerede?
+      description: >-
+        Terimin slug'ı (adres satırının sonundaki kısım) ya da sayfanın bağlantısı.
+        Site geneliyle ilgiliyse "genel" yaz.
+      placeholder: "gas  ya da  https://.../terim/gas"
+    validations:
+      required: true
+
+  - type: textarea
+    id: sorun
+    attributes:
+      label: Sorun ne?
+      description: Şu an ne yazıyor ve nesi yanlış? Mümkünse ilgili cümleyi kopyala.
+    validations:
+      required: true
+
+  - type: textarea
+    id: oneri
+    attributes:
+      label: Nasıl olmalı? (isteğe bağlı)
+      description: >-
+        Doğrusunu biliyorsan yaz. Bilmiyorsan da sorun yok — bildirmen yeterli.
+    validations:
+      required: false
+
+  - type: textarea
+    id: kaynak
+    attributes:
+      label: Kaynak (isteğe bağlı)
+      description: >-
+        Bilginin yanlış olduğunu gösteren güvenilir bir kaynak varsa bağlantısını bırak.
+    validations:
+      required: false

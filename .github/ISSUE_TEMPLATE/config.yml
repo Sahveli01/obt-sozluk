@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Katkı rehberi
+    url: https://github.com/Sahveli01/obt-sozluk/blob/main/CONTRIBUTING.md
+    about: Git bilmeden nasıl katkı verilir, terim nasıl yazılır, inceleme nasıl işler.
+  - name: Yazım kuralları
+    url: https://github.com/Sahveli01/obt-sozluk/blob/main/CLAUDE.md
+    about: Terim dosyası şeması, dil ve ton kuralları, benzetme kuralı.

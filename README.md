@@ -67,6 +67,14 @@ scripts/contrast.ts          kontrast tabanı denetimi
 
 ## Yayın
 
-`main` dalına her push'ta GitHub Actions `validate` + `contrast` + `build`
-çalıştırıp GitHub Pages'e yayımlar. Depo adı netleştiğinde
-`src/config.ts` içindeki `site` ve `base` değerleri güncellenmelidir.
+Her pull request'te `.github/workflows/ci.yml` `npm ci` + `validate` +
+`contrast` + `build` çalıştırır. `main` dalına her push'ta
+`.github/workflows/deploy.yml` aynı kontrolleri yapıp GitHub Pages'e yayımlar.
+
+Yayın adresi `src/config.ts` içindeki `site` ve `base` değerlerinden gelir.
+Özel bir alan adına geçilirse `base` değeri `'/'` yapılmalıdır.
+
+## Katkı
+
+Katkı rehberi — git bilmeden düzenleme, terim önerme, inceleme akışı —
+[`CONTRIBUTING.md`](CONTRIBUTING.md) içindedir.

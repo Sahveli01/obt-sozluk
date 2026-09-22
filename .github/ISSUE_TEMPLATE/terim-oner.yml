@@ -1,0 +1,94 @@
+name: Terim öner
+description: Sözlükte olmayan bir terimin eklenmesini iste
+title: "Terim: "
+labels: ["terim önerisi"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Teşekkürler! Önce hızlı bir kontrol: terim gerçekten yok mu?
+        Sitedeki aramayı ve [`docs/terim-taslagi.md`](../blob/main/docs/terim-taslagi.md)
+        dosyasını bir kez kontrol et — terim taslakta olup henüz yazılmamış olabilir.
+        Öyleyse bu form yerine doğrudan o terimi yazıp pull request açabilirsin.
+
+  - type: input
+    id: terim
+    attributes:
+      label: Terimin İngilizce adı
+      description: Sektörde kullanıldığı kanonik hâliyle yaz.
+      placeholder: "Reentrancy Attack"
+    validations:
+      required: true
+
+  - type: input
+    id: tr
+    attributes:
+      label: Yerleşik Türkçe karşılığı (varsa)
+      description: >-
+        Yalnızca TDK'da, resmî bir metinde ya da Türk teknoloji topluluklarında
+        yaygın kullanım varsa yaz. Yoksa boş bırak — karşılık uydurmuyoruz.
+      placeholder: "Yeniden Giriş Saldırısı"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: kategori
+    attributes:
+      label: Hangi kategoriye ait?
+      description: Emin değilsen en yakınını seç, düzeltiriz.
+      options:
+        - Blockchain Temelleri
+        - Kriptografi
+        - Konsensüs ve Ağ
+        - Cüzdanlar ve Hesaplar
+        - Akıllı Sözleşmeler ve Sanal Makineler
+        - Token'lar ve Tokenomi
+        - DeFi
+        - NFT ve Dijital Varlıklar
+        - Ölçeklenme ve Birlikte Çalışabilirlik
+        - Güvenlik ve Gizlilik
+        - DAO ve Yönetişim
+        - Önemli Ağlar ve Protokoller
+        - Programlama
+        - Web Geliştirme
+        - Geliştirici Araçları ve Süreçleri
+        - Yapay Zekâ
+        - Topluluk Kültürü ve Jargon
+        - Hackathon, Ürün ve Girişim
+        - Piyasa, Borsa ve Regülasyon
+        - Emin değilim
+    validations:
+      required: true
+
+  - type: textarea
+    id: neden
+    attributes:
+      label: Neden bu terim gerekli?
+      description: >-
+        Nerede karşılaştın, kimin işine yarar, hangi boşluğu doldurur?
+        Bir iki cümle yeter.
+      placeholder: >-
+        Sözleşme güvenliği okurken sürekli geçiyor ama sözlükte karşılığı yok;
+        yeni başlayan biri neyi anlatıldığını çıkaramıyor.
+    validations:
+      required: true
+
+  - type: textarea
+    id: kaynak
+    attributes:
+      label: Güvenilir kaynak (isteğe bağlı)
+      description: >-
+        Terimi doğru anlatan bir belge, standart metni ya da yazı varsa bağlantısını bırak.
+        Reklam, fiyat sayfası ya da proje tanıtımı olmasın.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: onay
+    attributes:
+      label: Son kontrol
+      options:
+        - label: Sitedeki aramada bu terimi aradım, bulamadım.
+          required: true
+        - label: Bu bir yatırım tavsiyesi, fiyat tahmini ya da proje tanıtımı değil.
+          required: true
