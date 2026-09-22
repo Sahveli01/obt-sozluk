@@ -29,7 +29,7 @@ Türkçe arayüzlerde bu adımı çoğunlukla "onayla" düğmesi olarak görürs
 
 `approve` mevcut rakamın üstüne eklemez, onun yerine yazar. Sıfır yazmak izni tamamen kaldırır.
 
-Bu üzerine yazma davranışı klasik bir yarışa yol açar. Diyelim 100'lük izni 50'ye düşürmek istiyorsun. Harcayan taraf, işlemini seninkinden önce sıraya sokarsa önce eski 100'ü çeker; ardından senin yazdığın 50 de geçerli olur ve toplam 150 çekilmiş olur. Bu yüzden bazı sözleşmeler izni değiştirmeden önce sıfırlamayı şart koşar, bazı token'lar da rakamı doğrudan yazmak yerine artıran ve azaltan yardımcı fonksiyonlar (`increaseAllowance`, `decreaseAllowance`) sunar. Hepsinde bulunmadıkları için varlıklarını varsayma. [[erc-2612-permit|permit]] destekleyen token'larda sorun başka bir zeminde çözülür: izin imzayla ve son geçerlilik tarihiyle verilir.
+Bu üzerine yazma davranışı klasik bir yarışa yol açar. Diyelim 100'lük izni 50'ye düşürmek istiyorsun. Harcayan taraf, işlemini seninkinden önce sıraya sokarsa önce eski 100'ü çeker; ardından senin yazdığın 50 de geçerli olur ve toplam 150 çekilmiş olur. Bu yüzden bazı sözleşmeler izni değiştirmeden önce sıfırlamayı şart koşar, bazı token'lar da rakamı doğrudan yazmak yerine artıran ve azaltan yardımcı fonksiyonlar sunar. `increaseAllowance` ve `decreaseAllowance` bunun en bilinen örneğidir; ikisi de ERC-20'nin parçası değil, OpenZeppelin uygulamasının eklentisidir ve o kütüphanenin her sürümünde bulunmaz. Varlıklarını varsayma, sözleşmeden kontrol et. [[erc-2612-permit|permit]] destekleyen token'larda sorun başka bir zeminde çözülür: izin imzayla ve son geçerlilik tarihiyle verilir.
 
 ## Örnek
 

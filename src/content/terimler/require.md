@@ -49,7 +49,6 @@ error YetersizBakiye(uint256 istenen, uint256 mevcut);
 contract Cuzdan {
     uint256 public toplamArz;
     mapping(address => uint256) public bakiye;
-
     function gonder(address kime, uint256 miktar) external {
         require(kime != address(0), "sifir adres");            // girdi denetimi
         if (bakiye[msg.sender] < miktar) {

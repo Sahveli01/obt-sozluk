@@ -32,7 +32,7 @@ Proxy'nin kendi fonksiyonları (yükseltme, yönetici değiştirme) ile mantık 
 - Çağrı yöneticiden geliyorsa proxy kendi yükseltme fonksiyonlarını çalıştırır.
 - Başka herkesten geliyorsa çağrı [[delegatecall]] ile mantık sözleşmesine iletilir.
 
-Bunun bedeli, yöneticinin uygulamayı bu proxy üzerinden normal bir kullanıcı gibi kullanamamasıdır. Bu yüzden yönetici olarak bir insanın cüzdanı değil, yalnızca yükseltme işi yapan ayrı bir yönetim sözleşmesi kullanmak yerleşik uygulamadır.
+Bunun bedeli, yöneticinin uygulamayı bu proxy üzerinden normal bir kullanıcı gibi kullanamamasıdır. OpenZeppelin uygulamasında yönetici çağrıları mantık sözleşmesine hiç iletilmez; bu yüzden yönetici olarak bir insanın cüzdanı değil, yalnızca yükseltme işi yapan ayrı bir yönetim sözleşmesi kullanılır. Düzenin ayrıntısı uygulamadan uygulamaya değişir.
 
 Yönetici adresi ve mantık sözleşmesi adresi, sıradan değişkenler gibi 0, 1, 2 numaralı slotlara yazılmaz. EIP-1967 bunlar için bir metnin hash'inden türetilmiş sabit [[storage-slot|depolama slotları]] belirler; böylece mantık sözleşmesinin kendi değişkenleriyle çakışma ihtimali pratikte ortadan kalkar. Bu sabit slotlar sayesinde cüzdanlar ve blok gezginleri de bir adresin proxy olduğunu tanıyabilir.
 

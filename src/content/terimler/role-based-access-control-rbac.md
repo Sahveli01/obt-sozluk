@@ -31,7 +31,7 @@ Hastanedeki yaka kartları gibi. Kart bir kişinin adına değil, yaptığı iş
 
 Her rol, genellikle bir metnin hash'inden üretilmiş sabit bir tanımlayıcıdır. Sözleşme bir iç içe eşleme tutar: rol → adres → izinli mi. Korunan fonksiyonların başında, çağıranın ilgili role sahip olup olmadığı denetlenir.
 
-Rolleri kimin dağıtacağı da bir kuraldır. Yaygın uygulamalarda her rolün bir **yönetici rolü** vardır ve yalnızca o rolün üyeleri o role adres ekleyip çıkarabilir. En tepede duran varsayılan yönetici rolü ise kendi kendisinin yöneticisidir.
+Rolleri kimin dağıtacağı da bir kuraldır. OpenZeppelin uygulamasında her rolün bir **yönetici rolü** vardır ve yalnızca o rolün üyeleri o role adres ekleyip çıkarabilir; en tepede duran varsayılan yönetici rolü kendi kendisinin yöneticisidir. Bu bir standart değil, o kütüphanenin tercihidir — başka bir uygulama rolleri bambaşka kurabilir.
 
 ## Örnek
 
