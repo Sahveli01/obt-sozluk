@@ -214,6 +214,8 @@
   --cat-name-col: 15rem;
   /* Geniş ekranda terim adı sütunu. */
   --term-name-col: 16rem;
+  /* Öğrenme yolundaki sıra numarası sütunu; iki basamak hizada dursun. */
+  --step-num-col: 2ch;
 
   /* Anlam taşıyan kenar şeridi. Renk körlüğünde ve projeksiyonda
    * zemin renginin yanında ikinci işaret olarak durur, o yüzden

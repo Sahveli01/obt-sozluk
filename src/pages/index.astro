@@ -5,12 +5,11 @@ import { SITE } from '../config.ts';
 import { AILELER } from '../data/aileler.ts';
 import { KATEGORI_HARITASI } from '../data/kategoriler.ts';
 import Temel from '../layouts/Temel.astro';
+import { kelimeSay, okumaDakikasi } from '../lib/okuma.ts';
+import { SEVIYE_ADLARI, SEVIYE_SIRASI } from '../lib/seviye.ts';
 import { kategoriYolu, siteYolu, terimYolu } from '../lib/yol.ts';
 
 const terimler = await getCollection('terimler');
-
-/** Seviye sırası: örnek olarak önce en yeni başlayana uygun olanları göster. */
-const SEVIYE_SIRASI: Record<string, number> = { baslangic: 0, orta: 1, ileri: 2 };
 
 interface KategoriOzeti {
   slug: string;
@@ -53,6 +52,23 @@ for (const [slug, liste] of yazilmisSecim) {
 const toplamTerim = terimler.length;
 const toplamYazilmis = terimler.filter((t) => t.data.status !== 'stub').length;
 const sayi = new Intl.NumberFormat('tr-TR');
+
+/** Öğrenme yolları: aramaya alternatif giriş. Süre terimlerden hesaplanır. */
+const terimHaritasi = new Map(terimler.map((terim) => [terim.id, terim]));
+const yollar = (await getCollection('yollar'))
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((yol) => ({
+    slug: yol.id,
+    baslik: yol.data.title,
+    seviye: yol.data.level,
+    terimSayisi: yol.data.terms.length,
+    dakika: okumaDakikasi(
+      yol.data.terms.reduce(
+        (toplam, slug) => toplam + kelimeSay(terimHaritasi.get(slug)?.body ?? ''),
+        0,
+      ),
+    ),
+  }));
 ---
 
 <Temel baslik={SITE.name} aktif="kategoriler">
@@ -111,6 +127,36 @@ const sayi = new Intl.NumberFormat('tr-TR');
       </span>
     </div>
 
+    {/*
+      Arama, ne aradığını bilen okur içindir. Bilmeyen okurun buradan bir
+      başlangıç noktası bulması gerekir; yollar tam olarak o iş için.
+    */}
+    <section class="aile">
+      <h2 class="aile__baslik">
+        <a class="yollar-baslik" href={siteYolu('/yollar')}>Öğrenme yolları</a>
+      </h2>
+      <p class="aile__aciklama">
+        Nereden başlayacağını bilmiyorsan sıralı bir yol izle. Her yol bir soruya
+        cevap verir ve terimleri öğrenme sırasına dizer.
+      </p>
+
+      <ul class="kategori-listesi">
+        {
+          yollar.map((yol) => (
+            <li class="kategori-satiri">
+              <a class="kategori-satiri__ad" href={siteYolu(`/yollar/${yol.slug}`)}>
+                {yol.baslik}
+              </a>
+              <span class="kategori-satiri__sayi">
+                {sayi.format(yol.terimSayisi)} terim · ~{sayi.format(yol.dakika)} dk
+              </span>
+              <span class="kategori-satiri__ornek">{SEVIYE_ADLARI[yol.seviye]}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
     {
       AILELER.map((aile) => (
         <section class="aile">
@@ -165,3 +211,18 @@ const sayi = new Intl.NumberFormat('tr-TR');
     kisayolBagla(girdi);
   }
 </script>
+
+<style>
+  /* Bölüm başlığı aynı zamanda yolların tam listesine bağlantı.
+     Vurgu rengi bağlantılara ayrılmış olsa da başlık ölçeğinde bir blok
+     vurgu istemiyoruz: renk metinden gelir, işaret alt çizgiden. */
+  .yollar-baslik {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .yollar-baslik:hover {
+    color: var(--color-accent);
+    text-decoration: underline;
+  }
+</style>

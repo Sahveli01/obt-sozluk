@@ -22,7 +22,7 @@ interface Props {
    */
   noindex?: boolean;
   /** Başlıktaki hangi bağlantının `aria-current` alacağı. */
-  aktif?: 'kategoriler' | 'ara';
+  aktif?: 'kategoriler' | 'yollar' | 'ara';
 }
 
 const {
@@ -78,6 +78,12 @@ const tamBaslik = baslik === SITE.name ? SITE.name : `${baslik} — ${SITE.name}
               aria-current={aktif === 'kategoriler' ? 'page' : undefined}
             >
               Kategoriler
+            </a>
+            <a
+              href={siteYolu('/yollar')}
+              aria-current={aktif === 'yollar' ? 'page' : undefined}
+            >
+              Yollar
             </a>
             <a href={siteYolu('/ara')} aria-current={aktif === 'ara' ? 'page' : undefined}>
               Ara

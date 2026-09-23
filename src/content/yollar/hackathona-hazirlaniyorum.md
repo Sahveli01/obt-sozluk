@@ -41,4 +41,4 @@ Sıra, etkinliğin kendi akışını izliyor. Önce etkinliğin yapısı: track 
 
 Son iki terim hackathon bittikten sonrası için: projeye devam etmek isteyenlerin en sık karşılaştığı iki kelime.
 
-**Tahmini okuma süresi: ~25 dakika.** Etkinlikten önceki akşam okunacak kadar kısa; jüri kriterleri maddesini iki kez oku.
+Etkinlikten önceki akşam okunacak kadar kısa; jüri kriterleri maddesini iki kez oku.

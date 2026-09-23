@@ -53,4 +53,4 @@ Son blok, sistemin dışarıya açılan ve en kırılgan olduğu yer: fiyat veri
 
 Bu yol hiçbir strateji önermez ve hiçbir protokolü tavsiye etmez; mekanizmaları ve risklerini anlatır.
 
-**Tahmini okuma süresi: ~40 dakika.** Altı kategorinin en uzunu; iki oturuma bölmek makul.
+Sözlüğün en uzun yolu; iki oturuma bölmek makul.

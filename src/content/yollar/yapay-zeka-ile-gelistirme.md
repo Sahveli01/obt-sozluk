@@ -48,5 +48,3 @@ Sıra üç bölüme ayrılıyor. Önce temel: öğrenmenin ne olduğu, sinir ağ
 Üçüncü bölüm ajanlar. Modelin araç çağırabilmesiyle başlıyor, MCP ile dış dünyaya bağlanmaya, oradan ajanlara ve alt ajanlara gidiyor. Hemen ardından gelen dört terim bilinçli olarak güvenlik ve sınır terimleri: insan onayı, kum havuzu, koruma bantları ve prompt enjeksiyonu. Bir ajanı çalıştırmadan önce bunları okumuş olmak, sonradan okumaktan çok daha ucuzdur.
 
 Son dörtlü günlük pratik: yapay zekâyla eşli programlama, ajana kural yazma, vibecoding ve çıktının nasıl ölçüleceği.
-
-**Tahmini okuma süresi: ~35 dakika.**

@@ -1,0 +1,123 @@
+---
+import { getCollection } from 'astro:content';
+
+import Temel from '../../layouts/Temel.astro';
+import { kelimeSay, okumaDakikasi } from '../../lib/okuma.ts';
+import { SEVIYE_ADLARI } from '../../lib/seviye.ts';
+import { siteYolu } from '../../lib/yol.ts';
+
+const terimler = await getCollection('terimler');
+const terimHaritasi = new Map(terimler.map((terim) => [terim.id, terim]));
+
+const yollar = (await getCollection('yollar')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+
+/** Süre, yoldaki terimlerin gerçek gövde uzunluğundan hesaplanır. */
+const satirlar = yollar.map((yol) => {
+  const kelime = yol.data.terms.reduce(
+    (toplam, slug) => toplam + kelimeSay(terimHaritasi.get(slug)?.body ?? ''),
+    0,
+  );
+  return {
+    slug: yol.id,
+    baslik: yol.data.title,
+    kisa: yol.data.short,
+    seviye: yol.data.level,
+    terimSayisi: yol.data.terms.length,
+    dakika: okumaDakikasi(kelime),
+  };
+});
+
+const sayi = new Intl.NumberFormat('tr-TR');
+---
+
+<Temel
+  baslik="Öğrenme yolları"
+  aciklama="Sözlüğü baştan sona okumak zorunda değilsin: her yol bir soruya cevap verir ve terimleri öğrenme sırasına dizer."
+  aktif="yollar"
+>
+  <div class="sayfa-basi">
+    <h1>Öğrenme yolları</h1>
+    <p class="sayfa-basi__giris">
+      Sözlüğü baştan sona okumak zorunda değilsin. Her yol bir soruya cevap verir
+      ve terimleri öğrenme sırasına dizer: bir terim, kendisini anlamak için
+      gereken terimlerden sonra gelir.
+    </p>
+  </div>
+
+  <ul class="kategori-listesi">
+    {
+      satirlar.map((yol) => (
+        <li class="yol-satiri">
+          <a class="kategori-satiri__ad" href={siteYolu(`/yollar/${yol.slug}`)}>
+            {yol.baslik}
+          </a>
+          <span class="yol-satiri__olcu">
+            {sayi.format(yol.terimSayisi)} terim · ~{sayi.format(yol.dakika)} dk
+          </span>
+          <span class="rozet rozet--seviye yol-satiri__seviye">
+            {SEVIYE_ADLARI[yol.seviye]}
+          </span>
+          <span class="kategori-satiri__ornek yol-satiri__kisa">{yol.kisa}</span>
+        </li>
+      ))
+    }
+  </ul>
+
+  <p class="yol-dipnot">
+    Süreler yoldaki terimlerin gerçek uzunluğundan hesaplanır ve terimler
+    büyüdükçe kendiliğinden güncellenir.
+  </p>
+</Temel>
+
+<style>
+  /* Kategori satırının kardeşi: ad | ölçü | seviye | açıklama.
+     Dar ekranda tek sütun, geniş ekranda tek satır. */
+  .yol-satiri {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2) var(--space-4);
+    padding: var(--space-4);
+    min-height: var(--target-min);
+    align-content: center;
+  }
+
+  .yol-satiri + .yol-satiri {
+    border-top: 1px solid var(--color-line);
+  }
+
+  .yol-satiri__olcu {
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Rozet satırın tamamına yayılmasın. */
+  .yol-satiri__seviye {
+    justify-self: start;
+  }
+
+  .yol-satiri__kisa {
+    max-width: var(--measure);
+  }
+
+  .yol-dipnot {
+    margin-top: var(--space-4);
+    color: var(--color-text-muted);
+    font-size: var(--text-small);
+    max-width: var(--measure);
+  }
+
+  @media (min-width: 48rem) {
+    .yol-satiri {
+      grid-template-columns: var(--cat-name-col) auto auto;
+      align-items: baseline;
+    }
+
+    /* Açıklama kendi satırına geçer; üç sütunun altını boydan boya kaplar. */
+    .yol-satiri__kisa {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

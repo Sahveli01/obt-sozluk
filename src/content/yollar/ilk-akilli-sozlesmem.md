@@ -41,4 +41,4 @@ Sıralama işin gerçek akışını izliyor. Önce sözleşmenin ne olduğu ve n
 
 Son terim bilinçli olarak bir güvenlik kalıbı. İlk sözleşmesini yazan herkesin öğrendiği en pahalı ders, doğru sıralamayla ilgilidir.
 
-**Tahmini okuma süresi: ~35 dakika.** Ana ağda gerçek parayla hiçbir şey denemeden önce bu yolun tamamını okumak iyi bir fikir.
+Ana ağda gerçek parayla hiçbir şey denemeden önce bu yolun tamamını okumak iyi bir fikir.

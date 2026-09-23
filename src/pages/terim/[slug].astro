@@ -4,6 +4,7 @@ import { getCollection, getEntry, render } from 'astro:content';
 
 import { kategoriBul } from '../../data/kategoriler.ts';
 import Temel from '../../layouts/Temel.astro';
+import { SEVIYE_ADLARI } from '../../lib/seviye.ts';
 import { kategoriYolu, siteYolu, terimYolu } from '../../lib/yol.ts';
 
 export const getStaticPaths = (async () => {
@@ -36,12 +37,6 @@ async function baglantilar(sluglar: readonly string[]) {
 
 const ilgili = await baglantilar(terim.data.related);
 const anlamAyrimi = await baglantilar(terim.data.disambiguation);
-
-const SEVIYE_ADLARI: Record<string, string> = {
-  baslangic: 'Başlangıç',
-  orta: 'Orta',
-  ileri: 'İleri',
-};
 
 const tarihBicimi = new Intl.DateTimeFormat('tr-TR', { dateStyle: 'long' });
 ---

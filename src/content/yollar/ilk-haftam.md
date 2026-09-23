@@ -43,4 +43,4 @@ Bir Discord sunucusuna ya da bir topluluk etkinliğine ilk kez girdiğinde karş
 
 Sıra rastgele değil. Önce zincirin kendisi ve üstünde ne olup bittiği geliyor, sonra ağın kimlerden oluştuğu, sonra paranın ve ücretin nasıl çalıştığı. Cüzdan ve anahtar konusu ortada duruyor, çünkü bunu anlamadan hiçbir uygulamaya güvenle bağlanamazsın. Son beş terim ise teknik değil kültürel: sosyal medyada en çok göreceğin kelimeler ve en çok karşılaşacağın iki tuzak.
 
-**Tahmini okuma süresi: ~30 dakika.** Bir oturuşta bitirmek zorunda değilsin; ilk on terim tek başına da işe yarar.
+Bir oturuşta bitirmek zorunda değilsin; ilk on terim tek başına da işe yarar.

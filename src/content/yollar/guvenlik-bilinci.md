@@ -50,5 +50,3 @@ Sıra üç bölüm hâlinde ilerliyor. Önce **neyi koruyorsun**: özel anahtar,
 Son altı terim savunma tarafı: kendi araştırmanı yapmak ne demek, tehdit modeli nasıl kurulur, denetim raporu ne söyler ve ne söylemez, açığı bulan iyi niyetli kişiler nasıl çalışır.
 
 Hiçbir metin seni tamamen korumaz; ama bu terimleri bilen biri, tanımadığı bir ekrana "onayla" demeden önce bir saniye duraksar. Bu yolun bütün amacı o bir saniyedir.
-
-**Tahmini okuma süresi: ~35 dakika.**

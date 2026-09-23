@@ -1,0 +1,182 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection, render } from 'astro:content';
+
+import Temel from '../../layouts/Temel.astro';
+import { kelimeSay, okumaDakikasi } from '../../lib/okuma.ts';
+import { SEVIYE_ADLARI } from '../../lib/seviye.ts';
+import { siteYolu, terimYolu } from '../../lib/yol.ts';
+
+export const getStaticPaths = (async () => {
+  const yollar = await getCollection('yollar');
+  return yollar.map((yol) => ({
+    params: { slug: yol.id },
+    props: { yol },
+  }));
+}) satisfies GetStaticPaths;
+
+const { yol } = Astro.props;
+const { Content } = await render(yol);
+
+const terimler = await getCollection('terimler');
+const terimHaritasi = new Map(terimler.map((terim) => [terim.id, terim]));
+
+/** Listedeki sıra öğrenme sırasıdır; alfabetik ya da başka bir sıraya dizilmez. */
+const adimlar = yol.data.terms.map((slug) => {
+  const terim = terimHaritasi.get(slug);
+  return {
+    slug,
+    ad: terim?.data.term ?? slug,
+    tr: terim?.data.tr ?? '',
+    kisa: terim?.data.short ?? '',
+    yazilmadi: terim === undefined || terim.data.status === 'stub',
+    kelime: kelimeSay(terim?.body ?? ''),
+  };
+});
+
+const dakika = okumaDakikasi(adimlar.reduce((toplam, a) => toplam + a.kelime, 0));
+const sayi = new Intl.NumberFormat('tr-TR');
+---
+
+<Temel baslik={yol.data.title} aciklama={yol.data.short} aktif="yollar">
+  <article class="yol">
+    <nav class="izlek" aria-label="Konum">
+      <a href={siteYolu('/')}>Kategoriler</a>
+      <span class="izlek__ayrac" aria-hidden="true">/</span>
+      <a href={siteYolu('/yollar')}>Öğrenme yolları</a>
+      <span class="izlek__ayrac" aria-hidden="true">/</span>
+      <span>{yol.data.title}</span>
+    </nav>
+
+    <header class="sayfa-basi">
+      <h1>{yol.data.title}</h1>
+      <p class="sayfa-basi__giris">{yol.data.short}</p>
+      <div class="satir yol__olculer">
+        <span class="rozet rozet--seviye">{SEVIYE_ADLARI[yol.data.level]}</span>
+        <span class="yol__olcu">
+          {sayi.format(adimlar.length)} terim · ~{sayi.format(dakika)} dk
+        </span>
+      </div>
+    </header>
+
+    <div class="okuma yol__giris">
+      <Content />
+    </div>
+
+    <section class="bolum">
+      <h2 class="bolum__baslik">Okuma sırası</h2>
+      <ol class="terim-listesi yol-adimlar">
+        {
+          adimlar.map((adim, i) => (
+            <li class="yol-adim">
+              <span class="yol-adim__sira" aria-hidden="true">
+                {sayi.format(i + 1)}
+              </span>
+              <a class="terim-satiri__ad yol-adim__ad" href={terimYolu(adim.slug)}>
+                {adim.ad}
+              </a>
+              {adim.tr !== '' && (
+                <span class="terim-satiri__tr yol-adim__tr">{adim.tr}</span>
+              )}
+              {adim.kisa !== '' && (
+                <span class="terim-satiri__kisa yol-adim__kisa">{adim.kisa}</span>
+              )}
+              {adim.yazilmadi && (
+                <span class="terim-satiri__kisa yol-adim__kisa" data-yazilmadi>
+                  Bu terim henüz yazılmadı.
+                </span>
+              )}
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <footer class="yol__alt">
+      <p>
+        Bu yol bir sıralamadır, bir ders değil. Bir terimde takılırsan geç, sonra
+        dön. <a href={siteYolu('/yollar')}>Diğer yollara bak</a> ya da{' '}
+        <a href={siteYolu('/ara')}>doğrudan ara</a>.
+      </p>
+    </footer>
+  </article>
+</Temel>
+
+<style>
+  .yol {
+    max-width: var(--measure);
+  }
+
+  .yol__olculer {
+    padding-top: var(--space-1);
+  }
+
+  .yol__olcu {
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .yol__giris {
+    margin-top: var(--space-6);
+  }
+
+  /* Liste kabuğu .terim-listesi'nden gelir (zemin, yarıçap, işaretçi yok);
+     burada yalnızca satırın kendi düzeni tanımlanır. */
+  .yol-adim {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-1) var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    min-height: var(--target-min);
+    align-items: baseline;
+  }
+
+  .yol-adim + .yol-adim {
+    border-top: 1px solid var(--color-line);
+  }
+
+  .yol-adim:hover {
+    background: var(--color-surface-sunken);
+  }
+
+  /* Sıra numarası dekoratif: bilgi zaten listenin kendi sırasında.
+     Ekran okuyucu <ol> sayesinde sırayı ayrıca duyurur. */
+  .yol-adim__sira {
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+    font-variant-numeric: tabular-nums;
+    min-width: var(--step-num-col);
+    text-align: end;
+  }
+
+  /* Numara sütunu dışındaki her şey ikinci sütunda; dar ekranda alt alta. */
+  .yol-adim__ad,
+  .yol-adim__tr,
+  .yol-adim__kisa {
+    grid-column: 2;
+  }
+
+  .yol__alt {
+    margin-top: var(--space-8);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-line);
+    color: var(--color-text-muted);
+    font-size: var(--text-small);
+  }
+
+  @media (min-width: 48rem) {
+    /* Geniş ekranda ad ve Türkçe karşılık yan yana, açıklama altlarında. */
+    .yol-adim {
+      grid-template-columns: auto var(--term-name-col) 1fr;
+    }
+
+    .yol-adim__tr {
+      grid-column: 3;
+    }
+
+    .yol-adim__kisa {
+      grid-column: 2 / -1;
+    }
+  }
+</style>
