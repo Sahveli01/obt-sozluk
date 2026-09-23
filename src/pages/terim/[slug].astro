@@ -198,8 +198,12 @@ const tarihBicimi = new Intl.DateTimeFormat('tr-TR', { dateStyle: 'long' });
 </Temel>
 
 <style>
+  /* Yazı tek sütun ve kabuğun içinde ortalı. Sola yaslı bırakıldığında
+     geniş ekranda sayfanın sağ yarısı boş kalıyor, düzen dengesiz
+     görünüyordu. */
   .terim {
     max-width: var(--measure);
+    margin-inline: auto;
   }
 
   /* Başlık bölgesi: solunda ailenin renginde şerit, terim adı o renkte.

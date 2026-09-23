@@ -184,25 +184,29 @@
     'IBM Plex Mono', ui-monospace, 'Cascadia Mono', 'Consolas', monospace;
 
   /* --- Tip ölçeği ------------------------------------------------ */
-  /* Taban 17px (html üzerinde %106.25). Telefonda, aydınlık ortamda,
-   * uzun Türkçe kelimelerle okunacak; 16px tabana göre bilerek büyük.
-   * Basamaklar arası sıçrama belirgin: 1 -> 1.25 -> 1.5 -> 2 -> 2.75 */
-  --text-micro: 0.8125rem; /* YALNIZCA dekoratif. Bilgi taşımaz. */
-  --text-meta: 0.875rem;
-  --text-small: 0.9375rem;
-  --text-body: 1rem;
-  --text-lead: 1.125rem;
+  /* Taban 16px: `html` üzerinde yüzde ayarı yok, 1rem = tarayıcının
+   * varsayılanı. Önceki 17px taban her şeyi bir tık büyütüyor, sayfalar
+   * gereğinden uzun ve iri görünüyordu.
+   *
+   * Hiyerarşi ölçekle birlikte küçüldü ama korundu: liste adı (18px,
+   * semibold) ile meta bilgi (13px, regular, soluk) arasında hem 1.38
+   * kat boyut hem iki basamak ağırlık farkı var. */
+  --text-micro: 0.75rem; /* 12px — YALNIZCA dekoratif. Bilgi taşımaz. */
+  --text-meta: 0.8125rem; /* 13px */
+  --text-small: 0.875rem; /* 14px */
+  --text-body: 1rem; /* 16px */
+  --text-lead: 1.0625rem; /* 17px */
   /* Listelerde adın basamağı: terim, kategori ve yol adları. Gövdeden bir
    * basamak yukarıda durur; asıl ayrımı ağırlıkla birlikte kurar. */
-  --text-item: 1.1875rem;
-  --text-h3: 1.25rem;
-  --text-h2: 1.5rem;
-  --text-h1: 2rem;
-  --text-display: 2.75rem;
+  --text-item: 1.125rem; /* 18px */
+  --text-h3: 1.1875rem; /* 19px */
+  --text-h2: 1.375rem; /* 22px */
+  --text-h1: 1.75rem; /* 28px */
+  --text-display: 2.25rem; /* 36px */
 
   /* Okunabilir alt sınır. Bunun altındaki her şey dekoratiftir.
    * `--text-meta` destekleyici bilgi (sayı, seviye, tarih) için taban:
-   * 17px kökte 14.9px eder ve her zaman --color-text-muted ile gelir,
+   * 13px eder ve her zaman --color-text-muted ile gelir,
    * o çift de kontrast tabanını geçer. Bilgi taşıyan hiçbir şey
    * --text-micro'ya düşmez. */
   --text-min-readable: var(--text-meta);
@@ -220,20 +224,27 @@
   --weight-medium: 500;
   --weight-semibold: 600;
 
-  /* Okuma satır uzunluğu. Hiçbir metin bloğu bunlardan geniş olmaz. */
+  /* Okuma satır uzunluğu. Akan metin bunlardan geniş olmaz. */
   --measure: 66ch;
   --measure-narrow: 52ch;
+  /* Liste satırındaki tek cümlelik tanım için. Akan metin değil, en fazla
+   * 160 karakterlik tek bir cümle olduğu için --measure'dan gevşek: dar
+   * tutulduğunda geniş ekranda satırın sağ yarısı boş kalıyordu. */
+  --measure-wide: 88ch;
 
   /* --- Boşluk: tek birim 4px ------------------------------------- */
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 0.75rem;
-  --space-4: 1rem;
-  --space-5: 1.5rem;
-  --space-6: 2rem;
-  --space-7: 3rem;
-  --space-8: 4rem;
-  --space-9: 6rem;
+  /* Üst basamaklar bilerek sıkıldı (1.5/2/3/4/6 -> 1.25/1.75/2.25/3/4):
+   * bölüm araları ve sayfa dolgusu tip ölçeğiyle aynı oranda küçülsün,
+   * sayfa derli toplu görünsün. Alt basamaklar 4px ızgarasında kaldı. */
+  --space-1: 0.25rem; /* 4px */
+  --space-2: 0.5rem; /* 8px */
+  --space-3: 0.75rem; /* 12px */
+  --space-4: 1rem; /* 16px */
+  --space-5: 1.25rem; /* 20px */
+  --space-6: 1.75rem; /* 28px */
+  --space-7: 2.25rem; /* 36px */
+  --space-8: 3rem; /* 48px */
+  --space-9: 4rem; /* 64px */
 
   /* --- Yarıçap: hiyerarşi, tek değer değil ----------------------- */
   /* İç içe öğe her zaman ebeveyninden küçük yarıçap alır. */
@@ -264,8 +275,10 @@
   --focus-offset: 2px;
 
   /* --- Düzen ------------------------------------------------------ */
-  /* İçerik genişliği, en dar makul projeksiyonda (1024px) da sığar. */
-  --layout-max: 68rem;
+  /* Kabuk: üst çubuk, içerik ve alt bilgi aynı genişliği paylaşır ve
+   * sayfada ortalanır, böylece üçü aynı hizada başlayıp biter.
+   * 72rem = 1152px; 1440px'te iki yanda eşit boşluk kalır. */
+  --layout-max: 72rem;
   --layout-gutter: var(--space-4);
 
   /* Kategori satırındaki ad sütunu; uzun Türkçe adlar sığsın diye. */

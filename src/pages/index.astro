@@ -86,36 +86,35 @@ const yollar = (await getCollection('yollar'))
     </p>
   </form>
 
+  {/*
+    Kapsam bilgisi tek satır. Eskiden hem burada hem altındaki bildirim
+    kutusunda aynı sayı yazıyordu. Metin sunucuda üretiliyor: indeks
+    yüklenmeden de doğru, "yükleniyor" titremesi yok. Arama betiği indeks
+    hazır olunca aynı cümleyi tazeler, hata olursa yerine hatayı yazar.
+  */}
   <p class="arama-durum" id="arama-durumu" role="status" aria-live="polite">
-    İndeks yükleniyor…
+    {sayi.format(toplamTerim)} terim aranabilir.
   </p>
 
   <ul class="terim-listesi" id="arama-sonuclari" hidden></ul>
 
   <div id="gozat">
-    {/*
-      Sözlüğün bugünkü en önemli gerçeği bu; en küçük puntoda dipnot değil,
-      listenin başında açık bir cümle olarak duruyor.
-    */}
-    <div class="bildirim bildirim--notr kapsam">
-      <span class="bildirim__baslik">
-        {
-          toplamYazilmis === toplamTerim
-            ? `${sayi.format(toplamTerim)} terimin tamamı yazıldı.`
-            : `${sayi.format(toplamTerim)} terim listelendi, ${sayi.format(toplamYazilmis)} tanesi yazıldı.`
-        }
-      </span>
-      {
-        /* Yazılmamış terim kalmadığında bu cümle yanlış olurdu; o yüzden
-           yalnızca gerçekten eksik varken görünür. */
-        toplamYazilmis < toplamTerim && (
+    {
+      /* Yazılmamış terim varsa bunu söylemek gerekir; hepsi yazıldığında
+         kutu bilgi taşımadan yer kaplar, o yüzden hiç basılmaz. */
+      toplamYazilmis < toplamTerim && (
+        <div class="bildirim bildirim--notr kapsam">
+          <span class="bildirim__baslik">
+            {sayi.format(toplamTerim)} terimin {sayi.format(toplamYazilmis)} tanesi
+            yazıldı.
+          </span>
           <span>
             Geri kalanların adı listede duruyor ama tanımı henüz yok. Bir
             kategoriye girdiğinde hangilerinin yazıldığını görürsün.
           </span>
-        )
-      }
-    </div>
+        </div>
+      )
+    }
 
     {/*
       Arama, ne aradığını bilen okur içindir. Bilmeyen okurun buradan bir

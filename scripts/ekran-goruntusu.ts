@@ -46,8 +46,13 @@ const VARSAYILAN_SAYFALAR = [
   '/yollar',
 ] as const;
 
-/** Masaüstü ve telefon. Aradaki kırılma noktası 48rem = 768px. */
+/**
+ * Masaüstü, geniş masaüstü ve telefon. Aradaki kırılma noktası 48rem = 768px.
+ * 1440 ayrıca var çünkü kabuk genişliği orada sınırına dayanıyor: düzenin
+ * ortalanıp ortalanmadığı ancak kabuktan geniş bir ekranda görülüyor.
+ */
 const GENISLIKLER = [
+  { ad: '1440', width: 1440, height: 1600 },
   { ad: '1280', width: 1280, height: 1600 },
   { ad: '390', width: 390, height: 1400 },
 ] as const;

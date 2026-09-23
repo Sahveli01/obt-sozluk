@@ -107,12 +107,13 @@ const sayi = new Intl.NumberFormat('tr-TR');
     white-space: nowrap;
   }
 
+  /* Terim satırındaki tanımla aynı gerekçe: tek cümle, --measure-wide. */
   .yol-satiri__kisa {
     grid-column: 1 / -1;
     font-size: var(--text-small);
     line-height: var(--leading-body);
     color: var(--color-text-muted);
-    max-width: var(--measure);
+    max-width: var(--measure-wide);
     text-wrap: pretty;
   }
 

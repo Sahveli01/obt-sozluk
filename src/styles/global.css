@@ -28,9 +28,10 @@
  * =================================================================== */
 
 html {
-  /* 16px tabandan 17px'e. Yüzde kullanıldığı için kullanıcının kendi
-   * yazı tipi boyutu ayarı korunur. */
-  font-size: 106.25%;
+  /* Taban tarayıcının kendi varsayılanı (genelde 16px). Daha önce %106.25
+   * ile 17px'e çıkarılıyordu; bütün sayfa gereğinden iri duruyordu.
+   * Yüzde ayarı olmadığı için kullanıcının kendi yazı tipi boyutu ayarı
+   * doğrudan geçerli olur. */
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
 }
@@ -463,13 +464,15 @@ svg {
   font-size: var(--text-meta);
 }
 
-/* Alt satır: tanım iki sütunu da kaplar. */
+/* Alt satır: tanım iki sütunu da kaplar. Akan metin değil tek cümle
+ * olduğu için --measure yerine daha gevşek olan --measure-wide ile
+ * sınırlanır; dar tutulduğunda geniş ekranda satırın sağı boş kalıyordu. */
 .terim-satiri__kisa {
   grid-column: 1 / -1;
   color: var(--color-text-muted);
   font-size: var(--text-small);
   line-height: var(--leading-body);
-  max-width: var(--measure);
+  max-width: var(--measure-wide);
   text-wrap: pretty;
 }
 
