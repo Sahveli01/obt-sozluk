@@ -14,12 +14,19 @@ export const SITE = {
   /** Sayfa dili. */
   lang: 'tr',
   /**
-   * GitHub Pages yayın adresi. `astro.config.ts` buradan okur.
-   * Özel bir alan adına geçilirse burası o alan adı olur ve `base` '/' döner.
+   * Yayın adresi. `astro.config.ts` buradan okur; sitenin tek yayın hedefi
+   * Vercel'dir. Özel bir alan adına geçilirse yalnızca burası değişir.
    */
-  site: 'https://sahveli01.github.io',
-  /** Alt dizin yayını için taban yol. Depo adıyla aynı; kök alan adında '/' olur. */
-  base: '/obt-sozluk',
+  site: 'https://obt-sozluk.vercel.app',
+  /**
+   * Taban yol. Site kök dizinde yayınlandığı için '/'.
+   *
+   * Alt dizinde yayın (ör. GitHub Pages'te `/depo-adi`) gerekirse burası
+   * o dizin olur; `src/lib/yol.ts` ve derleme sırasında çalışan remark
+   * eklentisi bütün bağlantıları buradan üretir. Kök yayında bu değerin
+   * '/' dışında bir şey olması varlık yollarını 404'e düşürür.
+   */
+  base: '/',
 } as const;
 
 /** Terim sayfalarının URL ön eki. Slug'lar kalıcıdır, bu ön ek de öyle. */

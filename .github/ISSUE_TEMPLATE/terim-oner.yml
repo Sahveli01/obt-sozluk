@@ -7,7 +7,7 @@ body:
     attributes:
       value: |
         Teşekkürler! Önce hızlı bir kontrol: terim gerçekten yok mu?
-        Sitedeki aramayı ve [`docs/terim-taslagi.md`](../blob/main/docs/terim-taslagi.md)
+        Sitedeki aramayı ve [`docs/terim-taslagi.md`](https://github.com/Sahveli01/obt-sozluk/blob/main/docs/terim-taslagi.md)
         dosyasını bir kez kontrol et — terim taslakta olup henüz yazılmamış olabilir.
         Öyleyse bu form yerine doğrudan o terimi yazıp pull request açabilirsin.
 

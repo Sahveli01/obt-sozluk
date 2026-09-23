@@ -8,7 +8,7 @@ body:
       value: |
         Küçük bir yazım hatası için issue açmak zorunda değilsin — dosyayı GitHub
         web arayüzünden doğrudan düzeltip pull request açabilirsin. Nasıl
-        yapılacağı [`CONTRIBUTING.md`](../blob/main/CONTRIBUTING.md) içinde anlatılıyor.
+        yapılacağı [`CONTRIBUTING.md`](https://github.com/Sahveli01/obt-sozluk/blob/main/CONTRIBUTING.md) içinde anlatılıyor.
 
   - type: dropdown
     id: tur

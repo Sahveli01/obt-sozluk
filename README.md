@@ -67,12 +67,24 @@ scripts/contrast.ts          kontrast tabanı denetimi
 
 ## Yayın
 
-Her pull request'te `.github/workflows/ci.yml` `npm ci` + `validate` +
-`contrast` + `build` çalıştırır. `main` dalına her push'ta
-`.github/workflows/deploy.yml` aynı kontrolleri yapıp GitHub Pages'e yayımlar.
+Site **Vercel**'de yayımlanır: <https://obt-sozluk.vercel.app>
 
-Yayın adresi `src/config.ts` içindeki `site` ve `base` değerlerinden gelir.
-Özel bir alan adına geçilirse `base` değeri `'/'` yapılmalıdır.
+Yayını Vercel'in kendi Git entegrasyonu yapar; `main` dalına her push
+otomatik olarak üretime, her pull request de ayrı bir önizleme adresine
+çıkar. Depoda yayın için bir GitHub Actions iş akışı yoktur.
+
+Her pull request'te ve `main` push'unda `.github/workflows/ci.yml`
+`npm ci` + `validate` + `contrast` + `build` çalıştırır. Bu, kırık bir
+commit'in main'e girip yayını düşürmesini engeller.
+
+Yayın adresi ve taban yol `src/config.ts` içindeki `site` ve `base`
+değerlerinden gelir; başka hiçbir yerde sabit yazılmaz.
+
+- Kök dizinde yayın (bugünkü durum): `base: '/'`.
+- Alt dizinde yayın gerekirse `base` o dizin olur — örneğin GitHub Pages'te
+  `'/obt-sozluk'`. Kök dizinde alt dizin değeri bırakılırsa bütün varlık
+  yolları 404 verir ve site stilsiz açılır.
+- Özel alan adına geçilirse yalnızca `site` değişir.
 
 ## Katkı
 

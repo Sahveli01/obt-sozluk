@@ -28,10 +28,13 @@ jobs:
       - name: İçerik doğrulama
         run: npm run validate
 
-      # Yayın iş akışı da bunu çalıştırır; burada takılması main'i korur.
+      # Kontrast tabanı DESIGN.md'nin merkezî kararı; elle denetlenen bir
+      # kural ilk değişiklikte sessizce çürür.
       - name: Kontrast tabanı
         run: npm run contrast
 
+      # Yayını Vercel yapar; derlemenin burada da geçmesi, kırık bir
+      # commit'in main'e girip yayını düşürmesini engeller.
       - name: Derleme
         run: npm run build
 

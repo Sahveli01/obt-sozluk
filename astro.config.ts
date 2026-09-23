@@ -5,9 +5,10 @@ import { remarkWikiLink } from './src/lib/remark-wiki-link.ts';
 
 // https://astro.build/config
 export default defineConfig({
+  // Yayın adresi ve taban yol tek yerde: src/config.ts.
   site: SITE.site,
   base: SITE.base,
-  // GitHub Pages statik dosya sunar; her sayfa kendi klasöründe index.html olur.
+  // Statik çıktı; her sayfa kendi klasöründe index.html olur.
   build: { format: 'directory' },
   trailingSlash: 'ignore',
   markdown: {
