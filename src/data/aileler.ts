@@ -73,6 +73,24 @@ export const AILELER: readonly Aile[] = [
   },
 ] as const;
 
+/** Kategori slug'ından ailesine. `kapsamiDenetle` bunun eksiksiz olmasını garanti eder. */
+const KATEGORI_AILESI = new Map<string, Aile>(
+  AILELER.flatMap((aile) => aile.kategoriler.map((slug) => [slug, aile] as const)),
+);
+
+/** Bir kategorinin ailesi; tanımsız kategoride `undefined`. */
+export function aileBul(kategoriSlug: string): Aile | undefined {
+  return KATEGORI_AILESI.get(kategoriSlug);
+}
+
+/**
+ * Ailenin renk token'ının adı. `tokens.css` içindeki `--color-family-*`
+ * adları aile slug'larıyla birebir aynıdır; bağ burada kurulur.
+ */
+export function aileRengi(aile: Aile | undefined): string {
+  return aile ? `var(--color-family-${aile.slug})` : 'var(--color-family-fallback)';
+}
+
 /**
  * Kapsama denetimi. Her kategori tam olarak bir ailede geçmek zorundadır;
  * aksi hâlde derleme burada durur. Taslağa yeni kategori eklenip buraya

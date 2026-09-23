@@ -63,10 +63,15 @@ const HUE: Record<string, number> = {
   '--hue-danger': 25,
   '--hue-warning': 75,
   '--hue-success': 155,
+  '--hue-family-blockchain': 262,
+  '--hue-family-gelistirme': 196,
+  '--hue-family-yapay-zeka': 318,
+  '--hue-family-urun-topluluk': 58,
+  '--hue-family-piyasa': 142,
 };
 
 const OKLCH_DESENI =
-  /^oklch\(\s*([\d.]+)\s+([\d.]+)\s+(var\(--hue-[a-z]+\)|[\d.]+)\s*\)$/;
+  /^oklch\(\s*([\d.]+)\s+([\d.]+)\s+(var\(--hue-[a-z-]+\)|[\d.]+)\s*\)$/;
 
 /** `oklch(L C H)` metnini renge çevirir; tanımadığı biçimde `undefined`. */
 function oklchCozumle(metin: string): RGB | undefined {
@@ -160,6 +165,19 @@ const CIFTLER: ReadonlyArray<readonly [string, string, number, string]> = [
   ['--color-danger', '--color-danger-subtle', METIN_TABANI, 'hata rozeti'],
   ['--color-text', '--color-warning-subtle', METIN_TABANI, 'uyarı kutusu metni'],
   ['--color-text', '--color-danger-subtle', METIN_TABANI, 'hata kutusu metni'],
+  // Aile renkleri hem başlık metni hem sol şerit olarak kullanılır:
+  // metin tabanını geçerlerse şerit tabanını da geçerler.
+  ['--color-family-blockchain', '--color-bg', METIN_TABANI, 'aile: Blockchain'],
+  ['--color-family-blockchain', '--color-surface', METIN_TABANI, 'aile: Blockchain (kart)'],
+  ['--color-family-gelistirme', '--color-bg', METIN_TABANI, 'aile: Geliştirme'],
+  ['--color-family-gelistirme', '--color-surface', METIN_TABANI, 'aile: Geliştirme (kart)'],
+  ['--color-family-yapay-zeka', '--color-bg', METIN_TABANI, 'aile: Yapay Zekâ'],
+  ['--color-family-yapay-zeka', '--color-surface', METIN_TABANI, 'aile: Yapay Zekâ (kart)'],
+  ['--color-family-urun-topluluk', '--color-bg', METIN_TABANI, 'aile: Ürün ve Topluluk'],
+  ['--color-family-urun-topluluk', '--color-surface', METIN_TABANI, 'aile: Ürün (kart)'],
+  ['--color-family-piyasa', '--color-bg', METIN_TABANI, 'aile: Piyasa'],
+  ['--color-family-piyasa', '--color-surface', METIN_TABANI, 'aile: Piyasa (kart)'],
+
   ['--color-line-strong', '--color-bg', CIZGI_TABANI, 'girdi kenarlığı'],
   ['--color-line-strong', '--color-surface', CIZGI_TABANI, 'girdi kenarlığı (kart)'],
   ['--color-accent', '--color-bg', CIZGI_TABANI, 'odak halkası'],

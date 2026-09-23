@@ -171,6 +171,21 @@ svg {
   display: flex;
   gap: var(--space-4);
   font-size: var(--text-small);
+  flex-shrink: 0;
+}
+
+/* Dar ekranda marka ile gezinme birbirine değiyordu: üç bağlantı ve tema
+ * seçici 390px'e ancak sığıyor. Marka kısalabilsin, gezinme daralsın. */
+@media (max-width: 47.999rem) {
+  .site-ust__nav {
+    gap: var(--space-3);
+    font-size: var(--text-meta);
+  }
+
+  .marka {
+    min-width: 0;
+    overflow: hidden;
+  }
 }
 
 .site-ust__nav a {
@@ -302,15 +317,19 @@ svg {
  * Projeksiyonda hue ayrımı güvenilmezdir.
  * ------------------------------------------------------------------ */
 
+/* Rozetler meta bilgidir: küçük, sakin, başlığın gölgesinde. Eskiden
+ * gövde ölçeğinde durup terim adıyla dikkat için yarışıyorlardı. */
 .rozet {
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
   font-family: var(--font-ui);
-  font-size: var(--text-small);
+  font-size: var(--text-meta);
   font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wide);
   line-height: 1.4;
-  padding: var(--space-1) var(--space-2);
+  padding: 0 var(--space-2);
+  min-height: var(--space-5);
   border-radius: var(--radius-chip);
   white-space: nowrap;
 }
@@ -388,42 +407,69 @@ svg {
   overflow: hidden;
 }
 
+/* Terim satırı iki satırdır, üç sütun değil:
+ *   1. satır  ad (belirgin)  +  Türkçe karşılığı (küçük, soluk)
+ *   2. satır  tek cümlelik tanım, tam genişlikte
+ * Eski sütunlu düzende uzun adlar ile uzun tanımlar birbirini itiyor ve
+ * hiçbir sütun hizada durmuyordu. Ad artık gövdeden bir basamak büyük ve
+ * yarı kalın; tanım ise küçülüp geri çekiliyor. */
+/* Flex değil grid: flex'te tanıma `flex-basis: 100%` verilse bile
+ * `max-width` onu küçültüp adın yanına sıkıştırıyor, satır kırılmıyordu.
+ * Grid'de iki satırlı yapı genişlikten bağımsız olarak garanti. */
 .terim-satiri {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: auto 1fr;
   align-items: baseline;
-  gap: var(--space-1) var(--space-3);
+  gap: var(--space-1) var(--space-2);
   padding: var(--space-3) var(--space-4);
   min-height: var(--target-min);
+  transition: background var(--motion-fast) var(--ease);
 }
 
 .terim-satiri + .terim-satiri {
   border-top: 1px solid var(--color-line);
 }
 
+/* Hover'da yalnızca zemin değişmez; sol kenarda bir şerit belirir.
+ * Zemin farkı projeksiyonda kaybolabiliyor, şerit kaybolmuyor. */
 .terim-satiri:hover {
   background: var(--color-surface-sunken);
+  box-shadow: inset var(--border-accent) 0 0 0 var(--color-accent-line);
 }
 
+/* Liste satırlarında ad metin rengindedir, vurgu renginde değil: her satırın
+ * bağlantı olduğu bir listede baştan sona mavi bir duvar okumayı
+ * kolaylaştırmıyor, zorlaştırıyor. Bağlantı olduğu hover, odak ve imleçten
+ * belli olur; hiyerarşiyi renk değil boyut ve ağırlık kurar. */
 .terim-satiri__ad {
-  font-weight: var(--weight-medium);
+  grid-column: 1;
+  font-size: var(--text-item);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
   text-decoration: none;
   overflow-wrap: anywhere;
 }
 
 .terim-satiri__ad:hover {
+  color: var(--color-accent);
   text-decoration: underline;
 }
 
+/* Üst satırın sağ yarısı; tanım aşağıda tam genişlikte. */
 .terim-satiri__tr {
+  grid-column: 2;
+  justify-self: start;
   color: var(--color-text-muted);
-  font-size: var(--text-small);
+  font-size: var(--text-meta);
 }
 
+/* Alt satır: tanım iki sütunu da kaplar. */
 .terim-satiri__kisa {
+  grid-column: 1 / -1;
   color: var(--color-text-muted);
   font-size: var(--text-small);
-  flex-basis: 100%;
+  line-height: var(--leading-body);
+  max-width: var(--measure);
   text-wrap: pretty;
 }
 
@@ -523,19 +569,28 @@ svg {
  * ------------------------------------------------------------------- */
 
 .aile + .aile {
-  margin-top: var(--space-7);
+  margin-top: var(--space-8);
 }
 
+/* Aile başlığı sayfanın ikinci düzeyidir ve öyle görünmeli: üstünde
+ * ailenin renginde kısa bir kural çizgisi, altında soluk bir cümle.
+ * Renk tek başına iş görmez — başlığın kendi metni hep yanındadır. */
 .aile__baslik {
   font-size: var(--text-h2);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-display);
+  color: var(--family-color, var(--color-text));
+  padding-top: var(--space-3);
+  border-top: var(--border-accent) solid
+    var(--family-color, var(--color-family-fallback));
 }
 
 .aile__aciklama {
-  margin-top: var(--space-1);
+  margin-top: var(--space-2);
   margin-bottom: var(--space-4);
   color: var(--color-text-muted);
   font-size: var(--text-small);
-  max-width: var(--measure);
+  max-width: var(--measure-narrow);
   text-wrap: pretty;
 }
 
@@ -547,39 +602,57 @@ svg {
   overflow: hidden;
 }
 
+/* Kategori satırı: solda ad (belirgin), sağda ölçüler (küçük, soluk).
+ * Sol kenardaki şerit satırın hangi aileye ait olduğunu söyler; rengi
+ * ailenin kendi token'ından, `--family-color` üzerinden gelir. */
 .kategori-satiri {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-1) var(--space-4);
   padding: var(--space-3) var(--space-4);
+  padding-inline-start: calc(var(--space-4) + var(--border-accent));
   min-height: var(--target-min);
   align-content: center;
+  position: relative;
+  transition: background var(--motion-fast) var(--ease);
+}
+
+/* Şerit ::before ile çizilir; kenarlık kullanılsaydı satır yüksekliğini
+ * ve iç boşluğu da etkilerdi. */
+.kategori-satiri::before {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: var(--border-accent);
+  background: var(--family-color, var(--color-family-fallback));
 }
 
 .kategori-satiri + .kategori-satiri {
   border-top: 1px solid var(--color-line);
 }
 
+.kategori-satiri:hover {
+  background: var(--color-surface-sunken);
+}
+
 .kategori-satiri__ad {
-  font-weight: var(--weight-medium);
+  font-size: var(--text-item);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
   text-decoration: none;
   overflow-wrap: break-word;
 }
 
 .kategori-satiri__ad:hover {
+  color: var(--color-accent);
   text-decoration: underline;
 }
 
 .kategori-satiri__sayi {
-  font-size: var(--text-small);
+  font-size: var(--text-meta);
   color: var(--color-text-muted);
   font-variant-numeric: tabular-nums;
-}
-
-.kategori-satiri__ornek {
-  font-size: var(--text-small);
-  color: var(--color-text-muted);
-  text-wrap: pretty;
 }
 
 .noscript-kategoriler {
@@ -596,18 +669,22 @@ svg {
 /* --- Bölüm başlığı ------------------------------------------------ */
 
 .bolum {
-  margin-top: var(--space-6);
+  margin-top: var(--space-7);
 }
 
 .bolum__baslik {
   font-size: var(--text-h3);
+  font-weight: var(--weight-semibold);
   margin-bottom: var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-line);
 }
 
+/* Alt başlığın yanındaki sayı: bilgi taşır ama başlıkla yarışmaz. */
 .bolum__sayi {
   font-weight: var(--weight-regular);
   color: var(--color-text-muted);
-  font-size: var(--text-small);
+  font-size: var(--text-meta);
   font-variant-numeric: tabular-nums;
 }
 
@@ -758,31 +835,18 @@ svg {
     display: inline;
   }
 
-  .terim-satiri {
-    flex-wrap: nowrap;
-  }
+  /* Terim satırı geniş ekranda da iki satır kalır. Eskiden burada ad
+   * sabit bir sütuna alınıyor, tanım yanına akıyordu; uzun adlarda ve
+   * uzun tanımlarda hiçbir şey hizada durmuyordu. */
 
-  .terim-satiri__ad {
-    flex: 0 0 var(--term-name-col);
-  }
-
-  /* `flex: 1 1 auto` bunu 1280px'te ~137 karakterlik satırlara çıkarıyordu;
-   * ölçü sınırı hem burada hem alt bilgide tutulur. */
-  .terim-satiri__kisa {
-    flex: 1 1 auto;
-    flex-basis: auto;
-    max-width: var(--measure);
-  }
-
-  /* Kategori satırı: ad | sayı | örnek terimler. */
+  /* Kategori satırı tek satıra sığar: ad solda, ölçüler sağda. */
   .kategori-satiri {
-    grid-template-columns: var(--cat-name-col) auto 1fr;
+    grid-template-columns: 1fr auto;
     align-items: baseline;
   }
 
-  .kategori-satiri__ornek {
+  .kategori-satiri__sayi {
     justify-self: end;
     text-align: end;
-    max-width: var(--measure);
   }
 }

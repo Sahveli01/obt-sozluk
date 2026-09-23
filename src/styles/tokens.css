@@ -34,6 +34,21 @@
   --hue-warning: 75;
   --hue-success: 155;
 
+  /* Aile çıpaları. Beş gezinme ailesi birbirinden ayırt edilebilsin diye
+   * hue çemberine olabildiğince eşit dağıtıldı (en dar aralık 56°).
+   *
+   * Bilinçli kabul: 58 uyarı hue'suna (75), 142 başarı hue'suna (155)
+   * yakın düşer. Karışma riski şu üç sebeple kabul edildi: doygunlukları
+   * semantik renklerin yarısı kadar, hiçbiri rozet zemininde kullanılmıyor
+   * (semantik renklerin tek yeri orası) ve her aile rengi her zaman
+   * ailenin yazılı adıyla birlikte görünüyor. Renk tek başına hiçbir yerde
+   * anlam taşımaz. */
+  --hue-family-blockchain: 262;
+  --hue-family-gelistirme: 196;
+  --hue-family-yapay-zeka: 318;
+  --hue-family-urun-topluluk: 58;
+  --hue-family-piyasa: 142;
+
   /* --- Yüzeyler -------------------------------------------------- */
   /* Ayrım gölgeyle değil zemin tonuyla yapılır. */
   --color-bg: light-dark(
@@ -96,6 +111,41 @@
     oklch(0.414 0.084 var(--hue-accent))
   );
 
+  /* --- Aile renkleri --------------------------------------------- */
+  /* Gezinme ailelerinin tınısı. Vurgudan daha düşük doygunlukta (0.09 /
+   * 0.163) çünkü işleri dikkat çekmek değil, ait olmayı göstermek.
+   *
+   * Üç yerde görünürler: ana sayfada aile başlığı ve o ailedeki kategori
+   * satırlarının sol şeridi, kategori sayfasının başlık bölgesi, o
+   * kategorideki terim sayfalarının izlek ve başlık bölgesi.
+   *
+   * Metin olarak da kullanıldıkları için hepsi iki temada da 4.5:1
+   * tabanını geçmek zorunda; `npm run contrast` beşini de denetler. */
+  --color-family-blockchain: light-dark(
+    oklch(0.44 0.09 var(--hue-family-blockchain)),
+    oklch(0.8 0.075 var(--hue-family-blockchain))
+  );
+  --color-family-gelistirme: light-dark(
+    oklch(0.44 0.09 var(--hue-family-gelistirme)),
+    oklch(0.8 0.075 var(--hue-family-gelistirme))
+  );
+  --color-family-yapay-zeka: light-dark(
+    oklch(0.44 0.09 var(--hue-family-yapay-zeka)),
+    oklch(0.8 0.075 var(--hue-family-yapay-zeka))
+  );
+  --color-family-urun-topluluk: light-dark(
+    oklch(0.44 0.09 var(--hue-family-urun-topluluk)),
+    oklch(0.8 0.075 var(--hue-family-urun-topluluk))
+  );
+  --color-family-piyasa: light-dark(
+    oklch(0.44 0.09 var(--hue-family-piyasa)),
+    oklch(0.8 0.075 var(--hue-family-piyasa))
+  );
+
+  /* Sayfa kimliği kurulmayan yerler için nötr yedek: aile bilinmiyorsa
+   * şerit ve başlık rengi metnin kendi rengine düşer. */
+  --color-family-fallback: var(--color-text);
+
   /* --- Semantik -------------------------------------------------- */
   --color-success: light-dark(
     oklch(0.432 0.114 var(--hue-success)),
@@ -138,16 +188,24 @@
    * uzun Türkçe kelimelerle okunacak; 16px tabana göre bilerek büyük.
    * Basamaklar arası sıçrama belirgin: 1 -> 1.25 -> 1.5 -> 2 -> 2.75 */
   --text-micro: 0.8125rem; /* YALNIZCA dekoratif. Bilgi taşımaz. */
+  --text-meta: 0.875rem;
   --text-small: 0.9375rem;
   --text-body: 1rem;
   --text-lead: 1.125rem;
+  /* Listelerde adın basamağı: terim, kategori ve yol adları. Gövdeden bir
+   * basamak yukarıda durur; asıl ayrımı ağırlıkla birlikte kurar. */
+  --text-item: 1.1875rem;
   --text-h3: 1.25rem;
   --text-h2: 1.5rem;
   --text-h1: 2rem;
   --text-display: 2.75rem;
 
-  /* Okunabilir alt sınır. Bunun altındaki her şey dekoratiftir. */
-  --text-min-readable: var(--text-small);
+  /* Okunabilir alt sınır. Bunun altındaki her şey dekoratiftir.
+   * `--text-meta` destekleyici bilgi (sayı, seviye, tarih) için taban:
+   * 17px kökte 14.9px eder ve her zaman --color-text-muted ile gelir,
+   * o çift de kontrast tabanını geçer. Bilgi taşıyan hiçbir şey
+   * --text-micro'ya düşmez. */
+  --text-min-readable: var(--text-meta);
 
   --leading-tight: 1.15;
   --leading-heading: 1.25;

@@ -2,6 +2,7 @@
 import type { GetStaticPaths } from 'astro';
 import { getCollection } from 'astro:content';
 
+import { aileBul, aileRengi } from '../../data/aileler.ts';
 import { KATEGORILER } from '../../data/kategoriler.ts';
 import Temel from '../../layouts/Temel.astro';
 import { siteYolu, terimYolu } from '../../lib/yol.ts';
@@ -32,22 +33,28 @@ const bloklar = [...kategori.altBasliklar, '']
 
 const yazilmis = terimler.filter((t) => t.data.status !== 'stub').length;
 const sayiBicimi = new Intl.NumberFormat('tr-TR');
+
+const aile = aileBul(kategori.slug);
 ---
 
 <Temel baslik={kategori.ad} aciklama={kategori.aciklama}>
-  <nav class="izlek" aria-label="Konum">
-    <a href={siteYolu('/')}>Kategoriler</a>
-    <span class="izlek__ayrac" aria-hidden="true">/</span>
-    <span>{kategori.ad}</span>
-  </nav>
+  <div class="kategori-kimlik" style={`--family-color: ${aileRengi(aile)}`}>
+    <nav class="izlek" aria-label="Konum">
+      <a href={siteYolu('/')}>Kategoriler</a>
+      <span class="izlek__ayrac" aria-hidden="true">/</span>
+      {aile && <span class="izlek__aile">{aile.ad}</span>}
+      <span class="izlek__ayrac" aria-hidden="true">/</span>
+      <span>{kategori.ad}</span>
+    </nav>
 
-  <div class="sayfa-basi">
-    <h1>{kategori.ad}</h1>
-    <p class="sayfa-basi__giris">{kategori.aciklama}</p>
-    <p class="kategori-sayi">
-      {sayiBicimi.format(terimler.length)} terim
-      {yazilmis > 0 && ` · ${sayiBicimi.format(yazilmis)} yazıldı`}
-    </p>
+    <div class="sayfa-basi">
+      <h1 class="kategori-baslik">{kategori.ad}</h1>
+      <p class="sayfa-basi__giris">{kategori.aciklama}</p>
+      <p class="kategori-sayi">
+        {sayiBicimi.format(terimler.length)} terim
+        {yazilmis > 0 && ` · ${sayiBicimi.format(yazilmis)} yazıldı`}
+      </p>
+    </div>
   </div>
 
   {
@@ -96,9 +103,34 @@ const sayiBicimi = new Intl.NumberFormat('tr-TR');
 </Temel>
 
 <style>
+  /* Başlık bölgesi sayfanın kimliğini taşır: solunda ailenin renginde bir
+     şerit, başlıkta aynı renk. Renk yalnız kalmıyor — aile adı izlekte
+     yazıyor ve başlığın kendisi zaten okunuyor. */
+  .kategori-kimlik {
+    padding-inline-start: var(--space-5);
+    border-inline-start: var(--border-accent) solid
+      var(--family-color, var(--color-family-fallback));
+    margin-bottom: var(--space-7);
+  }
+
+  .kategori-baslik {
+    color: var(--family-color, var(--color-text));
+  }
+
+  .izlek__aile {
+    color: var(--family-color, var(--color-text-muted));
+    font-weight: var(--weight-medium);
+  }
+
   .kategori-sayi {
     color: var(--color-text-muted);
-    font-size: var(--text-small);
+    font-size: var(--text-meta);
     font-variant-numeric: tabular-nums;
+  }
+
+  /* Başlık bloğu kendi alt boşluğunu taşıyor; sayfa-basi'nin kendi
+     boşluğu burada çift boşluk yaratırdı. */
+  .kategori-kimlik .sayfa-basi {
+    margin-bottom: 0;
   }
 </style>

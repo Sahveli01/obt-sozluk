@@ -2,6 +2,7 @@
 import type { GetStaticPaths } from 'astro';
 import { getCollection, getEntry, render } from 'astro:content';
 
+import { aileBul, aileRengi } from '../../data/aileler.ts';
 import { kategoriBul } from '../../data/kategoriler.ts';
 import Temel from '../../layouts/Temel.astro';
 import { SEVIYE_ADLARI } from '../../lib/seviye.ts';
@@ -19,6 +20,7 @@ const { terim } = Astro.props;
 const { Content } = await render(terim);
 
 const kategori = kategoriBul(terim.data.category);
+const aile = aileBul(terim.data.category);
 const stub = terim.data.status === 'stub';
 
 /** İlgili ve anlam ayrımı bağlantıları için gerçek terim adlarını çöz. */
@@ -46,7 +48,8 @@ const tarihBicimi = new Intl.DateTimeFormat('tr-TR', { dateStyle: 'long' });
   aciklama={terim.data.short || terim.data.term}
   noindex={stub}
 >
-  <article class="terim">
+  <article class="terim" style={`--family-color: ${aileRengi(aile)}`}>
+    <div class="terim__kimlik">
     <nav class="izlek" aria-label="Konum">
       <a href={siteYolu('/')}>Kategoriler</a>
       <span class="izlek__ayrac" aria-hidden="true">/</span>
@@ -68,7 +71,7 @@ const tarihBicimi = new Intl.DateTimeFormat('tr-TR', { dateStyle: 'long' });
     </nav>
 
     <header class="terim__bas">
-      <h1>{terim.data.term}</h1>
+      <h1 class="terim__ad">{terim.data.term}</h1>
       {terim.data.tr !== '' && <p class="terim__tr">{terim.data.tr}</p>}
       {terim.data.short !== '' && <p class="terim__kisa">{terim.data.short}</p>}
 
@@ -86,6 +89,7 @@ const tarihBicimi = new Intl.DateTimeFormat('tr-TR', { dateStyle: 'long' });
         }
       </div>
     </header>
+    </div>
 
     {
       /* "Yazılmadı" bir hata değil, sözlüğün dürüst bir durumu. Kırmızı
@@ -198,26 +202,48 @@ const tarihBicimi = new Intl.DateTimeFormat('tr-TR', { dateStyle: 'long' });
     max-width: var(--measure);
   }
 
+  /* Başlık bölgesi: solunda ailenin renginde şerit, terim adı o renkte.
+   * Renk yalnız değil — izlekte kategori adı, başlıkta terimin kendisi var. */
+  .terim__kimlik {
+    padding-inline-start: var(--space-5);
+    border-inline-start: var(--border-accent) solid
+      var(--family-color, var(--color-family-fallback));
+    margin-bottom: var(--space-6);
+  }
+
   .terim__bas > * + * {
     margin-top: var(--space-3);
   }
 
+  .terim__ad {
+    color: var(--family-color, var(--color-text));
+    overflow-wrap: anywhere;
+  }
+
   .terim__tr {
     font-size: var(--text-lead);
+    font-weight: var(--weight-medium);
     color: var(--color-text-muted);
   }
 
   /* Tek cümlelik tanım sayfanın en çok okunan satırı: okuma yüzeyinin
-   * serifiyle ve gövdeden büyük. */
+   * serifiyle ve gövdeden belirgin biçimde büyük. */
   .terim__kisa {
     font-family: var(--font-reading);
     font-size: var(--text-h3);
     line-height: var(--leading-body);
+    color: var(--color-text);
     text-wrap: pretty;
   }
 
   .terim__etiketler {
-    padding-top: var(--space-1);
+    padding-top: var(--space-2);
+  }
+
+  @media (min-width: 48rem) {
+    .terim__kisa {
+      font-size: var(--text-h2);
+    }
   }
 
   .terim__bos,
@@ -226,7 +252,7 @@ const tarihBicimi = new Intl.DateTimeFormat('tr-TR', { dateStyle: 'long' });
   }
 
   .okuma {
-    margin-top: var(--space-6);
+    margin-top: var(--space-5);
   }
 
   .kaynaklar {

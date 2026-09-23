@@ -2,12 +2,12 @@
 import { getCollection } from 'astro:content';
 
 import { SITE } from '../config.ts';
-import { AILELER } from '../data/aileler.ts';
+import { AILELER, aileRengi } from '../data/aileler.ts';
 import { KATEGORI_HARITASI } from '../data/kategoriler.ts';
 import Temel from '../layouts/Temel.astro';
 import { kelimeSay, okumaDakikasi } from '../lib/okuma.ts';
-import { SEVIYE_ADLARI, SEVIYE_SIRASI } from '../lib/seviye.ts';
-import { kategoriYolu, siteYolu, terimYolu } from '../lib/yol.ts';
+import { SEVIYE_ADLARI } from '../lib/seviye.ts';
+import { kategoriYolu, siteYolu } from '../lib/yol.ts';
 
 const terimler = await getCollection('terimler');
 
@@ -16,37 +16,18 @@ interface KategoriOzeti {
   ad: string;
   toplam: number;
   yazilmis: number;
-  ornekler: Array<{ slug: string; ad: string }>;
 }
 
 const ozetler = new Map<string, KategoriOzeti>();
 for (const [slug, kategori] of KATEGORI_HARITASI) {
-  ozetler.set(slug, { slug, ad: kategori.ad, toplam: 0, yazilmis: 0, ornekler: [] });
+  ozetler.set(slug, { slug, ad: kategori.ad, toplam: 0, yazilmis: 0 });
 }
 
-const yazilmisSecim = new Map<string, typeof terimler>();
 for (const terim of terimler) {
   const ozet = ozetler.get(terim.data.category);
   if (!ozet) continue;
   ozet.toplam += 1;
-  if (terim.data.status === 'stub') continue;
-  ozet.yazilmis += 1;
-  const liste = yazilmisSecim.get(terim.data.category) ?? [];
-  liste.push(terim);
-  yazilmisSecim.set(terim.data.category, liste);
-}
-
-for (const [slug, liste] of yazilmisSecim) {
-  const ozet = ozetler.get(slug);
-  if (!ozet) continue;
-  ozet.ornekler = liste
-    .sort((a, b) => {
-      const seviye =
-        (SEVIYE_SIRASI[a.data.level] ?? 9) - (SEVIYE_SIRASI[b.data.level] ?? 9);
-      return seviye !== 0 ? seviye : a.data.term.localeCompare(b.data.term, 'tr');
-    })
-    .slice(0, 3)
-    .map((t) => ({ slug: t.id, ad: t.data.term }));
+  if (terim.data.status !== 'stub') ozet.yazilmis += 1;
 }
 
 const toplamTerim = terimler.length;
@@ -118,23 +99,31 @@ const yollar = (await getCollection('yollar'))
     */}
     <div class="bildirim bildirim--notr kapsam">
       <span class="bildirim__baslik">
-        {sayi.format(toplamTerim)} terim listelendi, {sayi.format(toplamYazilmis)} tanesi
-        yazıldı.
+        {
+          toplamYazilmis === toplamTerim
+            ? `${sayi.format(toplamTerim)} terimin tamamı yazıldı.`
+            : `${sayi.format(toplamTerim)} terim listelendi, ${sayi.format(toplamYazilmis)} tanesi yazıldı.`
+        }
       </span>
-      <span>
-        Geri kalanların adı listede duruyor ama tanımı henüz yok. Aşağıda tanımı
-        yazılmış terimi olan kategorilerin yanında örnekleri görünür.
-      </span>
+      {
+        /* Yazılmamış terim kalmadığında bu cümle yanlış olurdu; o yüzden
+           yalnızca gerçekten eksik varken görünür. */
+        toplamYazilmis < toplamTerim && (
+          <span>
+            Geri kalanların adı listede duruyor ama tanımı henüz yok. Bir
+            kategoriye girdiğinde hangilerinin yazıldığını görürsün.
+          </span>
+        )
+      }
     </div>
 
     {/*
       Arama, ne aradığını bilen okur içindir. Bilmeyen okurun buradan bir
       başlangıç noktası bulması gerekir; yollar tam olarak o iş için.
+      Ana sayfa kısa kalsın diye altı yolun ilk üçü gösterilir.
     */}
-    <section class="aile">
-      <h2 class="aile__baslik">
-        <a class="yollar-baslik" href={siteYolu('/yollar')}>Öğrenme yolları</a>
-      </h2>
+    <section class="aile" style="--family-color: var(--color-accent)">
+      <h2 class="aile__baslik">Öğrenme yolları</h2>
       <p class="aile__aciklama">
         Nereden başlayacağını bilmiyorsan sıralı bir yol izle. Her yol bir soruya
         cevap verir ve terimleri öğrenme sırasına dizer.
@@ -142,24 +131,31 @@ const yollar = (await getCollection('yollar'))
 
       <ul class="kategori-listesi">
         {
-          yollar.map((yol) => (
+          yollar.slice(0, 3).map((yol) => (
             <li class="kategori-satiri">
               <a class="kategori-satiri__ad" href={siteYolu(`/yollar/${yol.slug}`)}>
                 {yol.baslik}
               </a>
               <span class="kategori-satiri__sayi">
-                {sayi.format(yol.terimSayisi)} terim · ~{sayi.format(yol.dakika)} dk
+                {SEVIYE_ADLARI[yol.seviye]} · {sayi.format(yol.terimSayisi)} terim · ~
+                {sayi.format(yol.dakika)} dk
               </span>
-              <span class="kategori-satiri__ornek">{SEVIYE_ADLARI[yol.seviye]}</span>
             </li>
           ))
         }
       </ul>
+
+      <p class="bolum-baglanti">
+        <a href={siteYolu('/yollar')}>
+          Altı yolun hepsi
+          <span aria-hidden="true"> →</span>
+        </a>
+      </p>
     </section>
 
     {
       AILELER.map((aile) => (
-        <section class="aile">
+        <section class="aile" style={`--family-color: ${aileRengi(aile)}`}>
           <h2 class="aile__baslik">{aile.ad}</h2>
           <p class="aile__aciklama">{aile.aciklama}</p>
 
@@ -177,16 +173,6 @@ const yollar = (await getCollection('yollar'))
                       ? ` · ${sayi.format(ozet.yazilmis)} yazıldı`
                       : ' · yazım sırada'}
                   </span>
-                  {ozet.ornekler.length > 0 && (
-                    <span class="kategori-satiri__ornek">
-                      {ozet.ornekler.map((ornek, i) => (
-                        <>
-                          {i > 0 && <span>, </span>}
-                          <a href={terimYolu(ornek.slug)}>{ornek.ad}</a>
-                        </>
-                      ))}
-                    </span>
-                  )}
                 </li>
               );
             })}
@@ -213,16 +199,11 @@ const yollar = (await getCollection('yollar'))
 </script>
 
 <style>
-  /* Bölüm başlığı aynı zamanda yolların tam listesine bağlantı.
-     Vurgu rengi bağlantılara ayrılmış olsa da başlık ölçeğinde bir blok
-     vurgu istemiyoruz: renk metinden gelir, işaret alt çizgiden. */
-  .yollar-baslik {
-    color: inherit;
-    text-decoration: none;
-  }
-
-  .yollar-baslik:hover {
-    color: var(--color-accent);
-    text-decoration: underline;
+  /* Kesilmiş bir listenin altındaki "devamı" bağlantısı. Liste kabuğunun
+     dışında durur ki satırlardan biri sanılmasın. */
+  .bolum-baglanti {
+    margin-top: var(--space-3);
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
   }
 </style>

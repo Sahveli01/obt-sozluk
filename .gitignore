@@ -7,3 +7,6 @@ dist/
 .env
 .env.*
 !.env.example
+
+# Tasarım denetimi için yerel ekran görüntüleri
+.screenshots/
